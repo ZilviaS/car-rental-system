@@ -1,0 +1,161 @@
+import { useState, useEffect } from "react"
+import { useSearchParams } from "react-router-dom"
+import { Navigate, useNavigate } from 'react-router-dom'
+import Navbar from "./navbar";
+
+function search(){
+    const navigate = useNavigate()
+    const [searchParams] = useSearchParams()
+
+    const [carinfo, setCarinfo] = useState([])
+
+    const [carForm, setCarForm] = useState({
+        brand : '',
+        carname : ''
+        }
+    )
+    const [query, setQuery] = useState({
+        brand: '',
+        carname: '',
+        startDate: '',
+        endDate: ''
+    })
+
+    const data = searchParams.get("data")
+
+    useEffect(() => {
+        if (!data) return
+
+        const parsed = JSON.parse(decodeURIComponent(data))
+
+        setCarForm({
+            brand: parsed.brand || '',
+            carname: parsed.carname || '',
+            startDate: parsed.startDate || '',
+            endDate: parsed.endDate || ''
+        })
+
+    }, [data])
+
+    useEffect(()=>{
+
+        fetch(`api/car`,{
+            method : 'POST',
+            headers : {
+                'content-type' : 'application/json'
+            },
+            body: JSON.stringify({
+                brand: carForm.brand,
+                carname: carForm.carname,
+                startDate: carForm.startDate,
+                endDate: carForm.endDate
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data)
+            setCarinfo(data)
+        })
+        .catch(err => console.error(err))
+    },[carForm])
+
+    const truncate = (str, n)=> {
+        return str?.length > n ? str.substr(0, n-1) + "..." : str;
+    }
+
+    const handleSearch = ()=>{
+        setCarForm({
+            brand: query.brand, 
+            carname: query.carname,
+            startDate: query.startDate,
+            endDate: query.endDate
+        })
+    }
+
+    const handleRent = (car)=>{
+        navigate(`/booking/${car.id}`)
+    }
+
+    return(
+        <>
+            <div className="bg-white min-h-screen">
+                <Navbar/>
+                <section className="flex gap-10 mx-20 mt-10">
+                    <form action="">
+                        <div className="w-130 bg-gray-100 rounded-md shadow-2xl">
+                            <div className=" bg-yellow-500 rounded-t-md">
+                                <h1 className="text-xl font-bold py-5 text-black pl-5 font-RobotoMono">Search Car</h1>
+                            </div>
+                            <div className="m-5">
+                                <h1 className="font-bold pl-2 font-RobotoMono text-sm">Car Brand</h1>
+                                <select className="font-RobotoMono mt-3 bg-white w-full p-4 rounded-sm" name="brand" id="type" onChange={(e)=>setQuery({...query,brand: e.target.value})}>
+                                    <option value="">select brand</option>
+                                    <option value="Abarth">Abarth</option>
+                                    <option value="Bentley">Bentley</option>
+                                    <option value="Ford">Ford</option>
+                                    <option value="Honda">Honda</option>
+                                    <option value="Jaguar">Jaguar</option>
+                                    <option value="Mercedes">Mercedes Benz</option>
+                                    <option value="Nissan">Nissan</option>
+                                    <option value="Rolls">Rolls Royce</option>
+                                </select>
+                            </div>
+                            <div className="m-5">
+                                <h1 className="font-bold pl-2 font-RobotoMono">Model</h1>
+                                <input type="text" name="model" className="font-RobotoMono mt-3 bg-white w-full p-4 rounded-sm" onChange={(e)=>setQuery({...query,carname: e.target.value})}/>
+                            </div>
+                            <div className="m-5">
+                                <h1 className="font-bold pl-2 font-RobotoMono">start date</h1>
+                                <input type="date" name="model" className="mt-3 bg-white w-full p-4 rounded-sm" onChange={(e)=>setQuery({...query,startDate: e.target.value})}/>
+                            </div>
+                            <div className="m-5">
+                                <h1 className="font-bold pl-2 font-RobotoMono">end date</h1>
+                                <input type="date" name="model" className="mt-3 bg-white w-full p-4 rounded-sm" onChange={(e)=>setQuery({...query,endDate: e.target.value})}/>
+                            </div>
+                            <div className="flex justify-center mx-5">
+                                <button type="button" className="font-RobotoMono bg-amber-400 py-3 w-full rounded-md hover:cursor-pointer hover:bg-amber-600 mb-5" onClick={handleSearch}>search</button>
+                            </div>
+                        </div>
+                    </form>
+                    <div className="mt-2">
+                        <div className=" w-full mb-3">
+                            <h1 className="text-gray-500">{carinfo.length} Result Found</h1>
+                        </div>
+                        <div className="w-full flex-col flex items-center gap-5">
+                            {carinfo.map((car, index)=>{
+                                return (
+                                    <div key={index} className="bg-white flex w-200 gap-3 rounded-md h-50 shadow-xl">
+                                        <img src={car.image_url} className="h-full w-70 rounded-l-md" alt="" />
+                                        <div className="flex flex-col justify-between w-full my-2">
+                                            <div className="pt-1">
+                                                <h2 className="font-bold font-RobotoMono">{car.brand} {car.model} {car.trim}</h2>
+                                                <div className="flex gap-2"> 
+                                                    <h2 className="text-sm">{car.year}</h2>
+                                                    <h2 className="text-sm">{car.plate}</h2>
+                                                </div>
+                                                <h2 className="text-sm text-gray-400">{truncate(car.description == null ? 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.' : car.description, 70)}</h2>
+                                            </div>
+                                            <div className="">
+                                                {car.status == true ?
+                                                <>
+                                                    <button onClick={() => handleRent(car)} className="bg-green-600 rounded-sm text-white px-5 py-1 flex hover:cursor-pointer hover:bg-green-900"><h1 className="font-bold mr-1">{car.price} บาท</h1>/วัน</button>
+                                                </> : 
+                                                <>
+                                                    <h1 className="text-red-700">not available</h1>
+                                                </>}
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    </div>
+                    
+                </section>
+            </div>
+        </>
+    )
+}
+
+export default search
