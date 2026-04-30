@@ -29,8 +29,9 @@ router.post('/', auth, async(req,res)=>{
             `UPDATE users
             SET fname = $1 , tel = $2, sex = $3, birthdate = $4
             WHERE id = $5`,
-            [ user.fname, user.tel, user.sex, user.birthdate, user.id] 
+            [ user.fname, user.tel, user.sex, user.birthdate, user.id ] 
         )
+        
         res.json({ message : 'updated!'})
     }catch(err){
         console.error(err)
