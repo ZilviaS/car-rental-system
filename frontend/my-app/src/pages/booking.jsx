@@ -2,18 +2,30 @@ import Navbar from "./navbar"
 import '../App.jsx'
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
+import DatePicker from "react-datepicker"
+import "react-datepicker/dist/react-datepicker.css"
 
 function Booking(){
     const navigate = useNavigate()
     const { id } = useParams()
     const [car, setCar] = useState(null)
     const [data, setData] = useState({
-        startDate : '',
-        endDate : '',
+        start_date : '',
+        end_date : '',
         location: ''
     })
     const [priceData, setPriceData] = useState(null)
+    const [bookedDates, setBookedDates] = useState([])
     
+    const isDateBlocked = (date) => {
+        return bookedDates.some(b => {
+            const start = new Date(b.start_date)
+            const end = new Date(b.end_date)
+
+            return date >= start && date <= end
+        })
+    }
+
     useEffect(()=>{
         console.log(id)
         fetch(`/api/car/${id}`)
@@ -27,16 +39,21 @@ function Booking(){
     , [id])
 
     useEffect(()=>{
-        if(data.startDate && data.endDate && car){
+        fetch(`/api/car/${id}/booked-dates`)
+        .then(res => res.json())
+        .then(data => setBookedDates(data))
+    }, [])
+
+    useEffect(()=>{
+        if(data.start_date && data.end_date && car){
             handleCheck()
         }
-    }, [data.startDate, data.endDate, car])
+    }, [data.start_date, data.end_date, car])
 
     const handleSubmit = ()=>{
-        if (data.startDate == '' || data.endDate == '' || data.location == ''){
+        if (data.start_date == '' || data.end_date == '' || data.location == ''){
             return
         }
-        fetch()
         navigate('/payment', {
             state:{
                 bookingData: data,
@@ -47,7 +64,6 @@ function Booking(){
 
     const handleCheck = async ()=>{
         try{
-            console.log('wht')
             const res = await fetch(`/api/payment`,{
                 method : 'POST',
                 headers :{
@@ -55,8 +71,8 @@ function Booking(){
                 },
                 body : JSON.stringify({
                     carID: car.id,
-                    startDate: data.startDate,
-                    endDate: data.endDate
+                    start_date: data.start_date.toISOString().split('T')[0],
+                    end_date: data.end_date.toISOString().split('T')[0]
                 })
             })
         const result = await res.json()
@@ -93,11 +109,23 @@ function Booking(){
                                 <div className="flex gap-5 pb-2">
                                     <div>
                                         <h1 className='text-gray-500 font-RobotoMono text-xs pl-1'>start date</h1>
-                                        <input onChange={(e)=> setData({...data, startDate : e.target.value})} type="date" name='startDate' className="px-4 py-2 rounded-md border-1 border-gray-400" required/>
+                                        <DatePicker
+                                            selected={data.start_date ? new Date(data.start_date) : null}
+                                            onChange={(date) => setData({...data, start_date: date})}
+                                            filterDate={(date) => !isDateBlocked(date)}
+                                            dateFormat="yyyy-MM-dd"
+                                            className="px-4 py-2 rounded-md border border-gray-400"
+                                        />
                                     </div>
                                     <div>
                                         <h1 className='text-gray-500 font-RobotoMono text-xs pl-1'>end date</h1>
-                                        <input onChange={(e)=> setData({...data, endDate : e.target.value})} type="date" name='endDate' className="px-4 py-2 rounded-md border-1 border-gray-400" required/>
+                                        <DatePicker
+                                            selected={data.end_date ? new Date(data.end_date) : null}
+                                            onChange={(date) => setData({...data, end_date: date})}
+                                            filterDate={(date) => !isDateBlocked(date)}
+                                            dateFormat="yyyy-MM-dd"
+                                            className="px-4 py-2 rounded-md border border-gray-400"
+                                        />
                                     </div>
                                 </div>
                                 <h1 className='text-gray-500 font-RobotoMono text-xs pl-1'>pickup location</h1>
@@ -109,10 +137,10 @@ function Booking(){
                                 <h1 className='pl-1 py-4 font-RobotoMono text-sm text-gray-500'>
                                 {
                                 (() => {
-                                    if (!data.startDate || !data.endDate) return 'please insert rent date'
+                                    if (!data.start_date || !data.end_date) return 'please insert rent date'
 
-                                    const start = new Date(data.startDate)
-                                    const end = new Date(data.endDate)
+                                    const start = new Date(data.start_date)
+                                    const end = new Date(data.end_date)
 
                                     if(end < start) return 'please insert rent date'
                                     if(!priceData) return 'calculating...'

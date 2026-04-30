@@ -5,7 +5,7 @@ const auth = require('../middleware/auth')
 
 router.get('/user', auth, async (req ,res)=>{
     try{
-        const userId = req.user.userId
+        const userId = req.user.id
 
         const result = await pool.query(`
             SELECT b.*, c.brand, c.model
@@ -18,6 +18,23 @@ router.get('/user', auth, async (req ,res)=>{
     } catch(err){
         console.error(err)
         res.status(500).send('server error')
+    }
+})
+
+router.post('/cancle', auth, async (req,res)=>{
+    try{
+        const userId = req.user.id
+        const car = req.body
+        console.log(car.id)
+        console.log(userId)
+        const result = await pool.query(`
+            DELETE FROM bookings
+            WHERE id = $1
+                AND user_id = $2 
+        `, [car.id, userId])
+        console.log('updated')
+    }catch(err){
+        console.error(err)
     }
 })
 

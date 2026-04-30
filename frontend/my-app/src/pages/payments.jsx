@@ -4,7 +4,6 @@ import { useEffect, useState } from "react"
 import { useNavigate, useParams, useLocation } from "react-router-dom"
 
 function Payment(){
-
     const location = useLocation()
     const navigate = useNavigate()
     const {bookingData, car} = location.state || {}
@@ -22,11 +21,11 @@ function Payment(){
         Bank : '',
         tel : '' 
     })
+    const [userAccount, setUserAccount] = useState([])
 
     const PaymentHandle = async ()=>{
         if (!paymentInfo)
             return;
-
         try{
             const res = await fetch(`http://localhost:3000/api/payment/transcript`,{
                 method : 'POST',
@@ -51,7 +50,6 @@ function Payment(){
 
     useEffect(()=>{
         const token = localStorage.getItem('token')
-
         if(!token){
             navigate('/login')
             return
@@ -68,10 +66,22 @@ function Payment(){
             console.log(data)
         }  
         })
+
+        fetch(`/api/user/account`,{
+            headers : {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        .then(res=> res.json())
+        .then(data=>{
+            setUserAccount(data)
+            console.log(data)
+    })
+
     }, [])
 
     useEffect(()=>{
-        if(!car || !bookingData) return
+        if(!car || !bookingData) return <div>Invalid access (no booking data)</div>
         
         const fetchPayment = async() =>{
             try{
@@ -82,8 +92,8 @@ function Payment(){
                 },
                 body : JSON.stringify({
                     carID: car.id,
-                    startDate: bookingData.startDate,
-                    endDate: bookingData.endDate
+                    start_date: bookingData.start_date.toISOString().split('T')[0],
+                    end_date: bookingData.end_date.toISOString().split('T')[0]
                 })
                 })
                 const result = await res.json()
@@ -107,13 +117,13 @@ function Payment(){
                         <form>
                             <table className="border-separate border-spacing-x-2 border-spacing-y-2">
                                 <tr>
-                                    <th className="text-right font-RobotoMono">Card Number</th>
-                                    <th><input onChange={(e)=>{setUserPayment({...userPayment, cardNumber : e.target.value})}} type="text" className="border-gray-500 border-2 rounded px-1 w-full" required /></th>
+                                    <th className="text-right font-normal font-RobotoMono">Card Number</th>
+                                    <th><input value={userAccount.card_number || ''} onChange={(e)=>{setUserPayment({...userPayment, cardNumber : e.target.value})}} type="text" className="border-gray-500 font-normal border-2 rounded px-1 w-full" required /></th>
                                 </tr>
                                 <tr>
                                     <td className="text-right font-RobotoMono">Expire Date</td>
                                     <td className="flex">
-                                        <input required onChange={(e) => {
+                                        <input value={userAccount.ex_month || ''} required onChange={(e) => {
                                             let val = e.target.value;
 
                                             val = parseInt(val);
@@ -124,7 +134,7 @@ function Payment(){
                                             setUserPayment({...userPayment, exMonth : val});
                                         }} type="number" min={1} max={12} placeholder="MM" className="border-gray-500 border-2 rounded px-1 w-17" />
                                         <h1 className="mx-2 text-xl">/</h1>
-                                        <input required onChange={(e) => {
+                                        <input value={userAccount.ex_year || ''} required onChange={(e) => {
                                             let val = e.target.value;
 
                                             val = parseInt(val);
@@ -138,16 +148,16 @@ function Payment(){
                                 </tr>
                                 <tr>
                                     <td className="text-right font-RobotoMono">CVV (3 digits)</td>
-                                    <td><input required onChange={(e)=>{setUserPayment({...userPayment, CVV : e.target.value})}} type="text" maxLength={3} className="border-gray-500 border-2 rounded px-1 w-15"/></td>
+                                    <td><input value={userAccount.cvv || ''} required onChange={(e)=>{setUserPayment({...userPayment, CVV : e.target.value})}} type="text" maxLength={3} className="border-gray-500 border-2 rounded px-1 w-15"/></td>
                                 </tr>
                                 <tr>
                                     <td className="text-right font-RobotoMono">Name</td>
-                                    <td><input required onChange={(e)=>{setUserPayment({...userPayment, Name : e.target.value})}} type="text" className="border-gray-500 border-2 rounded px-1 w-full"/></td>
+                                    <td><input value={userAccount.cardname || ''} required onChange={(e)=>{setUserPayment({...userPayment, Name : e.target.value})}} type="text" className="border-gray-500 border-2 rounded px-1 w-full"/></td>
                                 </tr>
                                 <tr>
                                     <td className="text-right font-RobotoMono">Bank</td>
                                     <td>
-                                        <select required defaultValue={''} onChange={(e)=>{setUserPayment({...userPayment, Bank : e.target.value})}} className="border-gray-500 border-2 rounded" name="bank" id="bank">
+                                        <select required value={userAccount.bank || ''} onChange={(e)=>{setUserPayment({...userPayment, Bank : e.target.value})}} className="border-gray-500 border-2 rounded" name="bank" id="bank">
                                             <option value="" disabled hidden>--SELECT-BANK--</option>
                                             <option value="Bangkok">Bangkok Bank</option>
                                             <option value="Kasikorn">Kasikorn</option>
@@ -195,11 +205,11 @@ function Payment(){
                                 </tr>
                                 <tr>
                                     <td className="border"><h1 className="w-full px-1">Start Date</h1></td>
-                                    <td className="w-50 border pl-1">{bookingData.startDate}</td>
+                                    <td className="w-50 border pl-1">{bookingData.start_date.toISOString().split('T')[0]}</td>
                                 </tr>
                                 <tr>
                                     <td className="border"><h1 className="w-full px-1">End Date</h1></td>
-                                    <td className="w-50 border pl-1">{bookingData.startDate}</td>
+                                    <td className="w-50 border pl-1">{bookingData.end_date.toISOString().split('T')[0]}</td>
                                 </tr>
                             </table>
                             {paymentInfo? 

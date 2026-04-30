@@ -4,14 +4,14 @@ const pool = require('../db')
 const { v4: uuidv4 } = require('uuid');
 
 router.post('/', async (req,res)=>{
-    const { carID, startDate, endDate } = req.body
-    console.log(carID + ' ' + startDate + ' ' + endDate)
+    const { carID, start_date, end_date } = req.body
+    console.log(carID + ' ' + start_date + ' ' + end_date)
     try{
         const result = await pool.query(`
             SELECT price FROM cars WHERE id = $1
             `, [carID])
-        const start = new Date(startDate)
-        const end = new Date(endDate)
+        const start = new Date(start_date)
+        const end = new Date(end_date)
         const days = Math.max((end - start) / (1000*60*60*24), 1)
         const price = result.rows[0].price * days
         res.json({

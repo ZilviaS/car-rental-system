@@ -14,7 +14,7 @@ const authRoutes = require('./routes/authRoutes')
 app.use('/api/auth', authRoutes)
 
 const bookingRoutes = require('./routes/bookingRoutes')
-app.use('api/booking', bookingRoutes)
+app.use('/api/booking', bookingRoutes)
 
 const userRoutes = require('./routes/userRoutes')
 app.use('/api/user', userRoutes)

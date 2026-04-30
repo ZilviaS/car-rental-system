@@ -11,12 +11,13 @@ router.post('/', async (req,res)=>{
         let values = []
         let index = 1
 
-        if (startDate && endDate) {
+       if (startDate && endDate) {
             conditions.push(`
                 NOT EXISTS (
-                SELECT 1 FROM bookings b
-                WHERE b.car_id = c.id
-                AND NOT (b.end_date < $${index} OR b.start_date > $${index + 1})
+                    SELECT 1 FROM bookings b
+                    WHERE b.car_id = c.id
+                    AND b.start_date::date <= $${index + 1}::date
+                    AND b.end_date::date >= $${index}::date
                 )
             `)
             values.push(startDate, endDate)
@@ -40,7 +41,7 @@ router.post('/', async (req,res)=>{
         }
 
         const result = await pool.query(baseQuery, values)
-        console.log(result.rows)
+        console.log(baseQuery)
         res.json(result.rows)
     }
     catch (err) {
@@ -64,5 +65,23 @@ router.get('/:id', async (req,res)=>{
     }
 
 })
+
+router.get('/:id/booked-dates', async (req,res)=>{
+    const { id } = req.params
+    try{
+        const result = await pool.query(`
+            SELECT start_date, end_date
+            FROM bookings
+            WHERE car_id = $1
+            AND status != 'cancelled'
+        `, [id])
+        console.log(result.rows)
+        res.json(result.rows)
+    }catch(err){
+        console.error(err)
+        res.status(500).send(err)
+    }
+})
+
 
 module.exports = router

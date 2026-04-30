@@ -15,16 +15,16 @@ function Manage(){
         sex : '',
         birthdate : ''
     })
+    const [userCars, setUserCars] = useState([])
     const navigate = useNavigate()
     const [pageState, setPageState] = useState('user')
     const [userPayment, setUserPayment] = useState({
-        cardNumber : '',
-        exMonth : '',
-        exYear : '',
-        CVV : '',
-        Name : '',
-        Bank : '',
-        tel : '' 
+        card_number : '',
+        ex_month : '',
+        ex_year : '',
+        cvv : '',
+        cardname : '',
+        bank : ''
     })
 
     useEffect(()=>{
@@ -45,6 +45,27 @@ function Manage(){
                 birthdate: data.birthdate?.split('T')[0]
             })
         })
+
+        fetch(`/api/user/account`,{
+            headers : {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            setUserPayment(data)
+        })
+
+        fetch(`/api/user/cars`,{
+            headers : {
+                Authorization : `Bearer ${token}`
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            setUserCars(data)
+            console.log(data)
+        })
     },[])
 
     const handleUpdate = ()=>{
@@ -59,27 +80,52 @@ function Manage(){
         })
     }
 
+    const handleAccountUpdate = ()=>{
+        const token = localStorage.getItem('token')
+        fetch(`/api/user/account`,{
+            method : 'POST',
+            headers : {
+                'content-type' : 'application/json',
+                'Authorization' : `Bearer ${token}`
+            },
+            body: JSON.stringify(userPayment)
+        })
+    }
+
+    const handleCancleOrder = (car)=>{
+        const token = localStorage.getItem('token')
+        fetch(`/api/booking/cancle`,{
+            method : 'POST',
+            headers:{
+                'content-type' : 'application/json',
+                'Authorization' : `Bearer ${token}`
+            },
+            body: JSON.stringify(car)
+        })
+        window.location.reload(); 
+    }
+
     if (!user) {
         return <div>Loading...</div>;
     }else
         return(
         <>
-            <div className="h-screen bg-gray-200">
+            <div className="h-screen bg-white">
                 <Navbar></Navbar>
                 <section className="flex justify-center gap-5">
-                    <div className="h-full bg-white mt-5 p-5 w-70">
+                    <div className="h-full bg-white mt-5 p-5 w-70 shadow-xl rounded">
                         <div className="flex items-center gap-2">
                             <img src={userLogo} alt="" className="h-10"/>
                             <h1 className="font-RobotoMono">{user.username}</h1>
                         </div>
                         <hr className="text-gray-300 my-3" />
                         <div className="">
-                            <h1><button onClick={()=>setPageState('user')} className="font-RobotoMono hover:cursor-pointer hover:text-red-500">User Info</button></h1>
-                            <h1><button onClick={()=>setPageState('account')} className="font-RobotoMono hover:cursor-pointer hover:text-red-500">Account</button></h1>
-                            <h1><button onClick={()=>setPageState('history')} className="font-RobotoMono hover:cursor-pointer hover:text-red-500">History</button></h1>
+                            <h1><button onClick={()=>setPageState('user')} className={`font-RobotoMono text-sm hover:cursor-pointer hover:text-red-500 ${  pageState === 'user' ? '' : 'text-gray-500'}`}>User Information</button></h1>
+                            <h1><button onClick={()=>setPageState('account')} className={`font-RobotoMono text-sm hover:cursor-pointer hover:text-red-500 ${  pageState === 'account' ? '' : 'text-gray-500'}`}>Account</button></h1>
+                            <h1><button onClick={()=>setPageState('history')} className={`font-RobotoMono text-sm hover:cursor-pointer hover:text-red-500 ${  pageState === 'history' ? '' : 'text-gray-500'}`}>History</button></h1>
                         </div>  
                     </div>
-                    <div className="h-full bg-white mt-5 p-5 w-200">
+                    <div className="h-full bg-white mt-5 p-5 w-230 shadow-xl min-h-90">
                         <h1 className="font-RobotoMono text-md">
                             {pageState == 'user' && 'User Information'}
                             {pageState == 'account'  && 'account Information'}
@@ -114,8 +160,8 @@ function Manage(){
                                 <tr>
                                     <td className="text-right text-gray-500">sex</td>
                                     <td className="">
-                                        <select value={user.sex || ""} onChange={(e)=>setUser({...user, sex : e.target.value})} name="" id="" className="border-gray-200 border-2 mx-2 rounded px-2">
-                                            <option value="">--select--</option>
+                                        <select value={user.sex || ""} onChange={(e)=>setUser({...user, sex : e.target.value})} name="" id="" className="border-gray-200 border-2 mx-2 px-1">
+                                            <option value="" disabled hidden>--select--</option>
                                             <option value="male">male</option>
                                             <option value="female">female</option>
                                             <option value="none">don't want to say</option>
@@ -140,11 +186,11 @@ function Manage(){
                             <table className="border-separate border-spacing-x-2 border-spacing-y-2">
                                 <tbody>
                                     <tr>
-                                        <td className="text-gray-500 text-right text-md">Card Number</td>
-                                        <td><input onChange={(e)=>{setUserPayment({...userPayment, cardNumber : e.target.value})}} type="text" className="border-gray-200 border-2 rounded px-1 w-full"/></td>
+                                        <td className="text-gray-500 text-right text-md">card number</td>
+                                        <td><input onChange={(e)=>{setUserPayment({...userPayment, card_number : e.target.value})}} value={userPayment.card_number || ''} type="text" className="border-gray-200 border-2 rounded px-1 w-full"/></td>
                                     </tr>
                                     <tr>
-                                        <td className="text-gray-500 text-right text-md">Expire Date</td>
+                                        <td className="text-gray-500 text-right text-md">expire date</td>
                                         <td className="flex">
                                             <input required onChange={(e) => {
                                                 let val = e.target.value;
@@ -154,8 +200,8 @@ function Manage(){
                                                 if (val < 1) val = 1;
                                                 if (val > 12) val = 12;
 
-                                                setUserPayment({...userPayment, exMonth : val});
-                                            }} type="number" min={1} max={12} placeholder="MM" className="border-gray-200 border-2 rounded px-1 w-17" />
+                                                setUserPayment({...userPayment, ex_month : val});
+                                            }} value={userPayment.ex_month || ''} type="number" min={1} max={12} placeholder="MM" className="border-gray-200 border-2 rounded px-1 w-17" />
                                             <h1 className="mx-2 text-xl">/</h1>
                                             <input required onChange={(e) => {
                                                 let val = e.target.value;
@@ -165,56 +211,71 @@ function Manage(){
                                                 if (val < 1) val = 1;
                                                 if (val > 99) val = 99;
 
-                                                setUserPayment({...userPayment, exYear : val});
-                                            }} type="number" min={0} max={99} placeholder="YY" className="border-gray-200 border-2 rounded px-1 w-17" />
+                                                setUserPayment({...userPayment, ex_year : val});
+                                            }} value={userPayment.ex_year || ''} type="number" min={0} max={99} placeholder="YY" className="border-gray-200 border-2 rounded px-1 w-17" />
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td className=" text-gray-500 text-right text-md">CVV (3 digits)</td>
-                                        <td><input required onChange={(e)=>{setUserPayment({...userPayment, CVV : e.target.value})}} type="text" maxLength={3} className="border-gray-200 border-2 rounded px-1 w-15"/></td>
+                                        <td className=" text-gray-500 text-right text-md">cvv</td>
+                                        <td><input required value={userPayment.cvv || ''} onChange={(e)=>{setUserPayment({...userPayment, cvv : e.target.value})}} type="text" maxLength={3} className="border-gray-200 border-2 rounded px-1 w-15"/></td>
                                     </tr>
                                     <tr>
-                                        <td className=" text-gray-500 text-right text-md">Name</td>
-                                        <td><input required onChange={(e)=>{setUserPayment({...userPayment, Name : e.target.value})}} type="text" className="border-gray-200 border-2 rounded px-1 w-full"/></td>
+                                        <td className=" text-gray-500 text-right text-md">name</td>
+                                        <td><input required value={userPayment.cardname || ''} onChange={(e)=>{setUserPayment({...userPayment, cardname : e.target.value})}} type="text" className="border-gray-200 border-2 rounded px-1 w-full"/></td>
                                     </tr>
                                     <tr>
-                                        <td className="text-gray-500 text-right text-md">Bank</td>
+                                        <td className="text-gray-500 text-right text-md">bank</td>
                                         <td>
-                                            <select required defaultValue={''} onChange={(e)=>{setUserPayment({...userPayment, Bank : e.target.value})}} className="border-gray-200 border-2 rounded" name="bank" id="bank">
+                                            <select required value={userPayment.bank || ''} onChange={(e)=>{setUserPayment({...userPayment, bank : e.target.value})}} className="border-gray-200 border-2 rounded" name="bank" id="bank">
                                                 <option value="" disabled hidden>--SELECT-BANK--</option>
                                                 <option value="Bangkok">Bangkok Bank</option>
                                                 <option value="Kasikorn">Kasikorn</option>
                                                 <option value="SCB">Siam Commercial Bank (SCB)</option>
-                                                <option value="Krungsri">Krungsri</option>
+                                                <option value="krungsri">Krungsri</option>
                                             </select>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td></td>
                                         <td>
-                                            <button type="button" className="bg-orange-500 text-white font-RobotoMono px-2 rounded hover:cursor-pointer">submit</button>
+                                            <button onClick={handleAccountUpdate} type="button" className="bg-orange-500 text-white font-RobotoMono px-2 rounded hover:cursor-pointer">save</button>
                                         </td>
                                     </tr>
                                 </tbody>
-                                
                             </table>
                         </>
                         }
-                        {/* {pageState == 'history' && <>
+                        {pageState == 'history' && <>
                             <table>
                                 <tbody>
                                     <tr>
-                                        <td>plate</td>
-                                        <td>brand</td>
-                                        <td>model</td>
-                                        <td>year</td>
-                                        <td>description</td>
-                                        <td>status</td>
-                                        <td>price</td>
+                                        <td className="px-2 w-25 border-2 border-gray-200">Plate</td>
+                                        <td className="px-2 w-30 border-2 border-gray-200">Brand</td>
+                                        <td className="px-2 w-35 border-2 border-gray-200">Model</td>
+                                        <td className="px-2 w-15 border-2 border-gray-200">Year</td>
+                                        <td className="px-2 w-25 border-2 border-gray-200">Start Date</td>
+                                        <td className="px-2 w-25 border-2 border-gray-200">End Date</td>
+                                        <td className="px-2 w-20 border-2 border-gray-200">Status</td>
+                                        <td className="px-2 w-20 border-2 border-gray-200">Price</td>
+                                        <td className="px-2  border-2 border-gray-200"></td>
                                     </tr>
+                                    {userCars.map((car, index)=>(
+                                    <tr key={car.id}>
+                                        <td className="px-2 py-2 border-2 border-gray-200">{car.plate}</td>
+                                        <td className="px-2 border-2 border-gray-200">{car.brand}</td>
+                                        <td className="px-2 border-2 border-gray-200">{car.model}</td>
+                                        <td className="px-2 border-2 border-gray-200">{car.year}</td>
+                                        <td className="px-2 border-2 border-gray-200">{car.start_date}</td>
+                                        <td className="px-2 border-2 border-gray-200">{car.end_date}</td>
+                                        <td className="px-2 border-2 border-gray-200">{car.status}</td>
+                                        <td className="px-2 border-2 border-gray-200">{car.price}</td>
+                                        <td className="border-2 border-gray-200"><button onClick={()=>{handleCancleOrder(car)}} className="bg-red-500 text-white p-2 hover:cursor-pointer">Cancel</button></td>
+                                    </tr>
+                                    ))}
+                                        
                                 </tbody>
                             </table>
-                        </>} */}
+                        </>}
                         
                     </div>
                 </section>
