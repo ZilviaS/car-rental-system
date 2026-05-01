@@ -113,7 +113,7 @@ function Manage(){
             <div className="h-screen bg-white">
                 <Navbar></Navbar>
                 <section className="flex justify-center gap-5">
-                    <div className="h-full bg-white mt-5 p-5 w-70 shadow-xl rounded">
+                    <div className="h-full bg-white mt-5 p-5 w-70 pt-4 shadow-xl rounded">
                         <div className="flex items-center gap-2">
                             <img src={userLogo} alt="" className="h-10"/>
                             <h1 className="font-RobotoMono">{user.username}</h1>

@@ -14,11 +14,11 @@ function register(){
         confirmPassword : Number
     })
     const registerHandle = ()=>{
-        console.log(registerForm.username)
+        console.log(registerForm)
         if (registerForm.password == registerForm.confirmPassword){
             try{
                 fetch(`/api/auth/register`,{
-                    method : 'GET',
+                    method : 'POST',
                     headers : {
                         'content-type' : 'application/json'
                     },
@@ -40,7 +40,7 @@ function register(){
                 <div className='flex justify-center'>
                     <div className='bg-white mt-15 w-120 py-5'>
                         <div className='flex justify-center'>
-                            <h1 className='text-2xl'>สมัครสมาชิก</h1>
+                            <h1 className='font-RobotoMono text-2xl'>Sign-Up</h1>
                         </div>
                         <div className='flex justify-center'>
                             <form action="" className='w-80'>
@@ -68,7 +68,7 @@ function register(){
                                     </button>
                                 </div>
                                 <div className="flex justify-center pt-5">
-                                    <button onClick={registerHandle} className="bg-green-600 text-white w-full rounded-md py-2 hover:cursor-pointer">ยืนยัน</button>
+                                    <button onClick={registerHandle} type="button" className="bg-green-600 text-white w-full rounded-md py-2 hover:cursor-pointer">ยืนยัน</button>
                                 </div>
                             </form>
                         </div>

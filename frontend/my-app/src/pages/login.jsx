@@ -46,15 +46,15 @@ function login(){
             <div className="w-full h-screen bg-no-repeat bg-cover bg-[url(https://storage.googleapis.com/48877118-7272-4a4d-b302-0465d8aa4548/c3711000-cdd4-4b80-ae10-57593635526a/6cf819ee-2239-4d6f-810b-4beb72badbea.jpg)]">
                 <Navbar></Navbar>
                 <div className='flex justify-center'>
-                    <div className='bg-white mt-15 w-120 py-5'>
+                    <div className='bg-white mt-15 w-120 py-5 rounded'>
                         <div className='flex justify-center'>
-                            <h1 className='text-2xl'>เข้าสู่ระบบ</h1>
+                            <h1 className='text-2xl font-RobotoMono'>Sign-In</h1>
                         </div>
                         <div className='flex justify-center'>
                             <form action="" className='w-80'>
-                                <h1 className='py-2'>อีเมล</h1>
+                                <h1 className='pt-2 font-RobotoMono text-gray-400 text-sm'>email</h1>
                                 <input className='border-gray-400 border-1 rounded-md p-2 w-full' type="text" onChange={(e)=> setUserForm({...userForm, email : e.target.value})}/>
-                                <h1 className='py-2'>รหัสผ่าน</h1>
+                                <h1 className='pt-2 font-RobotoMono text-gray-400 text-sm'>Password</h1>
                                 <div className='flex'>
                                     <input className='border-gray-400 border-1 rounded-md p-2 w-full' onChange={(e)=> setUserForm({...userForm, password : e.target.value})} type={showPassword ? "text" : "password"}/>
                                     <button type="button" onClick={()=> {setShowPassword(!showPassword)}} id='toggle-btn' className='pl-3 hover:cursor-pointer'>
@@ -65,7 +65,7 @@ function login(){
                                 </div>
                                 
                                 <div className="flex justify-center pt-5 mb-2">
-                                    <button type="button" className="bg-green-600 text-white w-full rounded-md py-2 hover:cursor-pointer" onClick={loginHandler}>ยืนยัน</button>
+                                    <button type="button" className="bg-green-600 text-white w-full rounded-md py-2 hover:cursor-pointer" onClick={loginHandler}>Sign-In</button>
                                 </div>
                             </form>
                         </div>

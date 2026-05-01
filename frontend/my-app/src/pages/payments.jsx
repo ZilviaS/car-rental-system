@@ -13,18 +13,18 @@ function Payment(){
 
     const [paymentInfo, setPaymentInfo] = useState(null)
     const [userPayment, setUserPayment] = useState({
-        cardNumber : '',
-        exMonth : '',
-        exYear : '',
-        CVV : '',
-        Name : '',
+        card_number : '',
+        ex_month : '',
+        ex_year : '',
+        cvv : '',
+        cardname : '',
         Bank : '',
+        user_id : '',
         tel : '' 
     })
-    const [userAccount, setUserAccount] = useState([])
 
     const PaymentHandle = async ()=>{
-        if (!paymentInfo)
+        if (!paymentInfo || !userPayment || !bookingData || !user)
             return;
         try{
             const res = await fetch(`http://localhost:3000/api/payment/transcript`,{
@@ -63,7 +63,7 @@ function Payment(){
         .then(res => res.json())
         .then(data => {{
             setUser(data)
-            console.log(data)
+            console.log('user', data)
         }  
         })
 
@@ -74,7 +74,7 @@ function Payment(){
         })
         .then(res=> res.json())
         .then(data=>{
-            setUserAccount(data)
+            setUserPayment(data)
             console.log(data)
     })
 
@@ -97,7 +97,7 @@ function Payment(){
                 })
                 })
                 const result = await res.json()
-                console.log(result)
+                console.log('price : ', result)
                 setPaymentInfo(result)
             }catch (err){
                 console.error(err)
@@ -116,101 +116,108 @@ function Payment(){
                     <div className="flex gap-10">
                         <form>
                             <table className="border-separate border-spacing-x-2 border-spacing-y-2">
-                                <tr>
-                                    <th className="text-right font-normal font-RobotoMono">Card Number</th>
-                                    <th><input value={userAccount.card_number || ''} onChange={(e)=>{setUserPayment({...userPayment, cardNumber : e.target.value})}} type="text" className="border-gray-500 font-normal border-2 rounded px-1 w-full" required /></th>
-                                </tr>
-                                <tr>
-                                    <td className="text-right font-RobotoMono">Expire Date</td>
-                                    <td className="flex">
-                                        <input value={userAccount.ex_month || ''} required onChange={(e) => {
-                                            let val = e.target.value;
+                                <tbody>
+                                    <tr>
+                                        <th className="text-right font-normal font-RobotoMono">Card Number</th>
+                                        <th><input value={userPayment.card_number || ''} onChange={(e)=>{setUserPayment({...userPayment, card_number : e.target.value})}} type="text" className="border-gray-500 font-normal border-2 rounded px-1 w-full" required /></th>
+                                    </tr>
+                                    <tr>
+                                        <td className="text-right font-RobotoMono">Expire Date</td>
+                                        <td className="flex">
+                                            <input value={userPayment.ex_month || ''} required onChange={(e) => {
+                                                let val = e.target.value;
 
-                                            val = parseInt(val);
+                                                val = parseInt(val);
 
-                                            if (val < 1) val = 1;
-                                            if (val > 12) val = 12;
+                                                if (val < 1) val = 1;
+                                                if (val > 12) val = 12;
 
-                                            setUserPayment({...userPayment, exMonth : val});
-                                        }} type="number" min={1} max={12} placeholder="MM" className="border-gray-500 border-2 rounded px-1 w-17" />
-                                        <h1 className="mx-2 text-xl">/</h1>
-                                        <input value={userAccount.ex_year || ''} required onChange={(e) => {
-                                            let val = e.target.value;
+                                                setUserPayment({...userPayment, ex_month : val});
+                                            }} type="number" min={1} max={12} placeholder="MM" className="border-gray-500 border-2 rounded px-1 w-17" />
+                                            <h1 className="mx-2 text-xl">/</h1>
+                                            <input value={userPayment.ex_year || ''} required onChange={(e) => {
+                                                let val = e.target.value;
 
-                                            val = parseInt(val);
+                                                val = parseInt(val);
 
-                                            if (val < 1) val = 1;
-                                            if (val > 99) val = 99;
+                                                if (val < 1) val = 1;
+                                                if (val > 99) val = 99;
 
-                                            setUserPayment({...userPayment, exYear : val});
-                                        }} type="number" min={0} max={99} placeholder="YY" className="border-gray-500 border-2 rounded px-1 w-17" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className="text-right font-RobotoMono">CVV (3 digits)</td>
-                                    <td><input value={userAccount.cvv || ''} required onChange={(e)=>{setUserPayment({...userPayment, CVV : e.target.value})}} type="text" maxLength={3} className="border-gray-500 border-2 rounded px-1 w-15"/></td>
-                                </tr>
-                                <tr>
-                                    <td className="text-right font-RobotoMono">Name</td>
-                                    <td><input value={userAccount.cardname || ''} required onChange={(e)=>{setUserPayment({...userPayment, Name : e.target.value})}} type="text" className="border-gray-500 border-2 rounded px-1 w-full"/></td>
-                                </tr>
-                                <tr>
-                                    <td className="text-right font-RobotoMono">Bank</td>
-                                    <td>
-                                        <select required value={userAccount.bank || ''} onChange={(e)=>{setUserPayment({...userPayment, Bank : e.target.value})}} className="border-gray-500 border-2 rounded" name="bank" id="bank">
-                                            <option value="" disabled hidden>--SELECT-BANK--</option>
-                                            <option value="Bangkok">Bangkok Bank</option>
-                                            <option value="Kasikorn">Kasikorn</option>
-                                            <option value="SCB">Siam Commercial Bank (SCB)</option>
-                                            <option value="Krungsri">Krungsri</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <h1 className="text-right font-RobotoMono">tel.</h1>
-                                    </td>
-                                    <td><input type="text" onChange={(e)=>{setUserPayment({...userPayment, tel : e.target.value})}} className="border-gray-500 border-2 rounded px-1 w-full"/></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td>
-                                        <button type="button" onClick={PaymentHandle} className="bg-orange-500 text-white font-RobotoMono px-2 rounded hover:cursor-pointer">submit</button>
-                                    </td>
-                                </tr>
+                                                setUserPayment({...userPayment, ex_year : val});
+                                            }} type="number" min={0} max={99} placeholder="YY" className="border-gray-500 border-2 rounded px-1 w-17" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td className="text-right font-RobotoMono">CVV (3 digits)</td>
+                                        <td><input value={userPayment.cvv || ''} required onChange={(e)=>{setUserPayment({...userPayment, cvv : e.target.value})}} type="text" maxLength={3} className="border-gray-500 border-2 rounded px-1 w-15"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td className="text-right font-RobotoMono">Name</td>
+                                        <td><input value={userPayment.cardname || ''} required onChange={(e)=>{setUserPayment({...userPayment, cardname : e.target.value})}} type="text" className="border-gray-500 border-2 rounded px-1 w-full"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td className="text-right font-RobotoMono">Bank</td>
+                                        <td>
+                                            <select required value={userPayment.bank || ''} onChange={(e)=>{setUserPayment({...userPayment, bank : e.target.value})}} className="border-gray-500 border-2 rounded" name="bank" id="bank">
+                                                <option value="" disabled hidden>--SELECT-BANK--</option>
+                                                <option value="Bangkok">Bangkok Bank</option>
+                                                <option value="Kasikorn">Kasikorn</option>
+                                                <option value="SCB">Siam Commercial Bank (SCB)</option>
+                                                <option value="Krungsri">Krungsri</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <h1 className="text-right font-RobotoMono">tel.</h1>
+                                        </td>
+                                        <td><input required type="text" onChange={(e)=>setUserPayment({...userPayment, tel : e.target.value})} 
+                                        value={user?.tel || ''} className="border-gray-500 border-2 rounded px-1 w-full"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            <button type="button" onClick={PaymentHandle} className="bg-orange-500 text-white font-RobotoMono px-2 rounded hover:cursor-pointer">submit</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                
                             </table>
                         </form>
                         <div className="border-l px-10">
                             <h1 className="font-RobotoMono text-xl pb-2">payment info</h1>
                             <table className="">
-                                <tr>
-                                    <td className="border"><h1 className="w-full px-1">Brand</h1></td>
-                                    <td className="w-50 border pl-1">{car.brand}</td>
-                                </tr>
-                                <tr>
-                                    <td className="border"><h1 className="w-full px-1">Model</h1></td>
-                                    <td className="w-50 border pl-1">{car.model} {car.trim}</td>
-                                </tr>
-                                <tr>
-                                    <td className="border"><h1 className="w-full px-1">Year</h1></td>
-                                    <td className="w-50 border pl-1">{car.year}</td>
-                                </tr>
-                                <tr>
-                                    <td className="border"><h1 className="w-full px-1">Plate</h1></td>
-                                    <td className="w-50 border pl-1">{car.plate}</td>
-                                </tr>
-                                <tr>
-                                    <td className="border"><h1 className="w-full px-1">Price/day</h1></td>
-                                    <td className="w-50 border pl-1">{car.price}</td>
-                                </tr>
-                                <tr>
-                                    <td className="border"><h1 className="w-full px-1">Start Date</h1></td>
-                                    <td className="w-50 border pl-1">{bookingData.start_date.toISOString().split('T')[0]}</td>
-                                </tr>
-                                <tr>
-                                    <td className="border"><h1 className="w-full px-1">End Date</h1></td>
-                                    <td className="w-50 border pl-1">{bookingData.end_date.toISOString().split('T')[0]}</td>
-                                </tr>
+                                <tbody>
+                                    <tr>
+                                        <td className="border"><h1 className="w-full px-1">Brand</h1></td>
+                                        <td className="w-50 border pl-1">{car.brand}</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="border"><h1 className="w-full px-1">Model</h1></td>
+                                        <td className="w-50 border pl-1">{car.model} {car.trim}</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="border"><h1 className="w-full px-1">Year</h1></td>
+                                        <td className="w-50 border pl-1">{car.year}</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="border"><h1 className="w-full px-1">Plate</h1></td>
+                                        <td className="w-50 border pl-1">{car.plate}</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="border"><h1 className="w-full px-1">Price/day</h1></td>
+                                        <td className="w-50 border pl-1">{car.price}</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="border"><h1 className="w-full px-1">Start Date</h1></td>
+                                        <td className="w-50 border pl-1">{bookingData.start_date.toISOString().split('T')[0]}</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="border"><h1 className="w-full px-1">End Date</h1></td>
+                                        <td className="w-50 border pl-1">{bookingData.end_date.toISOString().split('T')[0]}</td>
+                                    </tr>
+                                </tbody>
+                                
                             </table>
                             {paymentInfo? 
                             <h1 className="pt-2 font-RobotoMono">tatal: {paymentInfo.price} for {paymentInfo.days} day</h1>
