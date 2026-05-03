@@ -35,11 +35,10 @@ function Navbar(){
             <section className='bg-white flex justify-between items-center'>
                 <a href="/"><img className='max-h-10 rounded-full m-3' src="https://img.freepik.com/premium-vector/vector-car-logo-design-illus_714931-352.jpg" alt="" /></a>
                 <nav className='justify-center flex gap-2 py-3 mx-5 items-center'>
-                    <a className='p-2 hover:text-green-900 hover:underline font-RobotoMono text-sm'  href="/">search</a>
-                    <a className='p-2 hover:text-green-900 hover:underline font-RobotoMono text-sm'  href="/search">cars</a>
-                    <a className='p-2 hover:text-green-900 hover:underline font-RobotoMono text-sm'  href="">location</a>
-                    <a className='p-2 hover:text-green-900 hover:underline font-RobotoMono text-sm'  href="">service</a>
-                    <a className='p-2 hover:text-green-900 hover:underline font-RobotoMono text-sm'  href="">contact</a>
+                    <a className='p-1 hover:text-green-900 hover:underline font-RobotoMono text-sm'  href="/">search</a>
+                    <a className='p-1 hover:text-green-900 hover:underline font-RobotoMono text-sm'  href="/search">cars</a>
+                    <a className='p-1 hover:text-green-900 hover:underline font-RobotoMono text-sm'  href="/location">location</a>
+                    <a className='p-1 hover:text-green-900 hover:underline font-RobotoMono text-sm'  href="/contact">contact</a>
                     {user ? (user.role === 'admin' ? (
                         <>
                             <div className='flex items-center border-l pl-4 gap-3'>

@@ -22,6 +22,9 @@ app.use('/api/user', userRoutes)
 const paymentRoutes = require('./routes/paymentRoute')
 app.use('/api/payment', paymentRoutes)
 
+const locationRoutes = require('./routes/locationRoute')
+app.use('/api/location', locationRoutes)
+
 app.get('/', (req,res)=>{
     console.log('hi')
 })

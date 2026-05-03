@@ -116,7 +116,7 @@ function Manage(){
                     <div className="h-full bg-white mt-5 p-5 w-70 pt-4 shadow-xl rounded">
                         <div className="flex items-center gap-2">
                             <img src={userLogo} alt="" className="h-10"/>
-                            <h1 className="font-RobotoMono">{user.username}</h1>
+                            <h1 className="font-RobotoMono font-normal">{user.username}</h1>
                         </div>
                         <hr className="text-gray-300 my-3" />
                         <div className="">
@@ -146,19 +146,19 @@ function Manage(){
                                     <th className="font-medium font-RobotoMono px-2 text-left text-md">{user.username}</th>
                                 </tr>
                                 <tr>
-                                    <td className="text-right text-gray-500">name</td>
+                                    <td className="text-right text-gray-500">Name</td>
                                     <td><input onChange={(e)=>setUser({...user, fname : e.target.value})} type="text" value={user.fname || ""} className="border-gray-300 border-2 mx-2 px-2" /></td>
                                 </tr>
                                 <tr>
-                                    <td className="text-right text-gray-500">email</td>
+                                    <td className="text-right text-gray-500">Email</td>
                                     <td className="px-2">{user.email}</td>
                                 </tr>
                                 <tr>
-                                    <td className="text-right text-gray-500">telephone number</td>
+                                    <td className="text-right text-gray-500">Telephone Number</td>
                                     <td className=""><input onChange={(e)=>setUser({...user, tel : e.target.value})} type="number" value={user.tel || ''} className="border-gray-300 border-2 mx-2 px-2"/></td>
                                 </tr>
                                 <tr>
-                                    <td className="text-right text-gray-500">sex</td>
+                                    <td className="text-right text-gray-500">Sex</td>
                                     <td className="">
                                         <select value={user.sex || ""} onChange={(e)=>setUser({...user, sex : e.target.value})} name="" id="" className="border-gray-200 border-2 mx-2 px-1">
                                             <option value="" disabled hidden>--select--</option>
@@ -169,7 +169,7 @@ function Manage(){
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td className="text-right text-gray-500">date of birth</td>
+                                    <td className="text-right text-gray-500">Date of Birth</td>
                                     <td className="">
                                         <input onChange={(e)=>setUser({...user, birthdate : e.target.value})} value={user.birthdate || ''} type="date" className="mx-2 px-2 border-gray-200 border-2"/>
                                     </td>
@@ -186,11 +186,11 @@ function Manage(){
                             <table className="border-separate border-spacing-x-2 border-spacing-y-2">
                                 <tbody>
                                     <tr>
-                                        <td className="text-gray-500 text-right text-md">card number</td>
+                                        <td className="text-gray-500 text-right text-md">Card Number</td>
                                         <td><input onChange={(e)=>{setUserPayment({...userPayment, card_number : e.target.value})}} value={userPayment.card_number || ''} type="text" className="border-gray-200 border-2 rounded px-1 w-full"/></td>
                                     </tr>
                                     <tr>
-                                        <td className="text-gray-500 text-right text-md">expire date</td>
+                                        <td className="text-gray-500 text-right text-md">EXP.</td>
                                         <td className="flex">
                                             <input required onChange={(e) => {
                                                 let val = e.target.value;
@@ -216,15 +216,15 @@ function Manage(){
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td className=" text-gray-500 text-right text-md">cvv</td>
+                                        <td className=" text-gray-500 text-right text-md">CVV</td>
                                         <td><input required value={userPayment.cvv || ''} onChange={(e)=>{setUserPayment({...userPayment, cvv : e.target.value})}} type="text" maxLength={3} className="border-gray-200 border-2 rounded px-1 w-15"/></td>
                                     </tr>
                                     <tr>
-                                        <td className=" text-gray-500 text-right text-md">name</td>
+                                        <td className=" text-gray-500 text-right text-md">Name on card</td>
                                         <td><input required value={userPayment.cardname || ''} onChange={(e)=>{setUserPayment({...userPayment, cardname : e.target.value})}} type="text" className="border-gray-200 border-2 rounded px-1 w-full"/></td>
                                     </tr>
                                     <tr>
-                                        <td className="text-gray-500 text-right text-md">bank</td>
+                                        <td className="text-gray-500 text-right text-md">Bank</td>
                                         <td>
                                             <select required value={userPayment.bank || ''} onChange={(e)=>{setUserPayment({...userPayment, bank : e.target.value})}} className="border-gray-200 border-2 rounded" name="bank" id="bank">
                                                 <option value="" disabled hidden>--SELECT-BANK--</option>

@@ -8,3 +8,28 @@
 @theme{
     --font-RobotoMono:  RobotoMono, 'sans-serif';
 }
+/* scrollbar ทั้งหมด */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ตัวเลื่อน */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+/* hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* ❌ ซ่อนปุ่มขึ้นลง */
+::-webkit-scrollbar-button {
+  display: none;
+}

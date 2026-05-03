@@ -7,7 +7,10 @@ import Login from './pages/login'
 import Booking from './pages/booking'
 import Manage from './pages/manage'
 import Payment from './pages/payments'
+import Location from './pages/location'
+import Contact from './pages/contact'
 import './App.css'
+import 'leaflet/dist/leaflet.css'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -22,6 +25,8 @@ function App() {
         <Route path='/booking/:id' element={<Booking/>}></Route>
         <Route path='/manage' element={<Manage/>}></Route>
         <Route path='/payment' element={<Payment/>}></Route>
+        <Route path='/location' element={<Location/>}></Route>
+        <Route path='/contact' element={<Contact/>}></Route>
       </Routes>
     </BrowserRouter>
   )

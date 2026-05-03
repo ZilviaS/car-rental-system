@@ -7,23 +7,36 @@ const auth = require('../middleware/auth')
  
 router.post('/register', async (req,res)=>{
     const {username, email, password} = req.body
-    
+    const client = await pool.connect()
+
     try{
+        await client.query('BEGIN');
         const hashedPassword = await bcrypt.hash(password, 10)
-        const registerHandle = await pool.query(`
-            INSERT INTO users (username, password, email, role) VALUES ( $1, $2, $3 , $4) `,
+        const userResult = await client.query(`
+            INSERT INTO users (username, password, email, role) VALUES ( $1, $2, $3 , $4) 
+            RETURNING id`,
             [username, hashedPassword, email, 'user']
         )
-        console.log(registerHandle.rows)
+        const userId = userResult.rows[0].id
+        await client.query(`
+            INSERT INTO user_account (user_id) VALUES ($1)`,
+            [userId]
+        )
+
+        await client.query('COMMIT');
+        console.log(userResult.rows)
 
         res.status(201).json({
             message: 'Register success',
-            user: registerHandle.rows[0]
+            user: userResult.rows[0]
         })
         
     }catch (err){
+        await client.query('ROLLBACK');
         console.log("error", err)
         res.status(500).json({ error: err.message })
+    }finally{
+        client.release();
     }
 })
 
@@ -34,7 +47,7 @@ router.post('/login', async (req,res)=>{
 
     try{
         const result = await pool.query(`
-            SELECT id, username, email, password FROM users WHERE email = $1`, [email]
+            SELECT id, username, email, password , role FROM users WHERE email = $1`, [email]
         )
         const user = result.rows[0]
         const isMatch = await bcrypt.compare(password, user.password)

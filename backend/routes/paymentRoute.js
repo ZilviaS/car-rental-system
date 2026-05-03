@@ -17,7 +17,6 @@ router.post('/', async (req,res)=>{
         res.json({
             price , days
         })
-
     }catch (err) {
         console.error(err)
         res.status(500).send('server error')
@@ -37,9 +36,9 @@ router.post('/transcript/', async (req,res)=>{
 
         await client.query(`
         INSERT INTO bookings(
-	    id, user_id, car_id, start_date, end_date, status, location_id)
-        VALUES ($1, $2, $3, $4, $5, $6, $7)
-        `, [bookingId, userID, carID, bookingData.startDate, bookingData.endDate, 'pending', bookingData.location])
+	    id, user_id, car_id, start_date, end_date, status, location_id, price, tel)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+        `, [bookingId, userID, carID, bookingData.start_date, bookingData.end_date, 'pending', bookingData.location, paymentInfo.price, userPayment.tel])
         
         const transaction_ref = uuidv4();
 
@@ -47,7 +46,7 @@ router.post('/transcript/', async (req,res)=>{
         INSERT INTO payments(
         id, booking_id, amount, bank, status, transaction_ref)   
         VALUES ($1, $2, $3, $4, $5 , $6)
-        `, [paymentId, bookingId, paymentInfo.price, userPayment.Bank , 'paid' , transaction_ref]) 
+        `, [paymentId, bookingId, paymentInfo.price, userPayment.bank , 'paid' , transaction_ref]) 
 
         await client.query(`
         UPDATE bookings

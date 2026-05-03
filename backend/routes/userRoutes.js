@@ -10,7 +10,9 @@ router.get('/me', auth, async(req, res)=>{
         const userId = req.user.id
 
         const result = await pool.query(
-            `SELECT * FROM users WHERE id = $1`,
+            `SELECT 
+            id, username, email, role, tel, birthdate, fname, sex
+            FROM users WHERE id = $1`,
             [userId]
         )
         console.log(result.rows[0])
@@ -61,9 +63,9 @@ router.post('/account', auth, async(req,res)=>{
         console.log(account)
         const result = await pool.query(
             `UPDATE user_account
-            SET card_number = $1 , ex_month = $2, ex_year = $3, bank = $4
-            WHERE user_id = $5`,
-            [ account.cardNumber, account.exMonth, account.exYear, account.bank, req.user.id ] 
+            SET card_number = $1 , ex_month = $2, ex_year = $3, cvv = $4 , cardname = $5 , bank = $6
+            WHERE user_id = $7`,
+            [ account.card_number, account.ex_month, account.ex_year, account.cvv, account.cardname, account.bank, req.user.id ] 
         )
         
         res.json({ message : 'updated!'})
