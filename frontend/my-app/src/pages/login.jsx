@@ -2,6 +2,7 @@ import Navbar from "./navbar"
 import '../App.jsx'
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import bg from '../assets/background_crop.jpg'
 
 function login(){
     const [showPassword, setShowPassword] = useState(false)
@@ -43,10 +44,10 @@ function login(){
 
     return(
         <>
-            <div className="w-full h-screen bg-no-repeat bg-cover bg-[url(https://storage.googleapis.com/48877118-7272-4a4d-b302-0465d8aa4548/c3711000-cdd4-4b80-ae10-57593635526a/6cf819ee-2239-4d6f-810b-4beb72badbea.jpg)]">
-                <Navbar></Navbar>
-                <div className='flex justify-center'>
-                    <div className='bg-white mt-15 w-120 py-5 rounded'>
+            <div className="w-full h-screen bg-no-repeat bg-cover" style={{ backgroundImage: `url(${bg})` }}> 
+                <div className='flex justify-center h-full items-center'>
+                    <div className="absolute w-full top-0 left-0 z-10"><Navbar/></div>
+                    <div className='bg-white w-120 py-5 rounded'>
                         <div className='flex justify-center'>
                             <h1 className='text-2xl font-RobotoMono'>Sign-In</h1>
                         </div>

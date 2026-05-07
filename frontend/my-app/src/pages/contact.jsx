@@ -17,6 +17,7 @@ function Contact(){
     return(
         <>
             <section className='min-h-screen'>
+                <Navbar></Navbar>
                 <div className='flex justify-center min-h-screen'>
                     <div className='w-[25%] bg-gray-200'>
                         <div className='flex justify-center mt-10'>
@@ -164,6 +165,7 @@ function Contact(){
                                         <li className='ml-5 text-amber-500'>
                                             Awarded Outstanding Senior Project Award at KMITL INNOVATION EXPO 2025
                                         </li>  
+                                        <a className='ml-1 hover:underline hover:cursor-pointer' href='https://github.com/ZilviaS/CarProject.git'>https://github.com/ZilviaS/CarProject.git</a>
                                     </div>
                                     <div>
                                         <div className='flex justify-between'>
@@ -183,6 +185,7 @@ function Contact(){
                                         <li className='ml-5 text-gray-500'>
                                             Built basic engine and transmission simulation models
                                         </li>  
+                                        <a className='ml-1 hover:underline hover:cursor-pointer' href='https://github.com/ZilviaS/Remote-Virtual-Relistic-Driving-Simulation.git'>https://github.com/ZilviaS/Remote-Virtual-Relistic-Driving-Simulation.git</a>
                                     </div>
                                     <div>
                                         <div className='flex justify-between'>
@@ -202,6 +205,7 @@ function Contact(){
                                         <li className='ml-5 text-gray-500'>
                                             Integrated frontend and backend systems to ensure smooth data flow and user interaction
                                         </li>  
+                                        <a className='ml-1 hover:underline hover:cursor-pointer' href='https://github.com/ZilviaS/Just-a-Bread'>https://github.com/ZilviaS/Just-a-Bread </a>
                                     </div>
                                     <div>
                                         <p className='font-medium text-gray-900 text-2xl'>Awards</p>
@@ -222,11 +226,11 @@ function Contact(){
                     </div>
                 </div>
             </section>
-            <footer className='bg-gray-400'>
+            {/* <footer className='bg-gray-300'>
                 <div className='px-2'>
                     <a onClick={()=>{navigate(-1)}} className='hover:underline hover:cursor-pointer' >&lt;back</a>
                 </div>
-            </footer>
+            </footer> */}
         </>
     )
 

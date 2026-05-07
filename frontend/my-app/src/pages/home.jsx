@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Navbar from './navbar'
 import { Navigate, useNavigate } from 'react-router-dom'
-import bg from '../assets/background.jpg'
+import bg from '../assets/background_crop.jpg'
 import '../App.css'
 
 function Home(){
@@ -27,11 +27,13 @@ function Home(){
     return(
         <>
             <div className='bg-gray-300 min-h-screen'>
-                <Navbar />
-                <div className='relative w-full h-200 object-cover'>
+                <div className='relative w-full h-full object-cover'>
                     <img className="w-full h-full" src={bg} alt="" />
+                    <div className='absolute top-0 left-0 w-full z-50'>
+                        <Navbar />
+                    </div>
                     <div className='absolute inset-0 flex items-center justify-center z-10'>
-                        <div className="absolute inset-0 bg-black/30 z-0"></div>
+                        {/* <div className="absolute inset-0 bg-black/30 z-0"></div> */}
                         <div className='bg-white/80 backdrop-blur-md p-6 rounded-md shadow-lg'>
                             <div className='flex gap-3'>
                                 <div>
@@ -75,18 +77,22 @@ function Home(){
                         </div>
                     </div>
                 </div>
-                <footer className='bg-gray-200 '>
-                    <h1 className='ml-3 font-bold text-gray-600'>Contact</h1>
-                    <div className='w-full flex justify-center bg-gray-300'>
-                        <h1 className='text-gray-900 mx-3'>บริษัท ไม่ได้ตั้งชื่อ ไม่จำกัด</h1>
-                        <h1 className='text-gray-900 mx-3'>เลขประจำตัวกำกับภาษี: 228267</h1>
-                        <h1 className='text-gray-900 mx-3'>Tel: 000-000-0000</h1>
-                        <h1 className='text-gray-900 mx-3'>Line: @company_noname</h1>
-                        <h1 className='text-gray-900 mx-3'>Email: somecompany@gmail.com</h1>
-                    </div>
+                {/* <section>
+                    <div className='flex-col-3'>
 
-                </footer>
+                    </div>
+                </section> */}
             </div>
+            <footer className='bg-gray-200 '>
+                <h1 className='ml-3 font-bold text-gray-600'>Contact</h1>
+                <div className='w-full flex justify-center bg-gray-300'>
+                    <h1 className='text-gray-900 mx-3'>บริษัท ไม่ได้ตั้งชื่อ ไม่จำกัด</h1>
+                    <h1 className='text-gray-900 mx-3'>เลขประจำตัวกำกับภาษี: 228267</h1>
+                    <h1 className='text-gray-900 mx-3'>Tel: 000-000-0000</h1>
+                    <h1 className='text-gray-900 mx-3'>Line: @company_noname</h1>
+                    <h1 className='text-gray-900 mx-3'>Email: somecompany@gmail.com</h1>
+                </div>
+            </footer>
         </>
     )
 }

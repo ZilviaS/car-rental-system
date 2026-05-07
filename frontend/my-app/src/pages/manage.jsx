@@ -3,6 +3,7 @@ import '../App.jsx'
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import userLogo from '../assets/user.svg'
+import AdminManage from "./adminManage.jsx"
 
 function Manage(){
 
@@ -25,6 +26,20 @@ function Manage(){
         cvv : '',
         cardname : '',
         bank : ''
+    })
+
+    const [UserInformationUI, setUserInformationUI] = useState({
+        name : false,
+        tel : false,
+        Dob : false
+    })
+
+    const [cardInformationUI, setCardInformationUI] = useState({
+        cardNumber : false,
+        exp : false,
+        cvv : false,
+        name : false,
+        bank : false
     })
 
     useEffect(()=>{
@@ -147,7 +162,16 @@ function Manage(){
                                 </tr>
                                 <tr>
                                     <td className="text-right text-gray-500">Name</td>
-                                    <td><input onChange={(e)=>setUser({...user, fname : e.target.value})} type="text" value={user.fname || ""} className="border-gray-300 border-2 mx-2 px-2" /></td>
+                                    <td>{UserInformationUI.name === false ? 
+                                        <>  
+                                            <div className="flex ml-2 gap-2">
+                                                <p className="">{user.fname || ""}</p>
+                                                <button onClick={()=>{setUserInformationUI({...UserInformationUI, name : true})}} className="underline text-sm hover:cursor-pointer text-blue-700">edit</button>
+                                            </div>
+                                        </> : <>
+                                            <input onChange={(e)=>setUser({...user, fname : e.target.value})} type="text" value={user.fname || ""} className="border-gray-300 border-2 mx-2 px-2" />
+                                        </>}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td className="text-right text-gray-500">Email</td>
@@ -155,7 +179,17 @@ function Manage(){
                                 </tr>
                                 <tr>
                                     <td className="text-right text-gray-500">Telephone Number</td>
-                                    <td className=""><input onChange={(e)=>setUser({...user, tel : e.target.value})} type="number" value={user.tel || ''} className="border-gray-300 border-2 mx-2 px-2"/></td>
+                                    <td className="">{UserInformationUI.tel === false ? <>
+                                            <div className="flex gap-2 ml-2">
+                                                <p className="">{user.tel || ''}</p>
+                                                <button onClick={()=>setUserInformationUI({...UserInformationUI, tel : true})} className="underline text-blue-700 text-sm hover:cursor-pointer">edit</button>
+                                            </div>
+                                        </> : <>
+                                            <input onChange={(e)=>setUser({...user, tel : e.target.value})} type="number" value={user.tel || ''} className="border-gray-300 border-2 mx-2 px-2"/>
+                                        </>}
+                                        
+                                    </td>
+                                    
                                 </tr>
                                 <tr>
                                     <td className="text-right text-gray-500">Sex</td>
@@ -171,7 +205,15 @@ function Manage(){
                                 <tr>
                                     <td className="text-right text-gray-500">Date of Birth</td>
                                     <td className="">
-                                        <input onChange={(e)=>setUser({...user, birthdate : e.target.value})} value={user.birthdate || ''} type="date" className="mx-2 px-2 border-gray-200 border-2"/>
+                                        {UserInformationUI.Dob === false ? <>
+                                            <div className="flex ml-2 gap-2">
+                                                <p>{user.birthdate || ''}</p>    
+                                                <button onClick={()=>setUserInformationUI({...UserInformationUI, Dob : true})} className="underline text-blue-700 text-sm hover:cursor-pointer">edit</button>
+                                            </div>
+                                            
+                                        </> : <>
+                                            <input onChange={(e)=>setUser({...user, birthdate : e.target.value})} value={user.birthdate || ''} type="date" className="mx-2 px-2 border-gray-200 border-2"/>
+                                        </>} 
                                     </td>
                                 </tr>
                                 <tr>
@@ -187,41 +229,72 @@ function Manage(){
                                 <tbody>
                                     <tr>
                                         <td className="text-gray-500 text-right text-md">Card Number</td>
-                                        <td><input onChange={(e)=>{setUserPayment({...userPayment, card_number : e.target.value})}} value={userPayment.card_number || ''} type="text" className="border-gray-200 border-2 rounded px-1 w-full"/></td>
+                                        <td>{cardInformationUI.cardNumber === false ? <>
+                                            <div className="flex gap-2">
+                                                <p>{userPayment.card_number || ''}</p>
+                                                <button onClick={()=>setCardInformationUI({...cardInformationUI, cardNumber : true})} className="underline text-blue-700 text-sm hover:cursor-pointer">edit</button>
+                                            </div>
+                                        </> : <>
+                                            <input onChange={(e)=>{setUserPayment({...userPayment, card_number : e.target.value})}} value={userPayment.card_number || ''} type="text" className="border-gray-200 border-2 rounded px-1 w-full"/>
+                                        </>}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td className="text-gray-500 text-right text-md">EXP.</td>
-                                        <td className="flex">
-                                            <input required onChange={(e) => {
-                                                let val = e.target.value;
+                                        <td className="flex gap-1">
+                                            { cardInformationUI.exp === false ? <>
+                                                <p>{userPayment.ex_month || ''} / {userPayment.ex_year || ''}</p>
+                                                <button onClick={()=>setCardInformationUI({...cardInformationUI, exp : true})} className="underline text-blue-700 text-sm hover:cursor-pointer">edit</button>
+                                            </> : <>
+                                                <input required onChange={(e) => {
+                                                    let val = e.target.value;
 
-                                                val = parseInt(val);
+                                                    val = parseInt(val);
 
-                                                if (val < 1) val = 1;
-                                                if (val > 12) val = 12;
+                                                    if (val < 1) val = 1;
+                                                    if (val > 12) val = 12;
 
-                                                setUserPayment({...userPayment, ex_month : val});
-                                            }} value={userPayment.ex_month || ''} type="number" min={1} max={12} placeholder="MM" className="border-gray-200 border-2 rounded px-1 w-17" />
-                                            <h1 className="mx-2 text-xl">/</h1>
-                                            <input required onChange={(e) => {
-                                                let val = e.target.value;
+                                                    setUserPayment({...userPayment, ex_month : val});
+                                                }} value={userPayment.ex_month || ''} type="number" min={1} max={12} placeholder="MM" className="border-gray-200 border-2 rounded px-1 w-12" />
+                                                <h1 className="mx-2 text-xl">/</h1>
+                                                <input required onChange={(e) => {
+                                                    let val = e.target.value;
 
-                                                val = parseInt(val);
+                                                    val = parseInt(val);
 
-                                                if (val < 1) val = 1;
-                                                if (val > 99) val = 99;
+                                                    if (val < 1) val = 1;
+                                                    if (val > 99) val = 99;
 
-                                                setUserPayment({...userPayment, ex_year : val});
-                                            }} value={userPayment.ex_year || ''} type="number" min={0} max={99} placeholder="YY" className="border-gray-200 border-2 rounded px-1 w-17" />
+                                                    setUserPayment({...userPayment, ex_year : val});
+                                                }} value={userPayment.ex_year || ''} type="number" min={0} max={99} placeholder="YY" className="border-gray-200 border-2 rounded px-1 w-12" />
+                                            </>}
+                                            
                                         </td>
                                     </tr>
                                     <tr>
                                         <td className=" text-gray-500 text-right text-md">CVV</td>
-                                        <td><input required value={userPayment.cvv || ''} onChange={(e)=>{setUserPayment({...userPayment, cvv : e.target.value})}} type="text" maxLength={3} className="border-gray-200 border-2 rounded px-1 w-15"/></td>
+                                        <td>{cardInformationUI.cvv === false ? <>
+                                            <div className="flex gap-2">
+                                                <p>{userPayment.cvv || ''}</p>
+                                                <button onClick={()=>setCardInformationUI({...cardInformationUI, cvv : true})} className="underline text-blue-700 text-sm hover:cursor-pointer">edit</button>
+                                            </div>
+                                        </> : <>
+                                             <input required value={userPayment.cvv || ''} onChange={(e)=>{setUserPayment({...userPayment, cvv : e.target.value})}} type="text" maxLength={3} className="border-gray-200 border-2 rounded px-1 w-15"/>
+                                        </>}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td className=" text-gray-500 text-right text-md">Name on card</td>
-                                        <td><input required value={userPayment.cardname || ''} onChange={(e)=>{setUserPayment({...userPayment, cardname : e.target.value})}} type="text" className="border-gray-200 border-2 rounded px-1 w-full"/></td>
+                                        <td>{cardInformationUI.name === false ? <>
+                                            <div className="flex gap-2">
+                                                <p>{userPayment.cardname || ''}</p>
+                                                <button onClick={()=>setCardInformationUI({...cardInformationUI, name : true})} className="underline text-blue-700 text-sm hover:cursor-pointer">edit</button>
+                                            </div>
+                                            
+                                        </> : <>
+                                            <input required value={userPayment.cardname || ''} onChange={(e)=>{setUserPayment({...userPayment, cardname : e.target.value})}} type="text" className="border-gray-200 border-2 rounded px-1 w-full"/>
+                                        </>}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td className="text-gray-500 text-right text-md">Bank</td>
@@ -275,9 +348,11 @@ function Manage(){
                                         
                                 </tbody>
                             </table>
-                        </>}
-                        
+                        </>}   
                     </div>
+                </section>
+                <section className="my-10">
+                    <AdminManage />
                 </section>
             </div>
         </>

@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-
+import bg from '../assets/background_crop.jpg'
 import Navbar from './navbar'
 import '../App.css'
 
@@ -10,14 +10,14 @@ function register(){
     const [registerForm, setForm] = useState({
         username : String,
         email : String,
-        password : Number,
-        confirmPassword : Number
+        password : String,
+        confirmPassword : String
     })
-    const registerHandle = ()=>{
+    const registerHandle = async ()=>{
         console.log(registerForm)
         if (registerForm.password == registerForm.confirmPassword){
             try{
-                fetch(`/api/auth/register`,{
+                const res = await fetch(`/api/auth/register`,{
                     method : 'POST',
                     headers : {
                         'content-type' : 'application/json'
@@ -28,14 +28,17 @@ function register(){
                         password: registerForm.password
                 })
             })
+            const data = await res.json()
+            console.log(data)
             }catch(err){
                 console.log(err)
             }
         }
     }
+
     return(
         <>  
-            <div className='h-screen bg-cover bg-[url(https://storage.googleapis.com/48877118-7272-4a4d-b302-0465d8aa4548/c3711000-cdd4-4b80-ae10-57593635526a/6cf819ee-2239-4d6f-810b-4beb72badbea.jpg)]'>
+            <div className='h-screen bg-cover' style={{ backgroundImage: `url(${bg})` }}>
                 <Navbar></Navbar>
                 <div className='flex justify-center'>
                     <div className='bg-white mt-15 w-120 py-5'>
@@ -44,11 +47,11 @@ function register(){
                         </div>
                         <div className='flex justify-center'>
                             <form action="" className='w-80'>
-                                <h1 className='py-2'>ชื่อ</h1>
+                                <h1 className='py-2'>Username</h1>
                                 <input className='border-gray-400 border-1 rounded-md p-2 w-full' type="text" onChange={(e)=>setForm({...registerForm, username : e.target.value})}/>
-                                <h1 className='py-2'>อีเมล</h1>
+                                <h1 className='py-2'>Email</h1>
                                 <input className='border-gray-400 border-1 rounded-md p-2 w-full' type="text" onChange={(e)=>setForm({...registerForm, email : e.target.value})}/>
-                                <h1 className='py-2'>รหัสผ่าน</h1>
+                                <h1 className='py-2'>Password</h1>
                                 <div className='flex'>
                                     <input className='border-gray-400 border-1 rounded-md p-2 w-full' type={showPassword ? "text" : "password"} onChange={(e)=>setForm({...registerForm, password : e.target.value})}/>
                                     <button type="button" onClick={()=> {setShowPassword(!showPassword)}} id='toggle-btn' className='pl-3 hover:cursor-pointer'>
@@ -58,7 +61,7 @@ function register(){
                                     </button>
                                 </div>
                                 
-                                <h1 className='py-2'>ยืนยันรหัสผ่าน</h1>
+                                <h1 className='py-2'>confirm password</h1>
                                 <div className='flex'>
                                     <input className='border-gray-400 border-1 rounded-md p-2 w-full' type={showCheckPassword ? "text" : "password"} onChange={(e)=>setForm({...registerForm, confirmPassword : e.target.value})} />
                                     <button type="button" onClick={()=> {setCheckPassword(!showCheckPassword)}} id='toggle-btn' className='pl-3 hover:cursor-pointer'>

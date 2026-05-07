@@ -30,7 +30,6 @@ function Location(){
                         <div className='w-full h-[95%]'>
                             <MapContainer 
                                 center = {[13.714696747819657, 100.40647611209434]}
-                                // center={ mapLocation === null ? [13.714696747819657, 100.40647611209434] : [mapLocation.latitude, mapLocation.longitude]}
                                 zoom={12} 
                                 scrollWheelZoom={true}
                                 style={{ height: "100%", width: "100%" }}
@@ -44,18 +43,24 @@ function Location(){
                                         <>
                                             <Marker key={index} position={[location.latitude, location.longitude]}>
                                                 <Popup>
-                                                <div className="w-40">
+                                                <div className="w-60">
                                                     <img
                                                         src={location.img_url}
                                                         alt=""
-                                                        className="w-full h-20 object-cover rounded"
+                                                        className="w-full h-40 object-cover rounded"
                                                     />
-                                                    <h1 className="font-bold text-sm mt-2">
-                                                        {location.location_name}
-                                                    </h1>
-                                                    <h1 className="text-xs text-gray-500">
-                                                        {location.description}
-                                                    </h1>
+                                                    <a href={`https://www.google.com/maps/dir/?api=1&destination=${location.latitude},${location.longitude}`}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className='hover:underline hover:cursor-pointer'>
+                                                        <h1 className="font-bold text-sm mt-2">
+                                                            {location.location_name}
+                                                        </h1>
+                                                        <h1 className="text-xs text-gray-500">
+                                                            {location.description}
+                                                        </h1>
+                                                    </a>
+                                                    
                                                 </div>
                                             </Popup>
                                             </Marker>

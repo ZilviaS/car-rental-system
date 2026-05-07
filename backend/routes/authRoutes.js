@@ -9,6 +9,8 @@ router.post('/register', async (req,res)=>{
     const {username, email, password} = req.body
     const client = await pool.connect()
 
+    console.log(username, email, password)
+
     try{
         await client.query('BEGIN');
         const hashedPassword = await bcrypt.hash(password, 10)
@@ -18,6 +20,7 @@ router.post('/register', async (req,res)=>{
             [username, hashedPassword, email, 'user']
         )
         const userId = userResult.rows[0].id
+        console.log(userId)
         await client.query(`
             INSERT INTO user_account (user_id) VALUES ($1)`,
             [userId]
