@@ -15,12 +15,18 @@ function EditCar(){
         year: '',
         plate: '',
         status: false,
-        image_url: ''
+        image_url: '',
+        image_url_secondary: '',
+        image_url_teritery : ''
     })
 
     const navigate = useNavigate()
 
-    const [imageURL , setImageURL] = useState('')
+    const [imageURL , setImageURL] = useState({
+        primary : '',
+        secondary : '',
+        teritery : ''
+    })
 
     useEffect(()=>{
         const fetchCar = async ()=>{
@@ -28,7 +34,11 @@ function EditCar(){
                 const res = await fetch(`/api/car/${id}`)
                 const data = await res.json()
                 setCarInfo(data)
-                setImageURL(data.image_url || '')
+                setImageURL({
+                    primary : data.image_url || '',
+                    secondary : data.image_url_secondary || '',
+                    teritery : data.image_url_teritery || ''})
+
             }catch(err){
                 console.log(err)
             }
@@ -62,12 +72,10 @@ function EditCar(){
             <div className='relative min-h-screen'>
                 <img className="absolute w-full h-full object-cover" src={bg} alt="" />
                 <div className='relative z-10'>
-                    <div className='absolute top-0 left-0 w-full z-20'>
-                        <Navbar></Navbar>
-                    </div>
-                     <div className='min-h-screen flex flex-col justify-center'>
+                    <Navbar></Navbar>
+                    <div className='h-screen pt-5'>
                         <div className='flex w-full justify-center'>
-                            <div className='bg-white shadow rounded w-[50%]'>
+                            <div className='bg-white shadow rounded w-[70%]'>
                                 <div className='w-full bg-amber-200 rounded-t'>
                                     <p className='font-RobotoMono py-2 pl-3'>EDIT</p>
                                 </div>
@@ -88,11 +96,26 @@ function EditCar(){
                                             <p className='items-center'>available</p>
                                         </div>
                                     </div>
-                                    <div className='w-[50%] flex flex-col gap-1 pt-5'>
-                                        <img className='w-70 h-40 rounded shadow-xl object-cover' src={imageURL || placeholderImage} alt="" />
-                                        <p className='font-RobotoMono text-gray-500'>image(url)</p>
+                                    <div className='w-[59%] flex flex-col gap-0.5 pt-5'>
+                                        <div className='flex h-55 shadow'>
+                                            <img className='w-[60%] object-cover' src={imageURL.primary || placeholderImage} alt="" />
+                                            <div className='w-[40%] flex flex-col'>
+                                                <img className='w-full h-[50%] object-cover' src={imageURL.secondary  || placeholderImage} alt="" />
+                                                <img className='w-full h-[50%] object-cover' src={imageURL.teritery || placeholderImage} alt="" />
+                                            </div>
+                                        </div>
+                                        
+                                        <p className='font-RobotoMono text-gray-500 text-sm'>image(url)</p>
                                         <input onChange={(e)=>{setCarInfo({...carInfo, image_url : e.target.value})}} className='px-2 w-full bg-gray-100 rounded border-gray-400 border-1' type="text" value={carInfo.image_url} />
-                                        <div><button onClick={()=>{setImageURL(carInfo.image_url)}} className='bg-amber-300 rounded px-4 hover:cursor-pointer mt-1'>check</button></div>
+                                        <input onChange={(e)=>{setCarInfo({...carInfo, image_url_secondary : e.target.value})}} className='px-2 w-full bg-gray-100 rounded border-gray-400 border-1' type="text" placeholder='secondary' value={carInfo.image_url_secondary} />
+                                        <input onChange={(e)=>{setCarInfo({...carInfo, image_url_teritery : e.target.value})}} className='px-2 w-full bg-gray-100 rounded border-gray-400 border-1' type="text" placeholder='tertiary' value={carInfo.image_url_teritery} />
+                                        <div><button onClick={()=>{
+                                            setImageURL({
+                                                primary : carInfo.image_url,
+                                                secondary : carInfo.image_url_secondary,
+                                                teritery : carInfo.image_url_teritery
+                                            })
+                                            }} className='bg-amber-300 rounded px-4 hover:cursor-pointer mt-1'>check</button></div>
                                     </div>
                                 </div>
                                 <div className='px-3 pb-3'>
@@ -107,16 +130,7 @@ function EditCar(){
 
                 </div>
                 </div>
-                <footer className='absolute bottom-0  w-full bg-gray-200 '>
-                    <h1 className='ml-3 font-bold text-gray-600'>Contact</h1>
-                    <div className='w-full flex justify-center bg-gray-300'>
-                        <h1 className='text-gray-900 mx-3'>บริษัท ไม่ได้ตั้งชื่อ ไม่จำกัด</h1>
-                        <h1 className='text-gray-900 mx-3'>เลขประจำตัวกำกับภาษี: 228267</h1>
-                        <h1 className='text-gray-900 mx-3'>Tel: 000-000-0000</h1>
-                        <h1 className='text-gray-900 mx-3'>Line: @company_noname</h1>
-                        <h1 className='text-gray-900 mx-3'>Email: somecompany@gmail.com</h1>
-                    </div>
-                </footer>
+                
         </>
     )
 }

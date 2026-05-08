@@ -80,15 +80,15 @@ function search(){
         <>
             <div className="bg-white min-h-screen">
                 <Navbar/>
-                <section className="flex gap-10 mx-20 mt-10">
+                <section className="flex gap-10 mx-20 mt-5 mb-5 justify-center">
                     <form action="">
-                        <div className="w-130 bg-gray-100 rounded-md shadow-2xl">
+                        <div className="w-100 bg-gray-100 rounded-md shadow-2xl">
                             <div className=" bg-yellow-500 rounded-t-md">
-                                <h1 className="text-xl font-bold py-5 text-black pl-5 font-RobotoMono">Search Car</h1>
+                                <h1 className=" font-bold py-3 text-black pl-5 font-RobotoMono">Search Car</h1>
                             </div>
                             <div className="m-5">
-                                <h1 className="font-bold pl-2 font-RobotoMono text-sm">Car Brand</h1>
-                                <select className="font-RobotoMono mt-3 bg-white w-full p-4 rounded-sm" name="brand" id="type" onChange={(e)=>setQuery({...query,brand: e.target.value})}>
+                                <h1 className="font-bold pl-2 font-RobotoMono text-sm text-gray-600">Car Brand</h1>
+                                <select className="font-RobotoMono mt-2 bg-white w-full p-2 rounded-sm" name="brand" id="type" onChange={(e)=>setQuery({...query,brand: e.target.value})}>
                                     <option value="">select brand</option>
                                     <option value="Abarth">Abarth</option>
                                     <option value="Bentley">Bentley</option>
@@ -101,16 +101,16 @@ function search(){
                                 </select>
                             </div>
                             <div className="m-5">
-                                <h1 className="font-bold pl-2 font-RobotoMono">Model</h1>
-                                <input type="text" name="model" className="font-RobotoMono mt-3 bg-white w-full p-4 rounded-sm" onChange={(e)=>setQuery({...query,carname: e.target.value})}/>
+                                <h1 className="font-bold pl-2 font-RobotoMono text-sm text-gray-600">Model</h1>
+                                <input type="text" name="model" className="font-RobotoMono mt-1 bg-white w-full p-2 rounded-sm" onChange={(e)=>setQuery({...query,carname: e.target.value})}/>
                             </div>
                             <div className="m-5">
-                                <h1 className="font-bold pl-2 font-RobotoMono">start date</h1>
-                                <input type="date" name="model" className="mt-3 bg-white w-full p-4 rounded-sm" onChange={(e)=>setQuery({...query,startDate: e.target.value})}/>
+                                <h1 className="font-bold pl-2 font-RobotoMono text-sm text-gray-600">start date</h1>
+                                <input type="date" name="model" className="mt-1 bg-white w-full p-2 rounded-sm" onChange={(e)=>setQuery({...query,startDate: e.target.value})}/>
                             </div>
                             <div className="m-5">
-                                <h1 className="font-bold pl-2 font-RobotoMono">end date</h1>
-                                <input type="date" name="model" className="mt-3 bg-white w-full p-4 rounded-sm" onChange={(e)=>setQuery({...query,endDate: e.target.value})}/>
+                                <h1 className="font-bold pl-2 font-RobotoMono text-sm text-gray-600">end date</h1>
+                                <input type="date" name="model" className="mt-1 bg-white w-full p-2 rounded-sm" onChange={(e)=>setQuery({...query,endDate: e.target.value})}/>
                             </div>
                             <div className="flex justify-center mx-5">
                                 <button type="button" className="font-RobotoMono bg-amber-400 py-3 w-full rounded-md hover:cursor-pointer hover:bg-amber-600 mb-5" onClick={handleSearch}>search</button>

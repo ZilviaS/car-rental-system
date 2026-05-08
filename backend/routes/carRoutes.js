@@ -62,8 +62,21 @@ router.get('/:id', async (req,res)=>{
             [id]
         )
         console.log(result.rows)
-        res.json(result.rows[0])
+
+        const imageResult = await pool.query(`
+            SELECT * FROM car_image WHERE car_id = $1`,
+            [id]
+        )
+
+        const car = result.rows[0]
+
+        car.image_url_secondary = imageResult.rows[0]?.image_url || ''
+        car.image_url_teritery = imageResult.rows[1]?.image_url || ''
+        console.log(car)
+        res.json(car)
     }catch (err){
+
+        console.log(err)
         res.status(500).send('server error')
     }
 
@@ -135,10 +148,13 @@ router.post('/delete', authAdmin, async (req,res)=>{
 })
 
 router.post('/update', authAdmin, async (req, res)=>{
-    const {id, brand, model, trim, year, plate, status, image_url, description, price} = req.body
-    console.log(id, brand, model, trim, year, plate, status, image_url, description, price)
+    const {id, brand, model, trim, year, plate, status, image_url, description, price , image_url_secondary, image_url_teritery} = req.body
+    console.log(id, brand, model, trim, year, plate, status, image_url, description, price, image_url_secondary, image_url_teritery)
+    const client = await pool.connect()
     try{
-        await pool.query(`
+        await client.query('BEGIN');
+
+        await client.query(`
             UPDATE cars 
             SET brand = $1, model = $2, trim = $3, year = $4, 
             plate = $5, status = $6, image_url = $7, description = $8,
@@ -146,11 +162,33 @@ router.post('/update', authAdmin, async (req, res)=>{
             WHERE id = $10`,[
                 brand, model, trim, year, plate, status, image_url, description, price, id
         ])
-        return res.status(201).json({
+
+        await client.query(`
+            DELETE FROM car_image
+            WHERE car_id = $1
+        `,[id])
+
+        await client.query(`
+            INSERT INTO car_image(car_id, image_url)
+            VALUES ($1, $2)
+            `,[id, image_url_secondary])
+
+        await client.query(`
+            INSERT INTO car_image(car_id, image_url)
+            VALUES ($1, $2)
+            `,[id, image_url_teritery])
+        
+        await client.query('COMMIT');
+
+        res.status(201).json({
             message : 'success'
         })
     }catch(err){
-        return res.status(500).send(err)
+        await client.query('ROLLBACK');
+        console.log(err)
+        res.status(500).send(err)
+    }finally{
+        client.release();
     }
 })
 
