@@ -42,6 +42,8 @@ function Manage(){
         bank : false
     })
 
+    const [loading, setLoading] = useState(true)
+
     useEffect(()=>{
         const token = localStorage.getItem('token')
         if(!token){
@@ -59,6 +61,7 @@ function Manage(){
             setUser({...data,
                 birthdate: data.birthdate?.split('T')[0]
             })
+            setLoading(false)
         })
 
         fetch(`/api/user/account`,{
@@ -120,7 +123,7 @@ function Manage(){
         window.location.reload(); 
     }
 
-    if (!user) {
+    if (loading) {
         return <div>Loading...</div>;
     }else
         return(

@@ -125,7 +125,7 @@ function search(){
                             {carinfo.map((car, index)=>{
                                 return (
                                     <div key={index} className="bg-white flex w-200 gap-3 rounded-md h-50 shadow-xl">
-                                        <img src={car.image_url} className="h-full w-70 rounded-l-md" alt="" />
+                                        <img src={car.image_url} className="h-full w-70 rounded-l-md object-cover" alt="" />
                                         <div className="flex flex-col justify-between w-full my-2">
                                             <div className="pt-1">
                                                 <h2 className="font-bold font-RobotoMono">{car.brand} {car.model} {car.trim}</h2>
@@ -133,7 +133,7 @@ function search(){
                                                     <h2 className="text-sm">{car.year}</h2>
                                                     <h2 className="text-sm">{car.plate}</h2>
                                                 </div>
-                                                <h2 className="text-sm text-gray-400">{truncate(car.description == null ? 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.' : car.description, 70)}</h2>
+                                                <h2 className="text-sm text-gray-400">{truncate(car.description == '' ? 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.' : car.description, 70)}</h2>
                                             </div>
                                             <div className="">
                                                 {car.status == true ?
@@ -156,16 +156,16 @@ function search(){
 
             </div>
             <footer className='bg-gray-200 '>
-                    <h1 className='ml-3 font-bold text-gray-600'>Contact</h1>
-                    <div className='w-full flex justify-center bg-gray-300'>
-                        <h1 className='text-gray-900 mx-3'>บริษัท ไม่ได้ตั้งชื่อ ไม่จำกัด</h1>
-                        <h1 className='text-gray-900 mx-3'>เลขประจำตัวกำกับภาษี: 228267</h1>
-                        <h1 className='text-gray-900 mx-3'>Tel: 000-000-0000</h1>
-                        <h1 className='text-gray-900 mx-3'>Line: @company_noname</h1>
-                        <h1 className='text-gray-900 mx-3'>Email: somecompany@gmail.com</h1>
-                    </div>
+                <h1 className='ml-3 font-bold text-gray-600'>Contact</h1>
+                <div className='w-full flex justify-center bg-gray-300'>
+                    <h1 className='text-gray-900 mx-3'>บริษัท ไม่ได้ตั้งชื่อ ไม่จำกัด</h1>
+                    <h1 className='text-gray-900 mx-3'>เลขประจำตัวกำกับภาษี: 228267</h1>
+                    <h1 className='text-gray-900 mx-3'>Tel: 000-000-0000</h1>
+                    <h1 className='text-gray-900 mx-3'>Line: @company_noname</h1>
+                    <h1 className='text-gray-900 mx-3'>Email: somecompany@gmail.com</h1>
+                </div>
 
-                </footer>
+            </footer>
         </>
     )
 }

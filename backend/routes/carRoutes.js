@@ -1,6 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const pool = require('../db')
+const auth = require('../middleware/auth')
+const authAdmin = require('../middleware/authAdmin')
+const { v4: uuidv4 } = require('uuid')
 
 router.post('/', async (req,res)=>{
     const {brand, carname, startDate, endDate} = req.body
@@ -66,6 +69,18 @@ router.get('/:id', async (req,res)=>{
 
 })
 
+router.get('', async (req,res)=>{
+    try{
+        const result = await pool.query(
+            `SELECT * FROM cars`
+        )
+        console.log(result.rows)
+        res.json(result.rows)
+    }catch(err){
+        res.status(500).send('server error')
+    }
+})
+
 router.get('/:id/booked-dates', async (req,res)=>{
     const { id } = req.params
     try{
@@ -80,6 +95,62 @@ router.get('/:id/booked-dates', async (req,res)=>{
     }catch(err){
         console.error(err)
         res.status(500).send(err)
+    }
+})
+
+router.post('/insert', authAdmin, async (req,res)=>{
+    const {brand, model, trim, year, plate, imageURL, description, price} = req.body
+    console.log(brand, model, trim, year, plate, imageURL, description)
+    if (imageURL === ''){
+        imageURL = 'https://i.sstatic.net/y9DpT.jpg'
+    }
+    try{
+        const carId = uuidv4();
+        const result = await pool.query(`
+            INSERT INTO cars(
+	        brand, model, trim, year, description, plate, status, image_url, price, id)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+            `,[brand, model, trim, year, description, plate, 'true' ,imageURL, price, carId])
+        res.status(201).json({
+            message: 'success'
+        })
+    }catch(err){
+        console.log(err)
+        res.status(500).send(err)
+    }
+})
+
+router.post('/delete', authAdmin, async (req,res)=>{
+    const { id } = req.body
+    console.log(id)
+    try{
+        await pool.query(`
+            DELETE FROM cars WHERE id = $1`, [id])
+        return res.status(201).json({
+            message : 'success'
+        })
+    }catch(err){
+        return res.status(500).send(err)
+    }
+})
+
+router.post('/update', authAdmin, async (req, res)=>{
+    const {id, brand, model, trim, year, plate, status, image_url, description, price} = req.body
+    console.log(id, brand, model, trim, year, plate, status, image_url, description, price)
+    try{
+        await pool.query(`
+            UPDATE cars 
+            SET brand = $1, model = $2, trim = $3, year = $4, 
+            plate = $5, status = $6, image_url = $7, description = $8,
+            price = $9
+            WHERE id = $10`,[
+                brand, model, trim, year, plate, status, image_url, description, price, id
+        ])
+        return res.status(201).json({
+            message : 'success'
+        })
+    }catch(err){
+        return res.status(500).send(err)
     }
 })
 

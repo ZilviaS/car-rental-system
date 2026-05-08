@@ -8,7 +8,7 @@ async function authAdmin(req, res, next){
         return res.status(401).json( {msg: 'no token'})
     }
 
-    console.log('check')
+    console.log('checkAdmin')
 
     const token = authHeader.split(' ')[1]
 
@@ -17,17 +17,17 @@ async function authAdmin(req, res, next){
         req.user = decoded
         const userCheck = await pool.query(`
             SELECT role FROM users WHERE id = $1
-            `,[req.user.userId])
-
+            `,[req.user.id])
+        
         if(userCheck.rows.length === 0){
+            console.log('you are here')
             return res.status(401).json({ msg: 'user not found' })
         }
 
         if(userCheck.rows[0]?.role !== 'admin'){
             return res.status(403).json({ msg : 'forbidden'})
         }
-        
-        next()
+        return next()
 
     } catch(err){
         return res.status(401).json({msg : 'Invalid token'})

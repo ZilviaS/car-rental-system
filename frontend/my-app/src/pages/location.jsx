@@ -26,7 +26,6 @@ function Location(){
             <section className='flex justify-center'>
                 <div className='flex justify-center gap-10 my-7 w-[90%] shadow rounded'>
                     <div className='w-full h-screen bg-white shadow justify-center items-center px-5 pt-3'>
-                        <h1 className='font-RobotoMono text-gray-600'>pick-up location</h1>
                         <div className='w-full h-[95%]'>
                             <MapContainer 
                                 center = {[13.714696747819657, 100.40647611209434]}
