@@ -103,7 +103,7 @@ function Booking(){
                                 </div>
                                 <div className="flex justify-between gap-10 mt-3">
                                     <div className="w-full">
-                                        <div className="flex py-5 items-baseline">
+                                        <div className="flex mt-4 py-1 items-baseline">
                                             <h1 className="text-xl font-bold font-RobotoMono">{car.brand} {car.model}</h1>
                                             <h1 className="pl-2 text-sm">({car.plate})</h1>
                                         </div>
@@ -111,8 +111,10 @@ function Booking(){
                                             <h1 className="text-blue-600 font-bold">{car.price} </h1>
                                             <h1 className="pl-1 font-light">/ day</h1>
                                         </div>
-                                        <hr className="my-5" />
-                                        <h1>{car.description}</h1>
+                                        <hr className="my-2" />
+                                        <h1 className="text-gray-600 px-1 text-sm w-full break-words overflow-y-auto max-h-40">
+                                            {car.description}
+                                        </h1>
                                     </div>
                                     <div>
                                         <div className="flex gap-5 pb-2">

@@ -112,38 +112,65 @@ router.get('/:id/booked-dates', async (req,res)=>{
 })
 
 router.post('/insert', authAdmin, async (req,res)=>{
-    const {brand, model, trim, year, plate, imageURL, description, price} = req.body
-    console.log(brand, model, trim, year, plate, imageURL, description)
-    if (imageURL === ''){
-        imageURL = 'https://i.sstatic.net/y9DpT.jpg'
-    }
+    const {brand, model, trim, year, plate, imageURL, description, price, imageURL_secondary, imageURL_teritary} = req.body
+    console.log(brand, model, trim, year, plate, imageURL, description, imageURL_secondary, imageURL_teritary)
+    const client = await pool.connect()
+    const carId = uuidv4();
     try{
-        const carId = uuidv4();
-        const result = await pool.query(`
+        await client.query('BEGIN')
+        await client.query(`
             INSERT INTO cars(
 	        brand, model, trim, year, description, plate, status, image_url, price, id)
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
             `,[brand, model, trim, year, description, plate, 'true' ,imageURL, price, carId])
+        
+        if (imageURL_secondary && imageURL_secondary.trim() !== ''){
+            await client.query(`
+                INSERT INTO car_image(car_id, image_url)
+                VALUES ($1, $2)`,[carId, imageURL_secondary])
+        }
+
+        if (imageURL_teritary && imageURL_teritary.trim() !== ''){
+            await client.query(`
+                INSERT INTO car_image(car_id, image_url)
+                VALUES ($1, $2)`,[carId, imageURL_teritary])
+        }
+        
+        await client.query('COMMIT');
         res.status(201).json({
             message: 'success'
         })
+
     }catch(err){
         console.log(err)
+        await client.query('ROLLBACK')
         res.status(500).send(err)
+    }finally{
+        client.release()
     }
 })
 
 router.post('/delete', authAdmin, async (req,res)=>{
     const { id } = req.body
     console.log(id)
+    const client = await pool.connect()
     try{
-        await pool.query(`
+        await client.query('BEGIN')
+        await client.query(`
             DELETE FROM cars WHERE id = $1`, [id])
+
+        await client.query(`
+            DELETE FROM car_image WHERE car_id = $1`, [id])
+
+        await client.query('COMMIT')
         return res.status(201).json({
             message : 'success'
         })
     }catch(err){
+        await client.query('ROLLBACK')
         return res.status(500).send(err)
+    }finally{
+        await client.release()
     }
 })
 

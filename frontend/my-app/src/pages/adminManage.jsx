@@ -153,11 +153,15 @@ function adminManage(){
                                 </div>
                                 <div className="flex gap-2">
                                     <p>Year:</p>
-                                    <input onChange={(e)=>{setCarData({...carData, year : e.target.value})}} type="number" className="bg-gray-100 rounded border-gray-200 border-1 px-2 w-20"/>
+                                    <input onChange={(e)=>{setCarData({...carData, year : e.target.value})}} type="number" min="1886" max="2099" className="bg-gray-100 rounded border-gray-200 border-1 px-2 w-20"/>
                                     <p>Plate:</p>
-                                    <input onChange={(e)=>{setCarData({...carData, plate : e.target.value})}} type="text" className="bg-gray-100 rounded border-gray-200 border-1 px-2 w-20"/>
+                                    <input onChange={(e)=>{setCarData({...carData, plate : e.target.value})}} type="text" className="bg-gray-100 rounded border-gray-200 border-1 px-2 w-20"/> 
+                                </div>
+                                <div className="flex flex-col">
                                     <p>ImageURL:</p>
-                                    <input onChange={(e)=>{setCarData({...carData, imageURL : e.target.value})}} type="text" className="bg-gray-100 rounded border-gray-200 border-1 px-2 w-full"/>
+                                    <input onChange={(e)=>{setCarData({...carData, imageURL : e.target.value})}} type="text" className="bg-gray-100 rounded border-gray-200 border-1 px-2 w-full" placeholder="primary"/>
+                                    <input onChange={(e)=>{setCarData({...carData, imageURL_secondary : e.target.value})}} type="text" className="bg-gray-100 rounded border-gray-200 border-1 px-2 w-full mt-2" placeholder="secondary"/>
+                                    <input onChange={(e)=>{setCarData({...carData, imageURL_teritary : e.target.value})}} type="text" className="bg-gray-100 rounded border-gray-200 border-1 px-2 w-full mt-2" placeholder="teritary"/>
                                 </div>
                                 <p>Description</p>
                                 <textarea onChange={(e)=>{setCarData({...carData, description : e.target.value})}} className="bg-gray-100 rounded border w-full h-20 px-2 py-1"></textarea>

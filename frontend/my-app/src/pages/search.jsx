@@ -11,65 +11,95 @@ function search(){
 
     const [carForm, setCarForm] = useState({
         brand : '',
-        carname : ''
-        }
-    )
-    const [query, setQuery] = useState({
-        brand: '',
-        carname: '',
+        carname : '',
         startDate: '',
         endDate: ''
-    })
+        }
+    )
+    // const [query, setQuery] = useState({
+    //     brand: '',
+    //     carname: '',
+    //     startDate: '',
+    //     endDate: ''
+    // })
 
     const data = searchParams.get("data")
 
     useEffect(() => {
-        if (!data) return
+        if (!data){
+            fetchCars({
+                brand: '',
+                carname: '',
+                startDate: '',
+                endDate: ''
+            })
+            return
+        }
 
         const parsed = JSON.parse(decodeURIComponent(data))
 
-        setCarForm({
+        const formdata = ({
             brand: parsed.brand || '',
             carname: parsed.carname || '',
             startDate: parsed.startDate || '',
             endDate: parsed.endDate || ''
         })
 
+        setCarForm(formdata)
+
+        fetchCars(formdata)
+
     }, [data])
 
-    useEffect(()=>{
-
-        fetch(`api/car`,{
-            method : 'POST',
-            headers : {
-                'content-type' : 'application/json'
-            },
-            body: JSON.stringify({
-                brand: carForm.brand,
-                carname: carForm.carname,
-                startDate: carForm.startDate,
-                endDate: carForm.endDate
+    const fetchCars = async (searchData) => {
+        try{
+            const res = await fetch(`/api/car`,{
+                method : 'POST',
+                headers : {
+                    'content-type' : 'application/json'
+                },
+                body : JSON.stringify(searchData)
             })
-        })
-        .then(res => res.json())
-        .then(data => {
+
+            const data = await res.json()
+
             console.log(data)
+
             setCarinfo(data)
-        })
-        .catch(err => console.error(err))
-    },[carForm])
+
+        }catch(err){
+            console.error(err)
+        }
+    }
+
+    // useEffect(()=>{
+
+    //     fetch(`api/car`,{
+    //         method : 'POST',
+    //         headers : {
+    //             'content-type' : 'application/json'
+    //         },
+    //         body: JSON.stringify({
+    //             brand: carForm.brand,
+    //             carname: carForm.carname,
+    //             startDate: carForm.startDate,
+    //             endDate: carForm.endDate
+    //         })
+    //     })
+    //     .then(res => res.json())
+    //     .then(data => {
+    //         console.log(data)
+    //         setCarinfo(data)
+    //     })
+    //     .catch(err => console.error(err))
+    // },[carForm])
 
     const truncate = (str, n)=> {
         return str?.length > n ? str.substr(0, n-1) + "..." : str;
     }
 
     const handleSearch = ()=>{
-        setCarForm({
-            brand: query.brand, 
-            carname: query.carname,
-            startDate: query.startDate,
-            endDate: query.endDate
-        })
+        fetchCars(carForm)
     }
 
     const handleRent = (car)=>{
@@ -80,7 +110,7 @@ function search(){
         <>
             <div className="bg-white min-h-screen">
                 <Navbar/>
-                <section className="flex gap-10 mx-20 mt-5 mb-5 justify-center">
+                <section className="flex gap-10 mx-20 mt-5 mb-5">
                     <form action="">
                         <div className="w-100 bg-gray-100 rounded-md shadow-2xl">
                             <div className=" bg-yellow-500 rounded-t-md">
@@ -88,7 +118,7 @@ function search(){
                             </div>
                             <div className="m-5">
                                 <h1 className="font-bold pl-2 font-RobotoMono text-sm text-gray-600">Car Brand</h1>
-                                <select className="font-RobotoMono mt-2 bg-white w-full p-2 rounded-sm" name="brand" id="type" onChange={(e)=>setQuery({...query,brand: e.target.value})}>
+                                <select className="font-RobotoMono mt-2 bg-white w-full p-2 rounded-sm" name="brand" id="type" onChange={(e)=>setCarForm({...carForm,brand: e.target.value})}>
                                     <option value="">select brand</option>
                                     <option value="Abarth">Abarth</option>
                                     <option value="Bentley">Bentley</option>
@@ -102,15 +132,15 @@ function search(){
                             </div>
                             <div className="m-5">
                                 <h1 className="font-bold pl-2 font-RobotoMono text-sm text-gray-600">Model</h1>
-                                <input type="text" name="model" className="font-RobotoMono mt-1 bg-white w-full p-2 rounded-sm" onChange={(e)=>setQuery({...query,carname: e.target.value})}/>
+                                <input type="text" name="model" className="font-RobotoMono mt-1 bg-white w-full p-2 rounded-sm" onChange={(e)=>setCarForm({...carForm,carname: e.target.value})}/>
                             </div>
                             <div className="m-5">
                                 <h1 className="font-bold pl-2 font-RobotoMono text-sm text-gray-600">start date</h1>
-                                <input type="date" name="model" className="mt-1 bg-white w-full p-2 rounded-sm" onChange={(e)=>setQuery({...query,startDate: e.target.value})}/>
+                                <input type="date" name="model" className="mt-1 bg-white w-full p-2 rounded-sm" onChange={(e)=>setCarForm({...carForm,startDate: e.target.value})}/>
                             </div>
                             <div className="m-5">
                                 <h1 className="font-bold pl-2 font-RobotoMono text-sm text-gray-600">end date</h1>
-                                <input type="date" name="model" className="mt-1 bg-white w-full p-2 rounded-sm" onChange={(e)=>setQuery({...query,endDate: e.target.value})}/>
+                                <input type="date" name="model" className="mt-1 bg-white w-full p-2 rounded-sm" onChange={(e)=>setCarForm({...carForm,endDate: e.target.value})}/>
                             </div>
                             <div className="flex justify-center mx-5">
                                 <button type="button" className="font-RobotoMono bg-amber-400 py-3 w-full rounded-md hover:cursor-pointer hover:bg-amber-600 mb-5" onClick={handleSearch}>search</button>
@@ -128,7 +158,7 @@ function search(){
                                         <img src={car.image_url} className="h-full w-70 rounded-l-md object-cover" alt="" />
                                         <div className="flex flex-col justify-between w-full my-2">
                                             <div className="pt-1">
-                                                <h2 className="font-bold font-RobotoMono">{car.brand} {car.model} {car.trim}</h2>
+                                                <a onClick={() => handleRent(car)} className="font-bold font-RobotoMono hover:cursor-pointer hover:underline">{car.brand} {car.model} {car.trim}</a>
                                                 <div className="flex gap-2"> 
                                                     <h2 className="text-sm">{car.year}</h2>
                                                     <h2 className="text-sm">{car.plate}</h2>
