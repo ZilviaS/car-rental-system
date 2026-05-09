@@ -1,15 +1,15 @@
 # Car Rental System
 
-## Feature ##
-- Search Car
-- Booking System
+## Features
+- JWT Authentication
 - Admin Dashboard
-- Payment Calculation
-- Date blocking
+- Car Booking System
+- Date Availability Check
+- Image Gallery
+- Search & Pagination
 
-## Tech Stack ##
+## Tech Stack
 - React
-- Node.JS
-- Express
+- Node.js / Express
 - PostgreSQL
 - TailwindCSS
