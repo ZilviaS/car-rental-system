@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt')
 const pool = require('../db')
 const jwt = require('jsonwebtoken')
 const auth = require('../middleware/auth')
+const authAdmin = require('../middleware/authAdmin')
 
 router.get('/me', auth, async(req, res)=>{
     try{
@@ -21,6 +22,10 @@ router.get('/me', auth, async(req, res)=>{
         console.error(err)
         res.status(500).send('server error')
     }
+})
+
+router.get('/admin/me', authAdmin, (req, res)=>{
+    res.status(200).json({message : 'success'})
 })
 
 router.post('/', auth, async(req,res)=>{

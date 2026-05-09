@@ -5,6 +5,12 @@ const { v4: uuidv4 } = require('uuid');
 
 router.post('/', async (req,res)=>{
     const { carID, start_date, end_date } = req.body
+
+    if(new Date(end_Date) < new Date(start_Date)){
+        return res.status(400).json({
+            message: 'end date cannot be before start date'
+        })
+    }
     console.log(carID + ' ' + start_date + ' ' + end_date)
     try{
         const result = await pool.query(`

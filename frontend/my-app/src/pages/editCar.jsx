@@ -52,17 +52,26 @@ function EditCar(){
         if(!token){
             navigate('/')
         }
-
-        try{
-            const payload = JSON.parse(atob(token.split('.')[1]))
-            if (payload.role !== 'admin'){
+        
+        const checkAdmin = async ()=>{
+            try{   
+                const res = await fetch(`/api/user/admin/me`,{
+                    headers:{
+                        Authorization : `Bearer ${token}`
+                    }
+                })
+                if (!res.ok){
+                    navigate('/')
+                }
+                return
+            } catch(err){
                 navigate('/')
             }
-        } catch(err){
-            navigate('/')
-        }
 
-    })
+        }
+        checkAdmin()
+
+    },[])
 
     const handleUpdateCar = async ()=>{
         const token = localStorage.getItem('token')

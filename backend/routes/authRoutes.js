@@ -11,6 +11,10 @@ router.post('/register', async (req,res)=>{
 
     console.log(username, email, password)
 
+    if (!email || !password || !username){
+        return res.status(500).json({ error: err.message })
+    }
+
     try{
         await client.query('BEGIN');
         const hashedPassword = await bcrypt.hash(password, 10)
@@ -45,6 +49,10 @@ router.post('/register', async (req,res)=>{
 
 router.post('/login', async (req,res)=>{
     const {email, password} = req.body
+
+    if (!email || !password){
+        return res.status(500).json({ error: err.message })
+    }
 
     console.log("email : " + email + "\npassword : " + password)
 
