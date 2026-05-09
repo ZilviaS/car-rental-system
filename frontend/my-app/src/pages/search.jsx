@@ -16,14 +16,18 @@ function search(){
         endDate: ''
         }
     )
-    // const [query, setQuery] = useState({
-    //     brand: '',
-    //     carname: '',
-    //     startDate: '',
-    //     endDate: ''
-    // })
 
     const data = searchParams.get("data")
+
+    const [currentPage, setCurrentPage] = useState(1)
+    const carsPerPage = 5
+
+    const indexOfLastCar = currentPage * carsPerPage
+    const indexOfFirstCar = indexOfLastCar - carsPerPage
+
+    const currentCars = carinfo.slice(indexOfFirstCar, indexOfLastCar)
+
+    const totalPages = Math.ceil(carinfo.length / carsPerPage)
 
     useEffect(() => {
         if (!data){
@@ -71,28 +75,6 @@ function search(){
             console.error(err)
         }
     }
-
-    // useEffect(()=>{
-
-    //     fetch(`api/car`,{
-    //         method : 'POST',
-    //         headers : {
-    //             'content-type' : 'application/json'
-    //         },
-    //         body: JSON.stringify({
-    //             brand: carForm.brand,
-    //             carname: carForm.carname,
-    //             startDate: carForm.startDate,
-    //             endDate: carForm.endDate
-    //         })
-    //     })
-    //     .then(res => res.json())
-    //     .then(data => {
-    //         console.log(data)
-    //         setCarinfo(data)
-    //     })
-    //     .catch(err => console.error(err))
-    // },[carForm])
 
     const truncate = (str, n)=> {
         return str?.length > n ? str.substr(0, n-1) + "..." : str;
@@ -143,7 +125,7 @@ function search(){
                                 <input type="date" name="model" className="mt-1 bg-white w-full p-2 rounded-sm" onChange={(e)=>setCarForm({...carForm,endDate: e.target.value})}/>
                             </div>
                             <div className="flex justify-center mx-5">
-                                <button type="button" className="font-RobotoMono bg-amber-400 py-3 w-full rounded-md hover:cursor-pointer hover:bg-amber-600 mb-5" onClick={handleSearch}>search</button>
+                                <button type="button" className="font-RobotoMono bg-amber-400 py-3 w-full rounded-md hover:cursor-pointer mb-5" onClick={handleSearch}>search</button>
                             </div>
                         </div>
                     </form>
@@ -152,10 +134,12 @@ function search(){
                             <h1 className="text-gray-500">{carinfo.length} Result Found</h1>
                         </div>
                         <div className="w-full flex-col flex items-center gap-5">
-                            {carinfo.map((car, index)=>{
+                            {currentCars.map((car, index)=>{
                                 return (
                                     <div key={index} className="bg-white flex w-200 gap-3 rounded-md h-50 shadow-xl">
-                                        <img src={car.image_url} className="h-full w-70 rounded-l-md object-cover" alt="" />
+                                        <div className="h-full w-100">
+                                            <img src={car.image_url} className="h-full w-full rounded-l-md object-cover" alt="" />
+                                        </div>
                                         <div className="flex flex-col justify-between w-full my-2">
                                             <div className="pt-1">
                                                 <a onClick={() => handleRent(car)} className="font-bold font-RobotoMono hover:cursor-pointer hover:underline">{car.brand} {car.model} {car.trim}</a>
@@ -180,9 +164,29 @@ function search(){
                                 )
                             })}
                         </div>
-                    </div>
-                    
+                    </div>              
                 </section>
+                <div className="flex justify-center gap-2 mt-5 mb-2">
+                    <button
+                        disabled={currentPage === 1}
+                        onClick={() => setCurrentPage(currentPage - 1)}
+                        className="px-3 py-1 bg-gray-200 rounded hover:cursor-pointer disabled:opacity-50"
+                    >
+                        Prev
+                    </button>
+
+                    <p className="px-3 py-1">
+                        {currentPage} / {totalPages}
+                    </p>
+
+                    <button
+                        disabled={currentPage === totalPages}
+                        onClick={() => setCurrentPage(currentPage + 1)}
+                        className="px-3 py-1 bg-gray-200 rounded hover:cursor-pointer disabled:opacity-50"
+                    >
+                        Next
+                    </button>
+                </div>
 
             </div>
             <footer className='bg-gray-200 '>

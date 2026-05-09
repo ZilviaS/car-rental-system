@@ -124,6 +124,7 @@ function Booking(){
                                                     selected={data.start_date ? new Date(data.start_date) : null}
                                                     onChange={(date) => setData({...data, start_date: date})}
                                                     filterDate={(date) => !isDateBlocked(date)}
+                                                    minDate={new Date()}
                                                     dateFormat="yyyy-MM-dd"
                                                     className="px-4 py-2 rounded-md border border-gray-400"
                                                 />
@@ -134,6 +135,7 @@ function Booking(){
                                                     selected={data.end_date ? new Date(data.end_date) : null}
                                                     onChange={(date) => setData({...data, end_date: date})}
                                                     filterDate={(date) => !isDateBlocked(date)}
+                                                    minDate={data.start_date || new Date()}
                                                     dateFormat="yyyy-MM-dd"
                                                     className="px-4 py-2 rounded-md border border-gray-400"
                                                 />

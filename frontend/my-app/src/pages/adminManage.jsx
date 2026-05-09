@@ -31,6 +31,8 @@ function adminManage(){
     const [resultStatus, setResultStatus] = useState(null)
     const [resultLocationStatus, setLocationStatus] = useState(null)
 
+    const [searchTearm, setSearchTearm] = useState('')
+
     const navigate = useNavigate()
 
     useEffect(()=>{
@@ -98,23 +100,41 @@ function adminManage(){
         navigate(`/edit/${id}`)
     }
 
+    const filteredCars = carinfo.filter((car)=>{
+        const keyword = searchTearm.toLowerCase()
+
+        return (
+            car.brand?.toLowerCase().includes(keyword) ||
+            car.model?.toLowerCase().includes(keyword) ||
+            car.trim?.toLowerCase().includes(keyword) ||
+            car.plate?.toLowerCase().includes(keyword)
+        )
+    })
+    
+
 
     return (
         <>
             <div className="flex justify-center gap-5 mb-5">
-                <button onClick={()=>setPageStatus('carList')} className="px-5 py-1 rounded bg-yellow-200 hover:cursor-pointer">Car List</button>
-                <button onClick={()=>setPageStatus('rentalCar')} className="px-5 py-1 rounded bg-yellow-200 hover:cursor-pointer">Update Rental Car</button>
+                <button onClick={()=>setPageStatus('carList')} className={`px-5 py-1 rounded hover:cursor-pointer hover:underline ${pageStatus === 'carList' ? 'bg-yellow-400' : 'bg-yellow-200'}`}>Car List</button>
+                <button onClick={()=>setPageStatus('rentalCar')} className={`px-5 py-1 rounded hover:cursor-pointer hover:underline ${pageStatus === 'rentalCar' ? 'bg-yellow-400' : 'bg-yellow-200'}`}>Update Rental Car</button>
             </div>
             <div className="flex justify-center">
                 {pageStatus === 'carList' && <>
-                <div className="w-full flex-col flex items-center gap-5 mb-5">
-                    {carinfo.map((car, index)=>{
+                <div className="w-full flex-col flex items-center gap-3 mb-5">
+                    <div className="flex gap-2 w-200 items-center">
+                        <input onChange={(e)=> setSearchTearm(e.target.value)} className="border rounded px-1" type="text" value={searchTearm} placeholder="search" />
+                        <p className="text-sm text-gray-500 items-baseline">total of {filteredCars.length} {filteredCars.length == 1 ? 'car' : 'cars'}</p>
+                    </div>
+                    {filteredCars.map((car, index)=>{
                         return (
                             <div key={index} className="bg-white flex w-200 gap-3 rounded-md h-50 shadow-xl">
-                                <img src={car.image_url} className="h-full w-70 rounded-l-md object-cover" alt="" />
+                                <div className="h-full w-100">
+                                    <img src={car.image_url} className="h-full w-full rounded-l-md object-cover" alt="" />
+                                </div>
                                 <div className="flex flex-col justify-between w-full my-2">
                                     <div className="pt-1">
-                                        <h2 className="font-bold font-RobotoMono">{car.brand} {car.model} {car.trim}</h2>
+                                        <button onClick={()=>navigate(`/booking/${car.id}`)} className="hover:cursor-pointer hover:underline font-bold font-RobotoMono">{car.brand} {car.model} {car.trim}</button>
                                         <div className="flex gap-2"> 
                                             <h2 className="text-sm">{car.year}</h2>
                                             <h2 className="text-sm">{car.plate}</h2>
