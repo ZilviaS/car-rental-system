@@ -108,6 +108,7 @@ function Search(){
                                     <option value="Ford">Ford</option>
                                     <option value="Honda">Honda</option>
                                     <option value="Jaguar">Jaguar</option>
+                                    <option value="Mazda">Mazda</option>
                                     <option value="Mercedes">Mercedes Benz</option>
                                     <option value="Nissan">Nissan</option>
                                     <option value="Rolls">Rolls Royce</option>
@@ -143,6 +144,7 @@ function Search(){
                                             <option value="Ford">Ford</option>
                                             <option value="Honda">Honda</option>
                                             <option value="Jaguar">Jaguar</option>
+                                            <option value="Mazda">Mazda</option>
                                             <option value="Mercedes">Mercedes Benz</option>
                                             <option value="Nissan">Nissan</option>
                                             <option value="Rolls">Rolls Royce</option>

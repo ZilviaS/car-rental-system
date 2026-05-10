@@ -32,48 +32,59 @@ function Home(){
                     <div className='absolute top-0 left-0 w-full z-50'>
                         <Navbar />
                     </div>
-                    <div className='absolute inset-0 flex items-center justify-center z-10'>
+                    <div className='absolute inset-0 flex flex-col items-center justify-center'>
                         <div className="absolute inset-0 bg-black/30 z-0"></div>
-                        <div className='bg-white/80 backdrop-blur-md p-6 rounded-md shadow-lg'>
-                            <div className='flex md:flex-row flex-col gap-3'>
-                                <div>
-                                    <h1 className='text-gray-500 font-RobotoMono text-sm'>start date</h1>
-                                    <input onChange={(e)=>{setForm({...form,startDate: e.target.value})}} type="date" name='startDate' className="md:w-auto w-full px-4 py-2 rounded-md border" required/>
-                                </div>
-                                <div>
-                                    <h1 className='text-gray-500 font-RobotoMono text-sm'>end date</h1>
-                                    <input onChange={(e)=>{setForm({...form,endDate: e.target.value})}}  type="date" name='endDate' className="md:w-auto w-full px-4 py-2 rounded-md border" required/>
-                                </div>
-                                <div>
-                                    <h1 className='text-gray-500 font-RobotoMono text-sm'>brand</h1>
-                                    <select onChange={(e)=>{setForm({...form, brand: e.target.value})}} className=' md:w-auto w-full font-RobotoMono border rounded-md px-3 py-2' name="brand" id="cars" required>
-                                        <option value="">select brand</option>
-                                        <option value="Abarth">Abarth</option>
-                                        <option value="Bentley">Bentley</option>
-                                        <option value="Ford">Ford</option>
-                                        <option value="Honda">Honda</option>
-                                        <option value="Jaguar">Jaguar</option>
-                                        <option value="Mercedes">Mercedes Benz</option>
-                                        <option value="Nissan">Nissan</option>
-                                        <option value="Rolls">Rolls Royce</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <h1 className='text-gray-500 font-RobotoMono text-sm'>model</h1>
-                                    <input type="text" name='carname' className='border rounded-md px-4 py-2 md:w-auto w-full' onChange={(e)=>setForm({...form, carname: e.target.value})} required/>
-                                </div>
-                                <div className='flex items-end'>
+                        <div className='z-10'>
+                            <div className='flex w-full justify-center'>
+                                <img className="rounded-full w-20" src='https://img.freepik.com/premium-vector/vector-car-logo-design-illus_714931-352.jpg' alt="" />
+                            </div>
+                            <div className='flex w-full justify-center'>
+                                <p className='text-white text-4xl pl-2 font-bold' style={{
+                                    WebkitTextStroke: '0.5px black'
+                                }}>Car Rental</p>
+                            </div>
+                            <div className='bg-white/80 backdrop-blur-md p-6 rounded-md shadow-lg mt-5'>
+                                <div className='flex md:flex-row flex-col gap-3'>
                                     <div>
-                                        <button type='button' onClick={searchHandle} className="font-RobotoMono bg-yellow-400 px-4 py-2 rounded-md  hover:bg-yellow-500 hover:cursor-pointer">
-                                            search
-                                        </button>
+                                        <h1 className='text-gray-500 font-RobotoMono text-sm'>start date</h1>
+                                        <input onChange={(e)=>{setForm({...form,startDate: e.target.value})}} type="date" name='startDate' className="md:w-auto w-full px-4 py-2 rounded-md border" required/>
+                                    </div>
+                                    <div>
+                                        <h1 className='text-gray-500 font-RobotoMono text-sm'>end date</h1>
+                                        <input onChange={(e)=>{setForm({...form,endDate: e.target.value})}}  type="date" name='endDate' className="md:w-auto w-full px-4 py-2 rounded-md border" required/>
+                                    </div>
+                                    <div>
+                                        <h1 className='text-gray-500 font-RobotoMono text-sm'>brand</h1>
+                                        <select onChange={(e)=>{setForm({...form, brand: e.target.value})}} className=' md:w-auto w-full font-RobotoMono border rounded-md px-3 py-2' name="brand" id="cars" required>
+                                            <option value="">select brand</option>
+                                            <option value="Abarth">Abarth</option>
+                                            <option value="Bentley">Bentley</option>
+                                            <option value="Ford">Ford</option>
+                                            <option value="Honda">Honda</option>
+                                            <option value="Jaguar">Jaguar</option>
+                                            <option value="Mazda">Mazda</option>
+                                            <option value="Mercedes">Mercedes Benz</option>
+                                            <option value="Nissan">Nissan</option>
+                                            <option value="Rolls">Rolls Royce</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <h1 className='text-gray-500 font-RobotoMono text-sm'>model</h1>
+                                        <input type="text" name='carname' className='border rounded-md px-4 py-2 md:w-auto w-full' onChange={(e)=>setForm({...form, carname: e.target.value})} required/>
+                                    </div>
+                                    <div className='flex items-end'>
+                                        <div>
+                                            <button type='button' onClick={searchHandle} className="font-RobotoMono bg-yellow-400 px-4 py-2 rounded-md  hover:bg-yellow-500 hover:cursor-pointer">
+                                                search
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
+                                {dateCheck ? 
+                                <h1 className='text-red-600'>ใส่ข้อมูลวันเริ่ม/สิ้นสุดการใช้รถให้ครบก่อนค้นหา</h1>
+                                    : <></>
+                            }
                             </div>
-                            {dateCheck ? 
-                            <h1 className='text-red-600'>ใส่ข้อมูลวันเริ่ม/สิ้นสุดการใช้รถให้ครบก่อนค้นหา</h1>
-                                : <></>
-                        }
                         </div>
                     </div>
                 </div>

@@ -19,12 +19,12 @@ function Contact(){
             <section className='min-h-screen'>
                 <Navbar></Navbar>
                 <div className='flex justify-center min-h-screen'>
-                    <div className='w-[25%] bg-gray-200'>
+                    <div className='lg:w-[25%] w-[40%] bg-gray-200'>
                         <div className='flex justify-center mt-10'>
                             <img src={ProfilePic} className='w-[50%] rounded-full shadow-xl' />
                         </div>
-                        <div className='ml-10 my-10 flex flex-col gap-10 w-[80%]'>
-                            <div>
+                        <div className='w-full justify-center items-center my-10 flex flex-col gap-10'>
+                            <div className='w-[80%]'>
                                 <div className='flex gap-3 items-center'>
                                     <div className='bg-gray-600 flex justify-center items-center p-1 rounded'>
                                         <ContactLogo className="w-5 h-5 text-white" />
@@ -52,7 +52,7 @@ function Contact(){
                                 </div>
                             </div>
                             
-                            <div className=''>
+                            <div className='w-[80%]'>
                                 <div className='flex gap-3'>
                                     <div className='bg-gray-600 flex justify-center items-center p-1 rounded'>
                                         <EducationLogo className="w-5 h-5 text-white" />
@@ -69,7 +69,7 @@ function Contact(){
                                     </div>
                                 </div>   
                             </div>
-                            <div className=''>
+                            <div className='w-[80%]'>
                                 <div className='flex gap-3'>
                                     <div className='bg-gray-600 flex justify-center items-center p-1 rounded'>
                                         <EducationLogo className="w-5 h-5 text-white" />
@@ -88,7 +88,7 @@ function Contact(){
                                     <p className='text-gray-800'>Unity</p>
                                 </div>   
                             </div>
-                            <div className=''>
+                            <div className='w-[80%]'>
                                 <div className='flex gap-3'>
                                     <div className='bg-gray-600 flex justify-center items-center p-1 rounded'>
                                         <EducationLogo className="w-5 h-5 text-white" />
@@ -100,7 +100,7 @@ function Contact(){
                                     <p className='text-gray-800'>Script Writer & Translator <br />@Sandwish Media</p>
                                 </div>   
                             </div>
-                            <div className=''>
+                            <div className='w-[80%]'>
                                 <div className='flex gap-3'>
                                     <div className='bg-gray-600 flex justify-center items-center p-1 rounded'>
                                         <EducationLogo className="w-5 h-5 text-white" />
@@ -117,7 +117,7 @@ function Contact(){
                         
                         
                     </div>
-                    <div className='w-[75%] bg-white p-20'>
+                    <div className='lg:w-[75%] w-[60%] bg-white p-20'>
                         <div className='flex justify-center mb-10'>
                             <div>
                                 <h1 className='font-RobotoMono text-5xl'>Prepat Jarundechakorn</h1>   
