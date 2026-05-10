@@ -6,7 +6,7 @@ const cors = require('cors')
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
-  'https://car-rental-system-omega-lemon.vercel.app/'
+  'https://car-rental-system-omega-lemon.vercel.app'
 ]
 
 app.use(cors({
