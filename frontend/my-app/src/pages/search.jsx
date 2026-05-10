@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom"
 import { Navigate, useNavigate } from 'react-router-dom'
 import Navbar from "./navbar";
 
-function search(){
+function Search(){
     const navigate = useNavigate()
     const [searchParams] = useSearchParams()
 
@@ -26,6 +26,7 @@ function search(){
     const indexOfFirstCar = indexOfLastCar - carsPerPage
 
     const currentCars = carinfo.slice(indexOfFirstCar, indexOfLastCar)
+    const API = import.meta.env.VITE_API_URL
 
     const totalPages = Math.ceil(carinfo.length / carsPerPage)
 
@@ -57,7 +58,7 @@ function search(){
 
     const fetchCars = async (searchData) => {
         try{
-            const res = await fetch(`/api/car`,{
+            const res = await fetch(`${API}/api/car`,{
                 method : 'POST',
                 headers : {
                     'content-type' : 'application/json'
@@ -244,4 +245,4 @@ function search(){
     )
 }
 
-export default search
+export default Search

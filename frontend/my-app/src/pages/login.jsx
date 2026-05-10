@@ -12,11 +12,11 @@ function login(){
     })
 
     const [errorMSG, setErrorMSG] = useState('')
-
+    const API = import.meta.env.VITE_API_URL
     const navigate = useNavigate()
 
     const loginHandler = async ()=>{
-        const res = await fetch(`/api/auth/login`,{
+        const res = await fetch(`${API}/api/auth/login`,{
             method : 'POST',
             headers :{
                 'content-type' : 'application/json'

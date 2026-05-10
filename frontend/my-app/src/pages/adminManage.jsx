@@ -5,6 +5,7 @@ import { Navigate, useNavigate } from "react-router-dom"
 import userLogo from '../assets/user.svg'
 
 function adminManage(){
+    const API = import.meta.env.VITE_API_URL
     const [pageStatus , setPageStatus] = useState('carList')
 
     const [carData , setCarData] = useState({
@@ -36,7 +37,7 @@ function adminManage(){
     const navigate = useNavigate()
 
     useEffect(()=>{
-        fetch(`api/car`)
+        fetch(`${API}/api/car`)
         .then(res => res.json())
         .then(data => {
             console.log(data)
@@ -48,7 +49,7 @@ function adminManage(){
     const handleCarUpdate = async ()=>{
         const token = localStorage.getItem('token')
         try{
-            const res = await fetch(`/api/car/insert`,{
+            const res = await fetch(`${API}/api/car/insert`,{
                 method : 'POST',
                 headers :{
                         'Authorization' : `Bearer ${token}`,

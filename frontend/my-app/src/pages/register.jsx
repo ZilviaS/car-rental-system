@@ -18,13 +18,15 @@ function register(){
 
     const navigate = useNavigate()
 
+    const API = import.meta.env.VITE_API_URL
+
     const registerHandle = async ()=>{
         console.log(registerForm)
 
         setError('')
 
         try{
-            const res = await fetch(`/api/auth/register`,{
+            const res = await fetch(`${API}/auth/register`,{
                 method : 'POST',
                 headers : {
                     'content-type' : 'application/json'

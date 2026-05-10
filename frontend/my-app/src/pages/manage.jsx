@@ -7,6 +7,7 @@ import AdminManage from "./adminManage.jsx"
 
 function Manage(){
 
+    const API = import.meta.env.VITE_API_URL
     const [user, setUser] = useState({
         id : '',
         username : '',
@@ -53,7 +54,7 @@ function Manage(){
             return
         }
         const handleUserInformation = async()=>{
-            fetch(`/api/user/me`,{
+            fetch(`${API}/api/user/me`,{
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -66,7 +67,7 @@ function Manage(){
                 setLoading(false)
             })
 
-            fetch(`/api/user/account`,{
+            fetch(`${API}/api/user/account`,{
                 headers : {
                     Authorization: `Bearer ${token}`
                 }
@@ -76,7 +77,7 @@ function Manage(){
                 setUserPayment(data)
             })
 
-            fetch(`/api/user/cars`,{
+            fetch(`${API}/api/user/cars`,{
                 headers : {
                     Authorization : `Bearer ${token}`
                 }
@@ -87,7 +88,7 @@ function Manage(){
                 console.log(data)
             })
 
-            const adminCheck = await fetch(`/api/user/admin/me`,{
+            const adminCheck = await fetch(`${API}/api/user/admin/me`,{
                 headers : {
                     Authorization : `Bearer ${token}`
                 }
@@ -103,7 +104,7 @@ function Manage(){
 
     const handleUpdate = ()=>{
         const token = localStorage.getItem('token')
-        fetch(`/api/user`,{
+        fetch(`${API}/api/user`,{
             method : 'POST',
             headers : {
                 'content-type' : 'application/json',
@@ -115,7 +116,7 @@ function Manage(){
 
     const handleAccountUpdate = ()=>{
         const token = localStorage.getItem('token')
-        fetch(`/api/user/account`,{
+        fetch(`${API}/api/user/account`,{
             method : 'POST',
             headers : {
                 'content-type' : 'application/json',
@@ -127,7 +128,7 @@ function Manage(){
 
     const handleCancleOrder = (car)=>{
         const token = localStorage.getItem('token')
-        fetch(`/api/booking/cancle`,{
+        fetch(`${API}/api/booking/cancle`,{
             method : 'POST',
             headers:{
                 'content-type' : 'application/json',

@@ -7,6 +7,7 @@ import bg from '../assets/background_crop.jpg'
 
 function EditCar(){
 
+    const API = import.meta.env.VITE_API_URL
     const { id } = useParams()
     const [carInfo, setCarInfo] = useState({
         brand: '',
@@ -31,7 +32,7 @@ function EditCar(){
     useEffect(()=>{
         const fetchCar = async ()=>{
             try{
-                const res = await fetch(`/api/car/${id}`)
+                const res = await fetch(`${API}/api/car/${id}`)
                 const data = await res.json()
                 setCarInfo(data)
                 setImageURL({
@@ -55,7 +56,7 @@ function EditCar(){
         
         const checkAdmin = async ()=>{
             try{   
-                const res = await fetch(`/api/user/admin/me`,{
+                const res = await fetch(`${API}/api/user/admin/me`,{
                     headers:{
                         Authorization : `Bearer ${token}`
                     }
@@ -77,7 +78,7 @@ function EditCar(){
         const token = localStorage.getItem('token')
         try{
             console.log(carInfo)
-            const res = await fetch(`/api/car/update`,{
+            const res = await fetch(`${API}/api/car/update`,{
                 method : 'POST',
                 headers : {
                     'Authorization' : `Bearer ${token}`,

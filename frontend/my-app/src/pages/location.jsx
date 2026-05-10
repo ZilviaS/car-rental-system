@@ -11,9 +11,10 @@ function Location(){
 
     const [ location, setLocation ] = useState([])
     const [ mapLocation , setMapLocation ] = useState(null)
+    const API = import.meta.env.VITE_API_URL
 
     useEffect(()=>{
-        fetch(`/api/location`)
+        fetch(`${API}/api/location`)
         .then(res => res.json())
         .then(data => {
             setLocation(data)

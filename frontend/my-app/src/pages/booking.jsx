@@ -15,6 +15,7 @@ function Booking(){
         end_date : '',
         location: ''
     })
+    const API = import.meta.env.VITE_API_URL
     const [priceData, setPriceData] = useState(null)
     const [bookedDates, setBookedDates] = useState([])
     
@@ -29,7 +30,7 @@ function Booking(){
 
     useEffect(()=>{
         console.log(id)
-        fetch(`/api/car/${id}`)
+        fetch(`${API}/api/car/${id}`)
         .then(res => res.json())
         .then(data => {
             setCar(data)
@@ -40,7 +41,7 @@ function Booking(){
     , [id])
 
     useEffect(()=>{
-        fetch(`/api/car/${id}/booked-dates`)
+        fetch(`${API}/api/car/${id}/booked-dates`)
         .then(res => res.json())
         .then(data => setBookedDates(data))
     }, [])
@@ -65,7 +66,7 @@ function Booking(){
 
     const handleCheck = async ()=>{
         try{
-            const res = await fetch(`/api/payment`,{
+            const res = await fetch(`${API}/api/payment`,{
                 method : 'POST',
                 headers :{
                     'content-type' : 'application/json'

@@ -13,6 +13,8 @@ function Payment(){
 
     const [errorMSG, setErrorMSG] = useState('')
 
+    const API = import.meta.env.VITE_API_URL
+
     const [paymentInfo, setPaymentInfo] = useState(null)
     const [userPayment, setUserPayment] = useState({
         card_number : '',
@@ -29,7 +31,7 @@ function Payment(){
         if (!paymentInfo || !userPayment || !bookingData || !user)
             return;
         try{
-            const res = await fetch(`/api/payment/transcript`,{
+            const res = await fetch(`${API}/api/payment/transcript`,{
                 method : 'POST',
                 headers :{
                     'content-type' : 'application/json'
@@ -61,7 +63,7 @@ function Payment(){
             return
         }
 
-        fetch(`/api/user/me`,{
+        fetch(`${API}/api/user/me`,{
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -74,7 +76,7 @@ function Payment(){
         }  
         })
 
-        fetch(`/api/user/account`,{
+        fetch(`${API}/api/user/account`,{
             headers : {
                 Authorization: `Bearer ${token}`
             }
@@ -88,11 +90,11 @@ function Payment(){
     }, [])
 
     useEffect(()=>{
-        if(!car || !bookingData) return <div>Invalid access (no booking data)</div>
+        if(!car || !bookingData) return
         
         const fetchPayment = async() =>{
             try{
-                const res = await fetch(`/api/payment`,{
+                const res = await fetch(`${API}/api/payment`,{
                 method : 'POST',
                 headers :{
                     'content-type' : 'application/json'
