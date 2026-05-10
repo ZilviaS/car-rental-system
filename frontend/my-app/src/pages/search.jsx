@@ -136,7 +136,7 @@ function Search(){
                                 <div className="flex gap-2">
                                     <div>
                                         <h1 className="font-bold text-sm text-gray-600">Car Brand</h1>
-                                        <select className=" mt-1 bg-gray-100 rounded-sm" name="brand" id="type" onChange={(e)=>setCarForm({...carForm,brand: e.target.value})}>
+                                        <select className=" mt-1 bg-gray-100 h-7 rounded-sm" name="brand" id="type" onChange={(e)=>setCarForm({...carForm,brand: e.target.value})}>
                                             <option value="">select brand</option>
                                             <option value="Abarth">Abarth</option>
                                             <option value="Bentley">Bentley</option>
@@ -150,17 +150,17 @@ function Search(){
                                     </div>
                                     <div className="">
                                         <h1 className="font-bold text-sm text-gray-600">Model</h1>
-                                        <input type="text" name="model" className="mt-1 bg-gray-100  w-full rounded-sm" onChange={(e)=>setCarForm({...carForm,carname: e.target.value})}/>
+                                        <input type="text" name="model" className="mt-1 h-7 bg-gray-100  w-full rounded-sm" onChange={(e)=>setCarForm({...carForm,carname: e.target.value})}/>
                                     </div>  
                                 </div>
                                 <div className="my-2 w-full flex gap-3">
                                     <div className="w-full">
                                         <h1 className="font-bold text-sm text-gray-600">Start Date</h1>
-                                        <input type="date" name="model" className="mt-1 sm:text-md text-sm bg-gray-100 w-full rounded-sm" onChange={(e)=>setCarForm({...carForm,startDate: e.target.value})}/>
+                                        <input type="date" name="model" className="mt-1  h-7 sm:text-md text-sm bg-gray-100 w-full rounded-sm" onChange={(e)=>setCarForm({...carForm,startDate: e.target.value})}/>
                                     </div>
                                     <div className="w-full">
                                         <h1 className="font-bold text-sm text-gray-600">End Date</h1>
-                                        <input type="date" name="model" className="mt-1 sm:text-md text-sm bg-gray-100 w-full rounded-sm" onChange={(e)=>setCarForm({...carForm,endDate: e.target.value})}/>
+                                        <input type="date" name="model" className="mt-1  h-7 sm:text-md text-sm bg-gray-100 w-full rounded-sm" onChange={(e)=>setCarForm({...carForm,endDate: e.target.value})}/>
                                     </div>
                                 </div>
                                 <div className="mt-1 flex justify-center">
@@ -177,7 +177,7 @@ function Search(){
                         <div className="w-full flex-col flex items-center gap-5">
                             {currentCars.map((car, index)=>{
                                 return (
-                                    <div key={index} className="bg-white flex sm:flex-row flex-col sm:w-200 w-60 sm:gap-3 rounded-md sm:h-50 shadow-xl">
+                                    <div key={index} className="bg-white flex sm:flex-row flex-col sm:w-200 w-80 sm:gap-3 rounded-md sm:h-50 shadow-xl">
                                         <div className="h-full sm:w-100 w-full">
                                             <img src={car.image_url} className="h-full w-full rounded-l-md object-cover" alt="" />
                                         </div>

@@ -45,7 +45,7 @@ function Payment(){
                 })
             })
             const result = await res.json();
-            if (res.ok){
+            if (!res.ok){
                 setErrorMSG(result.message || result.error)
                 return 
             }
@@ -71,7 +71,7 @@ function Payment(){
         .then(res => res.json())
         .then(data => {{
             setUser(data)
-            setUserPayment({...userPayment, tel : user.tel})
+            setUserPayment(prev => ({...prev, tel : data.tel}))
             console.log('user', data)
         }  
         })
@@ -83,7 +83,7 @@ function Payment(){
         })
         .then(res=> res.json())
         .then(data=>{
-            setUserPayment(data)
+            setUserPayment(prev => ({...prev,...data}))
             console.log(data)
     })
 
@@ -127,16 +127,16 @@ function Payment(){
                 <section className="flex h-screen justify-center items-center z-50">
                     <div className="shadow-xl p-5 bg-white rounded">
                         <h1 className="font-RobotoMono text-2xl font-bold">Payment</h1>
-                        <div className="flex sm:flex-row flex-col gap-10">
+                        <div className="flex sm:flex-row flex-col sm:gap-10 gap-3">
                             <form>
                                 <table className="border-separate border-spacing-x-2 border-spacing-y-2">
                                     <tbody>
                                         <tr>
-                                            <th className="text-right font-normal font-RobotoMono sm:text-md text-sm">Card Number</th>
+                                            <th className="text-right font-normal font-RobotoMono sm:text-md md:text-base text-sm">Card Number</th>
                                             <th><input value={userPayment.card_number || ''} onChange={(e)=>{setUserPayment({...userPayment, card_number : e.target.value})}} type="text" className="border-gray-500 font-normal border-2 rounded px-1 w-full" required /></th>
                                         </tr>
                                         <tr>
-                                            <td className="text-right font-RobotoMono sm:text-md text-sm">Expire Date</td>
+                                            <td className="text-right font-RobotoMono sm:text-md md:text-base text-sm">Expire Date</td>
                                             <td className="flex">
                                                 <input value={userPayment.ex_month || ''} required onChange={(e) => {
                                                     let val = e.target.value;
@@ -162,15 +162,15 @@ function Payment(){
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td className="text-right font-RobotoMono sm:text-md text-sm">CVV</td>
+                                            <td className="text-right font-RobotoMono sm:text-md md:text-base text-sm">CVV</td>
                                             <td><input value={userPayment.cvv || ''} required onChange={(e)=>{setUserPayment({...userPayment, cvv : e.target.value})}} type="text" maxLength={3} className="border-gray-500 border-2 rounded px-1 w-15"/></td>
                                         </tr>
                                         <tr>
-                                            <td className="text-right font-RobotoMono sm:text-md text-sm">Name</td>
+                                            <td className="text-right font-RobotoMono sm:text-md md:text-base text-sm">Name</td>
                                             <td><input value={userPayment.cardname || ''} required onChange={(e)=>{setUserPayment({...userPayment, cardname : e.target.value})}} type="text" className="border-gray-500 border-2 rounded px-1 w-full"/></td>
                                         </tr>
                                         <tr>
-                                            <td className="text-right font-RobotoMono sm:text-md text-sm">Bank</td>
+                                            <td className="text-right font-RobotoMono sm:text-md md:text-base text-sm">Bank</td>
                                             <td>
                                                 <select required value={userPayment.bank || ''} onChange={(e)=>{setUserPayment({...userPayment, bank : e.target.value})}} className="border-gray-500 border-2 rounded md:w-auto w-50" name="bank" id="bank">
                                                     <option value="" disabled hidden>--SELECT-BANK--</option>
@@ -183,7 +183,7 @@ function Payment(){
                                         </tr>
                                         <tr>
                                             <td>
-                                                <h1 className="text-right font-RobotoMono sm:text-md text-sm">tel.</h1>
+                                                <h1 className="text-right font-RobotoMono sm:text-md md:text-base text-sm">tel.</h1>
                                             </td>
                                             <td><input required type="number" onChange={(e)=>setUserPayment({...userPayment, tel : e.target.value})} value={userPayment?.tel || ''} className="border-gray-500 border-2 rounded px-1 w-full"/></td>
                                         </tr>

@@ -38,16 +38,16 @@ function Home(){
                             <div className='flex md:flex-row flex-col gap-3'>
                                 <div>
                                     <h1 className='text-gray-500 font-RobotoMono text-sm'>start date</h1>
-                                    <input onChange={(e)=>{setForm({...form,startDate: e.target.value})}} type="date" name='startDate' className="px-4 py-2 rounded-md border" required/>
+                                    <input onChange={(e)=>{setForm({...form,startDate: e.target.value})}} type="date" name='startDate' className="md:w-auto w-full px-4 py-2 rounded-md border" required/>
                                 </div>
                                 <div>
                                     <h1 className='text-gray-500 font-RobotoMono text-sm'>end date</h1>
-                                    <input onChange={(e)=>{setForm({...form,endDate: e.target.value})}}  type="date" name='endDate' className="px-4 py-2 rounded-md border" required/>
+                                    <input onChange={(e)=>{setForm({...form,endDate: e.target.value})}}  type="date" name='endDate' className="md:w-auto w-full px-4 py-2 rounded-md border" required/>
                                 </div>
                                 <div>
                                     <h1 className='text-gray-500 font-RobotoMono text-sm'>brand</h1>
-                                    <select onChange={(e)=>{setForm({...form, brand: e.target.value})}} className=' font-RobotoMono border rounded-md px-3 py-2' name="brand" id="cars" required>
-                                        <option value="">ประเภทรถ</option>
+                                    <select onChange={(e)=>{setForm({...form, brand: e.target.value})}} className=' md:w-auto w-full font-RobotoMono border rounded-md px-3 py-2' name="brand" id="cars" required>
+                                        <option value="">select brand</option>
                                         <option value="Abarth">Abarth</option>
                                         <option value="Bentley">Bentley</option>
                                         <option value="Ford">Ford</option>
@@ -60,11 +60,11 @@ function Home(){
                                 </div>
                                 <div>
                                     <h1 className='text-gray-500 font-RobotoMono text-sm'>model</h1>
-                                    <input type="text" name='carname' className='border rounded-md px-4 py-2' onChange={(e)=>setForm({...form, carname: e.target.value})} required/>
+                                    <input type="text" name='carname' className='border rounded-md px-4 py-2 md:w-auto w-full' onChange={(e)=>setForm({...form, carname: e.target.value})} required/>
                                 </div>
                                 <div className='flex items-end'>
                                     <div>
-                                        <button type='button' onClick={searchHandle} className="font-RobotoMono bg-yellow-400 px-4 py-2 rounded-md hover:bg-yellow-500 hover:cursor-pointer">
+                                        <button type='button' onClick={searchHandle} className="font-RobotoMono bg-yellow-400 px-4 py-2 rounded-md  hover:bg-yellow-500 hover:cursor-pointer">
                                             search
                                         </button>
                                     </div>

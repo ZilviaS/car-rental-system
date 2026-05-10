@@ -126,9 +126,10 @@ function Manage(){
         })
     }
 
-    const handleCancleOrder = (car)=>{
+    const handleCancleOrder = async (car)=>{
         const token = localStorage.getItem('token')
-        fetch(`${API}/api/booking/cancle`,{
+
+        const res = await fetch(`${API}/api/booking/cancle`,{
             method : 'POST',
             headers:{
                 'content-type' : 'application/json',
@@ -136,7 +137,11 @@ function Manage(){
             },
             body: JSON.stringify(car)
         })
-        window.location.reload(); 
+
+        if (res.ok){
+            console.log('here')
+            setUserCars(prev => {prev.filter(c => c.id !== car.id)})
+        } 
     }
 
     if (loading) {

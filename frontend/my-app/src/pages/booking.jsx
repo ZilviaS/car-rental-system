@@ -54,6 +54,7 @@ function Booking(){
 
     const handleSubmit = ()=>{
         if (data.start_date == '' || data.end_date == '' || data.location == ''){
+            console.log(data.start_date, data.end_date, data.location)
             return
         }
         navigate('/payment', {
@@ -94,17 +95,24 @@ function Booking(){
                 <div className='flex justify-center pt-5 mb-3'>
                     {car ? 
                         <>
-                            <div className="bg-white md:w-[70%] w-[95%] rounded-md p-5 shadow-2xl">
-                                <div className="flex h-100 w-full justify-center">
+                            <div className="bg-white md:w-[70%] w-[95%] rounded-xl p-5 shadow-2xl">
+                                <div className="sm:flex hidden h-100 w-full justify-center">
                                     <img className="h-full w-[60%] rounded-l object-cover" src={car.image_url} alt="" />
                                     <div className="flex flex-col">
                                         <img className="h-[50%] rounded-tr object-cover" src={car.image_url_secondary || placeholderImage} alt="" />
                                         <img className="h-[50%] rounded-br object-cover" src={car.image_url_teritery || placeholderImage} alt="" />
                                     </div>
                                 </div>
-                                <div className="flex sm:flex-row flex-col justify-between gap-10 mt-3">
-                                    <div className="w-full">
-                                        <div className="flex mt-4 py-1 items-baseline">
+                                <div className="sm:hidden block shadow-xl">
+                                    <img className="h-full w-full rounded-t object-cover" src={car.image_url} alt="" />
+                                    <div className="flex">
+                                        <img className="w-[50%] rounded-bl object-cover" src={car.image_url_secondary || placeholderImage} alt="" />
+                                        <img className="w-[50%] rounded-br object-cover" src={car.image_url_teritery || placeholderImage} alt="" />
+                                    </div>
+                                </div>
+                                <div className="flex lg:flex-row flex-col justify-between gap-5 mt-3">
+                                    <div className="lg:w-[50%] w-full">
+                                        <div className="flex mt-4 py-1 items-baseline md:flex-row flex-col">
                                             <h1 className="text-xl font-bold font-RobotoMono">{car.brand} {car.model}</h1>
                                             <h1 className="pl-2 text-sm">({car.plate})</h1>
                                         </div>
@@ -113,38 +121,40 @@ function Booking(){
                                             <h1 className="pl-1 font-light">/ day</h1>
                                         </div>
                                         <hr className="my-2" />
-                                        <h1 className="text-gray-600 px-1 text-sm w-full break-words overflow-y-auto max-h-40">
+                                        <h1 className="text-gray-600 pb-2 px-1 text-sm w-full break-words min-h-20 bg-gray-100 overflow-y-auto max-h-40">
                                             {car.description}
                                         </h1>
                                     </div>
-                                    <div>
-                                        <div className="flex lg:flex-row flex-col gap-5 pb-2">
-                                            <div>
-                                                <h1 className='text-gray-500 font-RobotoMono text-xs pl-1'>start date</h1>
+                                    <div className="lg:w-[50%] w-full">
+                                        <div className="flex sm:flex-row flex-col gap-5 pb-2">
+                                            <div className=" md:w-[50%] w-full">
+                                                <h1 className=' text-gray-500 font-RobotoMono text-xs pl-1'>start date</h1>
                                                 <DatePicker
                                                     selected={data.start_date ? new Date(data.start_date) : null}
                                                     onChange={(date) => setData({...data, start_date: date})}
                                                     filterDate={(date) => !isDateBlocked(date)}
                                                     minDate={new Date()}
                                                     dateFormat="yyyy-MM-dd"
-                                                    className="px-4 py-2 rounded-md border border-gray-400"
+                                                    wrapperClassName=" w-full"
+                                                    className="w-full px-4 py-2 rounded-md border border-gray-400"
                                                 />
                                             </div>
-                                            <div>
-                                                <h1 className='text-gray-500 font-RobotoMono text-xs pl-1'>end date</h1>
+                                            <div className=" md:w-[50%] w-full">
+                                                <h1 className=' text-gray-500  font-RobotoMono text-xs pl-1'>end date</h1>
                                                 <DatePicker
                                                     selected={data.end_date ? new Date(data.end_date) : null}
                                                     onChange={(date) => setData({...data, end_date: date})}
                                                     filterDate={(date) => !isDateBlocked(date)}
                                                     minDate={data.start_date || new Date()}
                                                     dateFormat="yyyy-MM-dd"
-                                                    className="px-4 py-2 rounded-md border border-gray-400"
+                                                    wrapperClassName=" w-full"
+                                                    className="w-full px-4 py-2 rounded-md border border-gray-400"
                                                 />
                                             </div>
                                         </div>
                                         <h1 className='text-gray-500 font-RobotoMono text-xs pl-1'>pickup location</h1>
-                                        <select onChange={(e)=> setData({...data, location : e.target.value})} className='rounded-md px-3 py-2 w-full border-1 border-gray-400 font-RobotoMono' name="brand" id="cars" required>
-                                            <option value="" disabled selected hidden>Please choose the location</option>
+                                        <select value={data.location} onChange={(e)=> setData({...data, location : e.target.value})} className='rounded-md px-3 py-2 w-full border-1 border-gray-400 font-RobotoMono' name="brand" id="cars" required>
+                                            <option value="" disabled hidden>Please choose the location</option>
                                             <option value="1">Bangkae</option>
                                             <option value="2">Rangsit</option>
                                         </select>

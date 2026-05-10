@@ -32,8 +32,10 @@ router.post('/cancle', auth, async (req,res)=>{
             WHERE id = $1
                 AND user_id = $2 
         `, [car.id, userId])
+        res.status(201).json({message : 'finnish'})
         console.log('updated')
     }catch(err){
+        res.status(500).json({error : err})
         console.error(err)
     }
 })

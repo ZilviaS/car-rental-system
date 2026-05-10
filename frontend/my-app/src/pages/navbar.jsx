@@ -42,17 +42,17 @@ function Navbar(){
                 <a href="/"><img className='sm:max-h-10 max-h-7 rounded-full mx-3 ml-3' src="https://img.freepik.com/premium-vector/vector-car-logo-design-illus_714931-352.jpg" alt="" /></a>
                 <nav className='justify-center flex sm:gap-2 py-3 sm:mx-5 mx-1 items-center'>
                     <a className='sm:p-1 sm:block hidden p-0.5 hover:text-green-900 hover:underline font-RobotoMono text-xs sm:text-sm'  href="/">search</a>
-                    <a className='sm:hidden' href="/"><img className='h-6 mx-1' src={searchLogo} alt="" /></a>
+                    <a className='sm:hidden px-1' href="/"><img className='h-6 mx-1' src={searchLogo} alt="" /></a>
                     <a className='sm:p-1 sm:block hidden p-0.5 hover:text-green-900 hover:underline font-RobotoMono text-xs sm:text-sm'  href="/search">cars</a>
-                    <a className='sm:hidden' href="/search"><img className='h-6 mx-1' src={carsLogo} alt="" /></a>
+                    <a className='sm:hidden px-1' href="/search"><img className='h-6 mx-1' src={carsLogo} alt="" /></a>
                     <a className='sm:p-1 sm:block hidden p-0.5 hover:text-green-900 hover:underline font-RobotoMono text-xs sm:text-sm'  href="/location">location</a>
-                    <a className='sm:hidden' href="/location"><img className='h-6 mx-1' src={locationLogo} alt="" /></a>
+                    <a className='sm:hidden px-1' href="/location"><img className='h-6 mx-1' src={locationLogo} alt="" /></a>
                     <a className='sm:p-1 sm:block hidden p-0.5 hover:text-green-900 hover:underline font-RobotoMono text-xs sm:text-sm'  href="/contact">contact</a>
-                    <a className='sm:hidden' href="/contact"><img className='h-6 mx-1 mr-2' src={contactLogo} alt="" /></a>
+                    <a className='sm:hidden px-1' href="/contact"><img className='h-6 mx-1 mr-2' src={contactLogo} alt="" /></a>
                     {user ? (user.role === 'admin' ? (
                         <>
                             <div className='flex items-center border-l sm:pl-4 pl-2 gap-1 sm:gap-2'>
-                                <a className='font-RobotoMono text-green-500 text-xs sm:text-sm hover:shadow' href='/manage '>{user.username}</a>
+                                <a className='font-RobotoMono text-green-500 text-sm hover:shadow' href='/manage '>{user.username}</a>
                                 <button onClick={handleLogout}><img className='sm:w-5 w-4 pt-0.5 text-red-500 hover:cursor-pointer' src={signOutLogo} alt="" /></button>
                                 {/* <button className='text-red-500 hover:cursor-pointer hover:underline font-RobotoMono text-xs sm:text-sm' onClick={handleLogout}>Sign-Out</button> */}
                             </div>
