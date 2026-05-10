@@ -29,7 +29,7 @@ function Payment(){
         if (!paymentInfo || !userPayment || !bookingData || !user)
             return;
         try{
-            const res = await fetch(`http://localhost:3000/api/payment/transcript`,{
+            const res = await fetch(`/api/payment/transcript`,{
                 method : 'POST',
                 headers :{
                     'content-type' : 'application/json'
@@ -92,7 +92,7 @@ function Payment(){
         
         const fetchPayment = async() =>{
             try{
-                const res = await fetch(`http://localhost:3000/api/payment`,{
+                const res = await fetch(`/api/payment`,{
                 method : 'POST',
                 headers :{
                     'content-type' : 'application/json'
