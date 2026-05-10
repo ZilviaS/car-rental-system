@@ -36,7 +36,6 @@ function adminManage(){
     const navigate = useNavigate()
 
     useEffect(()=>{
-
         fetch(`api/car`)
         .then(res => res.json())
         .then(data => {
@@ -122,17 +121,17 @@ function adminManage(){
             <div className="flex justify-center">
                 {pageStatus === 'carList' && <>
                 <div className="w-full flex-col flex items-center gap-3 mb-5">
-                    <div className="flex gap-2 w-200 items-center">
+                    <div className="flex gap-2 md:w-200 w-full md:justify-start justify-center items-center">
                         <input onChange={(e)=> setSearchTearm(e.target.value)} className="border rounded px-1" type="text" value={searchTearm} placeholder="search" />
                         <p className="text-sm text-gray-500 items-baseline">total of {filteredCars.length} {filteredCars.length == 1 ? 'car' : 'cars'}</p>
                     </div>
                     {filteredCars.map((car, index)=>{
                         return (
-                            <div key={index} className="bg-white flex w-200 gap-3 rounded-md h-50 shadow-xl">
-                                <div className="h-full w-100">
+                            <div key={index} className="bg-white flex md:flex-row flex-col md:w-200 w-70 md:gap-3 rounded-md md:h-50 shadow-xl">
+                                <div className=" md:w-100 w-70">
                                     <img src={car.image_url} className="h-full w-full rounded-l-md object-cover" alt="" />
                                 </div>
-                                <div className="flex flex-col justify-between w-full my-2">
+                                <div className="flex flex-col md:justify-between w-full my-2 px-1">
                                     <div className="pt-1">
                                         <button onClick={()=>navigate(`/booking/${car.id}`)} className="hover:cursor-pointer hover:underline font-bold font-RobotoMono">{car.brand} {car.model} {car.trim}</button>
                                         <div className="flex gap-2"> 
@@ -153,19 +152,19 @@ function adminManage(){
                 </div>
                 </>}
                 {pageStatus === 'rentalCar' && <>
-                    <div className="w-[50%] mx-[15%] rounded shadow-xl mb-5">
+                    <div className="lg:w-[50%] mx-[15%] rounded shadow-xl mb-5">
                         <div className="flex justify-center  bg-yellow-200 rounded-t-md">
                             <p className="py-1 font-RobotoMono ">Car Rental Update</p>
                         </div>
                         <div className="m-5">
                             <div className="flex flex-col gap-2">
-                                <div className="flex gap-2">
+                                <div className="flex md:flex-row flex-col gap-2">
                                     <p>Brand:</p>
                                     <input onChange={(e)=>{setCarData({...carData, brand : e.target.value})}} type="text" className="bg-gray-100 rounded border-gray-200 border-1 px-2"/>
                                     <p>Model:</p>
                                     <input onChange={(e)=>{setCarData({...carData, model : e.target.value})}} type="text" className="bg-gray-100 rounded border-gray-200 border-1 px-2"/>
                                 </div>
-                                <div className="flex gap-2">
+                                <div className="flex md:flex-row flex-col gap-2">
                                     <p>Trim:</p>
                                     <input onChange={(e)=>{setCarData({...carData, trim : e.target.value})}} type="text" className="bg-gray-100 rounded border-gray-200 border-1 px-2"/>
                                     <p>Price:</p>

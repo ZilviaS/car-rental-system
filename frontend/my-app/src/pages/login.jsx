@@ -47,12 +47,12 @@ function login(){
             <div className="w-full h-screen bg-no-repeat bg-cover" style={{ backgroundImage: `url(${bg})` }}> 
                 <div className='flex justify-center h-full items-center'>
                     <div className="absolute w-full top-0 left-0 z-10"><Navbar/></div>
-                    <div className='bg-white w-120 py-5 rounded'>
+                    <div className='bg-white sm:w-120 w-80 sm:py-5 py-3 rounded'>
                         <div className='flex justify-center'>
                             <h1 className='text-2xl font-RobotoMono'>Sign-In</h1>
                         </div>
                         <div className='flex justify-center'>
-                            <form action="" className='w-80'>
+                            <form action="" className='sm:mx-0 mx-5 w-80'>
                                 <h1 className='pt-2 font-RobotoMono text-gray-400 text-sm'>email</h1>
                                 <input className='border-gray-400 border-1 rounded-md p-2 w-full' type="text" onChange={(e)=> setUserForm({...userForm, email : e.target.value})}/>
                                 <h1 className='pt-2 font-RobotoMono text-gray-400 text-sm'>Password</h1>

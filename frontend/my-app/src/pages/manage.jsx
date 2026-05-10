@@ -44,46 +44,61 @@ function Manage(){
 
     const [loading, setLoading] = useState(true)
 
+    const [isAdmin, setIsAdmin] = useState(false)
+
     useEffect(()=>{
         const token = localStorage.getItem('token')
         if(!token){
             navigate('/login')
             return
         }
-
-        fetch(`/api/user/me`,{
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
-        .then(res => res.json())
-        .then(data => {
-            setUser({...data,
-                birthdate: data.birthdate?.split('T')[0]
+        const handleUserInformation = async()=>{
+            fetch(`/api/user/me`,{
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
             })
-            setLoading(false)
-        })
+            .then(res => res.json())
+            .then(data => {
+                setUser({...data,
+                    birthdate: data.birthdate?.split('T')[0]
+                })
+                setLoading(false)
+            })
 
-        fetch(`/api/user/account`,{
-            headers : {
-                Authorization: `Bearer ${token}`
-            }
-        })
-        .then(res => res.json())
-        .then(data => {
-            setUserPayment(data)
-        })
+            fetch(`/api/user/account`,{
+                headers : {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                setUserPayment(data)
+            })
 
-        fetch(`/api/user/cars`,{
-            headers : {
-                Authorization : `Bearer ${token}`
+            fetch(`/api/user/cars`,{
+                headers : {
+                    Authorization : `Bearer ${token}`
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                setUserCars(data)
+                console.log(data)
+            })
+
+            const adminCheck = await fetch(`/api/user/admin/me`,{
+                headers : {
+                    Authorization : `Bearer ${token}`
+                }
+            })
+            if (adminCheck.ok){
+                setIsAdmin(true)
             }
-        })
-        .then(res => res.json())
-        .then(data => {
-            setUserCars(data)
-            console.log(data)
-        })
+        }
+
+        handleUserInformation()
+
     },[])
 
     const handleUpdate = ()=>{
@@ -130,20 +145,25 @@ function Manage(){
         <>
             <div className="h-screen bg-white">
                 <Navbar></Navbar>
-                <section className="flex justify-center gap-5">
-                    <div className="h-full bg-white mt-5 p-5 w-70 pt-4 shadow-xl rounded">
+                <section className="flex md:flex-row flex-col justify-center md:gap-5 gap-1">
+                    <div className="flex md:hidden w-full bg-gray-200">
+                        <button onClick={()=>setPageState('user')} className={`font-RobotoMono text-sm px-2 py-1 hover:cursor-pointer  ${  pageState === 'user' ? 'bg-white' : 'text-gray-500 bg-gray-200'}`}>User</button>
+                        <button onClick={()=>setPageState('account')} className={`font-RobotoMono text-sm px-2 py-2 hover:cursor-pointer  ${  pageState === 'account' ? 'bg-white' : 'text-gray-500 bg-gray-200'}`}>Account</button>
+                        <button onClick={()=>setPageState('history')} className={`font-RobotoMono text-sm px-2 py-2 hover:cursor-pointer  ${  pageState === 'history' ? 'bg-white' : 'text-gray-500 bg-gray-200'}`}>History</button>
+                    </div>
+                    <div className="h-full bg-white mt-5 p-5 w-70 pt-4 shadow-xl rounded md:block hidden">
                         <div className="flex items-center gap-2">
                             <img src={userLogo} alt="" className="h-10"/>
-                            <h1 className="font-RobotoMono font-normal">{user.username}</h1>
+                            <h1 className="font-RobotoMono sm:text-md text-sm font-normal">{user.username}</h1>
                         </div>
                         <hr className="text-gray-300 my-3" />
                         <div className="">
-                            <h1><button onClick={()=>setPageState('user')} className={`font-RobotoMono text-sm hover:cursor-pointer hover:text-red-500 ${  pageState === 'user' ? '' : 'text-gray-500'}`}>User Information</button></h1>
+                            <h1><button onClick={()=>setPageState('user')} className={`font-RobotoMono text-sm hover:cursor-pointer hover:text-red-500 ${  pageState === 'user' ? '' : 'text-gray-500'}`}>User</button></h1>
                             <h1><button onClick={()=>setPageState('account')} className={`font-RobotoMono text-sm hover:cursor-pointer hover:text-red-500 ${  pageState === 'account' ? '' : 'text-gray-500'}`}>Account</button></h1>
                             <h1><button onClick={()=>setPageState('history')} className={`font-RobotoMono text-sm hover:cursor-pointer hover:text-red-500 ${  pageState === 'history' ? '' : 'text-gray-500'}`}>History</button></h1>
                         </div>  
                     </div>
-                    <div className="h-full bg-white mt-5 p-5 w-230 shadow-xl min-h-90">
+                    <div className="h-full bg-white sm:mt-5 p-3 sm:p-5 md:w-230 shadow-xl min-h-90">
                         <h1 className="font-RobotoMono text-md">
                             {pageState == 'user' && 'User Information'}
                             {pageState == 'account'  && 'account Information'}
@@ -322,41 +342,47 @@ function Manage(){
                         </>
                         }
                         {pageState == 'history' && <>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td className="px-2 w-25 border-2 border-gray-200">Plate</td>
-                                        <td className="px-2 w-30 border-2 border-gray-200">Brand</td>
-                                        <td className="px-2 w-35 border-2 border-gray-200">Model</td>
-                                        <td className="px-2 w-15 border-2 border-gray-200">Year</td>
-                                        <td className="px-2 w-25 border-2 border-gray-200">Start Date</td>
-                                        <td className="px-2 w-25 border-2 border-gray-200">End Date</td>
-                                        <td className="px-2 w-20 border-2 border-gray-200">Status</td>
-                                        <td className="px-2 w-20 border-2 border-gray-200">Price</td>
-                                        <td className="px-2  border-2 border-gray-200"></td>
-                                    </tr>
-                                    {userCars.map((car, index)=>(
-                                    <tr key={car.id}>
-                                        <td className="px-2 py-2 border-2 border-gray-200">{car.plate}</td>
-                                        <td className="px-2 border-2 border-gray-200">{car.brand}</td>
-                                        <td className="px-2 border-2 border-gray-200">{car.model}</td>
-                                        <td className="px-2 border-2 border-gray-200">{car.year}</td>
-                                        <td className="px-2 border-2 border-gray-200">{car.start_date}</td>
-                                        <td className="px-2 border-2 border-gray-200">{car.end_date}</td>
-                                        <td className="px-2 border-2 border-gray-200">{car.status}</td>
-                                        <td className="px-2 border-2 border-gray-200">{car.price}</td>
-                                        <td className="border-2 border-gray-200"><button onClick={()=>{handleCancleOrder(car)}} className="bg-red-500 text-white p-2 hover:cursor-pointer">Cancel</button></td>
-                                    </tr>
-                                    ))}
-                                        
-                                </tbody>
-                            </table>
+                            <div className="overflow-x-auto w-full">
+                                <table className="min-w-max">
+                                    <tbody>
+                                        <tr>
+                                            <td className="px-2 md:text-base text-sm w-20 md:w-25 border-2 border-gray-200">Plate</td>
+                                            <td className="px-2 md:text-base text-sm w-10 md:w-30 border-2 border-gray-200">Brand</td>
+                                            <td className="px-2 md:text-base text-sm w-10 md:w-35 border-2 border-gray-200">Model</td>
+                                            <td className="px-2 md:text-base text-sm w-10 md:w-15 border-2 border-gray-200">Year</td>
+                                            <td className="px-2 md:text-base text-sm w-10 md:w-25 border-2 border-gray-200">Start Date</td>
+                                            <td className="px-2 md:text-base text-sm md:w-25 border-2 border-gray-200">End Date</td>
+                                            <td className="px-2 md:text-base text-sm md:w-20 border-2 border-gray-200">Status</td>
+                                            <td className="px-2 md:text-base text-sm md:w-20 border-2 border-gray-200">Price</td>
+                                            <td className="px-2 md:text-base text-sm border-2 border-gray-200"></td>
+                                        </tr>
+                                        {userCars.map((car, index)=>(
+                                        <tr key={car.id}>
+                                            <td className="px-2 md:text-base text-sm w-20 md:py-2 border-2 border-gray-200">{car.plate}</td>
+                                            <td className="px-2 md:text-base text-sm w-10 border-2 border-gray-200">{car.brand}</td>
+                                            <td className="px-2 md:text-base text-sm w-10 border-2 border-gray-200">{car.model}</td>
+                                            <td className="px-2 md:text-base text-sm w-10 border-2 border-gray-200">{car.year}</td>
+                                            <td className="px-2 md:text-base text-sm w-10 border-2 border-gray-200">{car.start_date}</td>
+                                            <td className="px-2 md:text-base text-sm border-2 border-gray-200">{car.end_date}</td>
+                                            <td className="px-2 md:text-base text-sm border-2 border-gray-200">{car.status}</td>
+                                            <td className="px-2 md:text-base text-sm border-2 border-gray-200">{car.price}</td>
+                                            <td className="border-2 border-gray-200"><button onClick={()=>{handleCancleOrder(car)}} className="bg-red-500 text-white p-1 md:p-2 hover:cursor-pointer">Cancel</button></td>
+                                        </tr>
+                                        ))}
+                                            
+                                    </tbody>
+                                </table>
+                            </div>
                         </>}   
                     </div>
                 </section>
+                {isAdmin === true ? 
                 <section className="my-10">
                     <AdminManage />
-                </section>
+                </section> : 
+                <></>
+                }
+                
             </div>
         </>
     )

@@ -90,10 +90,10 @@ function Booking(){
             
             <Navbar></Navbar>
             <div className="bg-white min-h-screen">
-                <div className='flex justify-center pt-5'>
+                <div className='flex justify-center pt-5 mb-3'>
                     {car ? 
                         <>
-                            <div className="bg-white w-[70%] rounded-md p-5 shadow-2xl">
+                            <div className="bg-white md:w-[70%] w-[95%] rounded-md p-5 shadow-2xl">
                                 <div className="flex h-100 w-full justify-center">
                                     <img className="h-full w-[60%] rounded-l object-cover" src={car.image_url} alt="" />
                                     <div className="flex flex-col">
@@ -101,7 +101,7 @@ function Booking(){
                                         <img className="h-[50%] rounded-br object-cover" src={car.image_url_teritery || placeholderImage} alt="" />
                                     </div>
                                 </div>
-                                <div className="flex justify-between gap-10 mt-3">
+                                <div className="flex sm:flex-row flex-col justify-between gap-10 mt-3">
                                     <div className="w-full">
                                         <div className="flex mt-4 py-1 items-baseline">
                                             <h1 className="text-xl font-bold font-RobotoMono">{car.brand} {car.model}</h1>
@@ -117,7 +117,7 @@ function Booking(){
                                         </h1>
                                     </div>
                                     <div>
-                                        <div className="flex gap-5 pb-2">
+                                        <div className="flex lg:flex-row flex-col gap-5 pb-2">
                                             <div>
                                                 <h1 className='text-gray-500 font-RobotoMono text-xs pl-1'>start date</h1>
                                                 <DatePicker

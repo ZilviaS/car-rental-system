@@ -1,6 +1,12 @@
 import { useEffect, useState } from 'react'
+
 import { jwtDecode } from "jwt-decode"
 import { Navigate, useNavigate } from 'react-router-dom'
+import signOutLogo from '../assets/logout.svg'
+import searchLogo from '../assets/search.svg'
+import carsLogo from '../assets/car.svg'
+import locationLogo from '../assets/location.svg'
+import contactLogo from '../assets/contact.svg'
 
 import '../App.css'
 
@@ -32,32 +38,37 @@ function Navbar(){
 
     return(
         <>
-            <section className='bg-white flex justify-between items-center'>
-                <a href="/"><img className='max-h-10 rounded-full m-3' src="https://img.freepik.com/premium-vector/vector-car-logo-design-illus_714931-352.jpg" alt="" /></a>
-                <nav className='justify-center flex gap-2 py-3 mx-5 items-center'>
-                    <a className='p-1 hover:text-green-900 hover:underline font-RobotoMono text-sm'  href="/">search</a>
-                    <a className='p-1 hover:text-green-900 hover:underline font-RobotoMono text-sm'  href="/search">cars</a>
-                    <a className='p-1 hover:text-green-900 hover:underline font-RobotoMono text-sm'  href="/location">location</a>
-                    <a className='p-1 hover:text-green-900 hover:underline font-RobotoMono text-sm'  href="/contact">contact</a>
+            <section className='bg-white flex justify-between items-center max-h-16'>
+                <a href="/"><img className='sm:max-h-10 max-h-7 rounded-full mx-3 ml-3' src="https://img.freepik.com/premium-vector/vector-car-logo-design-illus_714931-352.jpg" alt="" /></a>
+                <nav className='justify-center flex sm:gap-2 py-3 sm:mx-5 mx-1 items-center'>
+                    <a className='sm:p-1 sm:block hidden p-0.5 hover:text-green-900 hover:underline font-RobotoMono text-xs sm:text-sm'  href="/">search</a>
+                    <a className='sm:hidden' href="/"><img className='h-6 mx-1' src={searchLogo} alt="" /></a>
+                    <a className='sm:p-1 sm:block hidden p-0.5 hover:text-green-900 hover:underline font-RobotoMono text-xs sm:text-sm'  href="/search">cars</a>
+                    <a className='sm:hidden' href="/search"><img className='h-6 mx-1' src={carsLogo} alt="" /></a>
+                    <a className='sm:p-1 sm:block hidden p-0.5 hover:text-green-900 hover:underline font-RobotoMono text-xs sm:text-sm'  href="/location">location</a>
+                    <a className='sm:hidden' href="/location"><img className='h-6 mx-1' src={locationLogo} alt="" /></a>
+                    <a className='sm:p-1 sm:block hidden p-0.5 hover:text-green-900 hover:underline font-RobotoMono text-xs sm:text-sm'  href="/contact">contact</a>
+                    <a className='sm:hidden' href="/contact"><img className='h-6 mx-1 mr-2' src={contactLogo} alt="" /></a>
                     {user ? (user.role === 'admin' ? (
                         <>
-                            <div className='flex items-center border-l pl-4 gap-3'>
-                                <a className='font-RobotoMono text-green-500 text-sm hover:shadow' href='/manage '>{user.username}</a>
-                                <button className='text-red-500 hover:cursor-pointer hover:underline font-RobotoMono text-sm' onClick={handleLogout}>Sign-Out</button>
+                            <div className='flex items-center border-l sm:pl-4 pl-2 gap-1 sm:gap-2'>
+                                <a className='font-RobotoMono text-green-500 text-xs sm:text-sm hover:shadow' href='/manage '>{user.username}</a>
+                                <button onClick={handleLogout}><img className='sm:w-5 w-4 pt-0.5 text-red-500 hover:cursor-pointer' src={signOutLogo} alt="" /></button>
+                                {/* <button className='text-red-500 hover:cursor-pointer hover:underline font-RobotoMono text-xs sm:text-sm' onClick={handleLogout}>Sign-Out</button> */}
                             </div>
                         </>
                     ) : (
                         <>
-                            <div className='flex items-center border-l pl-4 gap-3'>
-                                <a className='font-RobotoMono text-sm hover:shadow' href='/manage '>{user.username}</a>
-                                <button className='text-red-500 hover:cursor-pointer hover:underline font-RobotoMono text-sm' onClick={handleLogout}>Sign-Out</button>
+                            <div className='flex items-center border-l pl-4 sm:gap-3 gap-1'>
+                                <a className='font-RobotoMono sm:mr-0 mr-3 text-sm hover:shadow' href='/manage '>{user.username}</a>
+                                <button onClick={handleLogout}><img className='sm:w-5 w-4 pt-0.5 text-red-500 hover:cursor-pointer' src={signOutLogo} alt="" /></button>
                             </div>
                         </>
                     )) : (
                         <>
-                            <div className='flex items-center border-l pl-2 gap-2'>
-                                <a className='font-RobotoMono text-sm p-2 hover:text-green-900 hover:underline' href="/login">Sign-in</a>
-                                <a className='font-RobotoMono text-sm p-2 rounded bg-yellow-400' href="/register">Sign-up</a>
+                            <div className='flex items-center border-l sm:pl-2 pl-1 pr-1 gap-2'>
+                                <a className='font-RobotoMono text-xs sm:text-sm hover:cursor-pointer' href="/login">Sign-in</a>
+                                <a className='font-RobotoMono text-xs sm:text-sm sm:p-2 rounded sm:bg-yellow-400' href="/register">Sign-up</a>
                             </div>
                         </>
                     )
