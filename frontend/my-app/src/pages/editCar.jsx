@@ -98,17 +98,17 @@ function EditCar(){
     return(
         <>  
             <div className='relative min-h-screen'>
-                <img className="absolute w-full h-full object-cover" src={bg} alt="" />
+                <img className="absolute inset-0 w-full h-full object-cover" src={bg} alt="" />
                 <div className='relative z-10'>
                     <Navbar></Navbar>
-                    <div className='h-screen pt-5'>
+                    <div className='min-h-screen pt-5'>
                         <div className='flex w-full justify-center'>
-                            <div className='bg-white shadow rounded w-[70%]'>
+                            <div className='bg-white shadow rounded sm:w-[70%] w-[90%] sm:mb-0 mb-5'>
                                 <div className='w-full bg-amber-200 rounded-t'>
                                     <p className='font-RobotoMono py-2 pl-3'>EDIT</p>
                                 </div>
-                                <div className='flex justify-between px-3 mt-2'>
-                                    <div className='w-[40%]'>
+                                <div className='flex md:flex-row flex-col justify-between px-3 mt-2'>
+                                    <div className='md:w-[40%] w-full'>
                                         <p className='font-RobotoMono text-gray-500 text-sm'>brand</p>
                                         <input onChange={(e)=>{setCarInfo({...carInfo, brand: e.target.value})}} className='bg-gray-100 rounded border-gray-400 border-1 w-full px-2' type="text" value={carInfo.brand} />
                                         <p className='font-RobotoMono text-gray-500 mt-2 text-sm'>model</p> 
@@ -124,8 +124,17 @@ function EditCar(){
                                             <p className='items-center'>available</p>
                                         </div>
                                     </div>
-                                    <div className='w-[59%] flex flex-col gap-0.5 pt-5'>
-                                        <div className='flex h-55 shadow'>
+                                    <div className='md:hidden flex'>
+                                        <div className='h-55 shadow flex'>
+                                            <img className='w-[60%] object-cover' src={imageURL.primary || placeholderImage} alt="" />
+                                            <div className='w-[40%] flex flex-col'>
+                                                <img className='w-full h-[50%] object-cover' src={imageURL.secondary  || placeholderImage} alt="" />
+                                                <img className='w-full h-[50%] object-cover' src={imageURL.teritery || placeholderImage} alt="" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className='md:w-[59%] flex flex-col gap-0.5 pt-5'>
+                                        <div className='h-55 shadow md:flex hidden'>
                                             <img className='w-[60%] object-cover' src={imageURL.primary || placeholderImage} alt="" />
                                             <div className='w-[40%] flex flex-col'>
                                                 <img className='w-full h-[50%] object-cover' src={imageURL.secondary  || placeholderImage} alt="" />

@@ -140,7 +140,9 @@ function Manage(){
 
         if (res.ok){
             console.log('here')
-            setUserCars(prev => {prev.filter(c => c.id !== car.id)})
+            setUserCars(prev => {
+                return prev.filter(c => c.id !== car.id)})
+            // window.location.reload()
         } 
     }
 
@@ -349,7 +351,7 @@ function Manage(){
                         }
                         {pageState == 'history' && <>
                             <div className="overflow-x-auto w-full">
-                                <table className="min-w-max">
+                                <table className="">
                                     <tbody>
                                         <tr>
                                             <td className="px-2 md:text-base text-sm w-20 md:w-25 border-2 border-gray-200">Plate</td>
