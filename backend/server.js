@@ -26,9 +26,11 @@ const locationRoutes = require('./routes/locationRoute')
 app.use('/api/location', locationRoutes)
 
 app.get('/', (req,res)=>{
-    console.log('hi')
+    res.send('API is running')
 })
 
-app.listen(process.env.PORT, ()=>{
-    console.log('server is listening on port : ' + process.env.port)
+const PORT = process.env.PORT || 3000
+
+app.listen(PORT , ()=>{
+    console.log(`server is listening on port : ${PORT}`)
 })
