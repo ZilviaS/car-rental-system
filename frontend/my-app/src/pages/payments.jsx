@@ -11,6 +11,8 @@ function Payment(){
     console.log(bookingData)
     console.log(car)
 
+    const [errorMSG, setErrorMSG] = useState('')
+
     const [paymentInfo, setPaymentInfo] = useState(null)
     const [userPayment, setUserPayment] = useState({
         card_number : '',
@@ -18,7 +20,7 @@ function Payment(){
         ex_year : '',
         cvv : '',
         cardname : '',
-        Bank : '',
+        bank : '',
         user_id : '',
         tel : '' 
     })
@@ -41,6 +43,10 @@ function Payment(){
                 })
             })
             const result = await res.json();
+            if (res.ok){
+                setErrorMSG(result.message || result.error)
+                return 
+            }
             navigate('/manage')
 
         }catch(err){
@@ -63,6 +69,7 @@ function Payment(){
         .then(res => res.json())
         .then(data => {{
             setUser(data)
+            setUserPayment({...userPayment, tel : user.tel})
             console.log('user', data)
         }  
         })
@@ -176,8 +183,7 @@ function Payment(){
                                             <td>
                                                 <h1 className="text-right font-RobotoMono sm:text-md text-sm">tel.</h1>
                                             </td>
-                                            <td><input required type="text" onChange={(e)=>setUserPayment({...userPayment, tel : e.target.value})} 
-                                            value={user?.tel || ''} className="border-gray-500 border-2 rounded px-1 w-full"/></td>
+                                            <td><input required type="number" onChange={(e)=>setUserPayment({...userPayment, tel : e.target.value})} value={userPayment?.tel || ''} className="border-gray-500 border-2 rounded px-1 w-full"/></td>
                                         </tr>
                                         <tr>
                                             <td></td>
@@ -188,6 +194,7 @@ function Payment(){
                                     </tbody>
                                     
                                 </table>
+                                <p className="text-sm font-bold text-red-500">{errorMSG}</p>
                             </form>
                             <div className="sm:border-l lg:px-10 sm:px-5">
                                 <h1 className="font-RobotoMono text-xl pb-2">payment info</h1>

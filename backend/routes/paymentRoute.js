@@ -31,6 +31,17 @@ router.post('/', async (req,res)=>{
 
 router.post('/transcript/', async (req,res)=>{
     const { paymentInfo, userPayment , bookingData , carID , userID } = req.body
+
+    if (!paymentInfo || !userPayment || !bookingData || !carID || !userID){
+        res.status(400).json({message : 'please provide all the information'})
+    }
+
+    if (!userPayment.card_number || !userPayment.ex_month || !userPayment.ex_year || !userPayment.user_id || !userPayment.cvv || !paymentInfo.price || !userPayment.bank , !bookingData.start_date , !bookingData.end_date , !bookingData.location, !userPayment.tel){
+        res.status(400).json({message : 'please provide all the information'})
+    }
+
+
+
     console.log(paymentInfo , userPayment, bookingData, carID , userID)
     const client = await pool.connect()
 
@@ -62,11 +73,11 @@ router.post('/transcript/', async (req,res)=>{
 
         await client.query('COMMIT');
         
-        res.json({message: 'payment success', bookingId})
+        res.status(200).json({message: 'payment success', bookingId})
     }catch(err){
         await client.query('ROLLBACK');
         console.error(err)
-        res.status(500).json({error: 'payment success', bookingId})
+        res.status(500).json({error: 'payment not success'})
     }finally{
         client.release();
     }      

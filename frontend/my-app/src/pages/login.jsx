@@ -11,34 +11,32 @@ function login(){
         password : '' 
     })
 
+    const [errorMSG, setErrorMSG] = useState('')
+
     const navigate = useNavigate()
 
     const loginHandler = async ()=>{
-        if(userForm.email == '' || userForm.password == ''){
-            alert('Please fill the form')
-        }else{
-            const res = await fetch(`/api/auth/login`,{
-                method : 'POST',
-                headers :{
-                    'content-type' : 'application/json'
-                },
-                body : JSON.stringify({
-                    email: userForm.email,
-                    password: userForm.password
-                })
+        const res = await fetch(`/api/auth/login`,{
+            method : 'POST',
+            headers :{
+                'content-type' : 'application/json'
+            },
+            body : JSON.stringify({
+                email: userForm.email,
+                password: userForm.password
             })
+        })
 
-            const data = await res.json()
+        const data = await res.json()
 
-            console.log(data)
+        console.log(data)
 
-            if(res.ok){
-                localStorage.setItem('token', data.token)
-                navigate('/')
-            }
-            else{
-                alert(data.message || data.error)
-            }
+        if(res.ok){
+            localStorage.setItem('token', data.token)
+            navigate('/')
+        }
+        else{
+            setErrorMSG(data.message || data.error)
         }
     }
 
@@ -68,6 +66,7 @@ function login(){
                                 <div className="flex justify-center pt-5 mb-2">
                                     <button type="button" className="bg-green-600 text-white w-full rounded-md py-2 hover:cursor-pointer" onClick={loginHandler}>Sign-In</button>
                                 </div>
+                                <p className="text-red-500 text-sm font-bold">{errorMSG}</p>
                             </form>
                         </div>
                     </div>
