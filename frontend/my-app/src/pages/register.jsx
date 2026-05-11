@@ -26,7 +26,7 @@ function register(){
         setError('')
 
         try{
-            const res = await fetch(`${API}/auth/register`,{
+            const res = await fetch(`${API}/api/auth/register`,{
                 method : 'POST',
                 headers : {
                     'content-type' : 'application/json'
