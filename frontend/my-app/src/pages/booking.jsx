@@ -111,7 +111,7 @@ function Booking(){
                                     </div>
                                 </div>
                                 <div className="flex lg:flex-row flex-col justify-between gap-5 mt-3">
-                                    <div className="lg:w-[50%] w-full">
+                                    <div className="lg:w-[60%] w-full">
                                         <div className="flex mt-4 py-1 items-baseline md:flex-row flex-col">
                                             <h1 className="text-xl font-bold font-RobotoMono">{car.brand} {car.model}</h1>
                                             <h1 className="pl-2 text-sm">({car.plate})</h1>
@@ -121,11 +121,11 @@ function Booking(){
                                             <h1 className="pl-1 font-light">/ day</h1>
                                         </div>
                                         <hr className="my-2" />
-                                        <p className="text-gray-600 pb-2 px-1 text-sm w-full break-words min-h-20 bg-gray-100 overflow-y-auto max-h-40 whitespace-pre-line">
+                                        <p className="text-gray-600 pb-2 px-1 text-sm w-full break-words min-h-20 bg-gray-100 overflow-y-auto lg:max-h-200 max-h-40 whitespace-pre-line">
                                             {car.description}
                                         </p>
                                     </div>
-                                    <div className="lg:w-[50%] w-full">
+                                    <div className="lg:w-[40%] w-full">
                                         <div className="flex sm:flex-row flex-col gap-5 pb-2">
                                             <div className=" md:w-[50%] w-full">
                                                 <h1 className=' text-gray-500 font-RobotoMono text-xs pl-1'>start date</h1>
@@ -155,8 +155,11 @@ function Booking(){
                                         <h1 className='text-gray-500 font-RobotoMono text-xs pl-1'>pickup location</h1>
                                         <select value={data.location} onChange={(e)=> setData({...data, location : e.target.value})} className='rounded-md px-3 py-2 w-full border-1 border-gray-400 font-RobotoMono' name="brand" id="cars" required>
                                             <option value="" disabled hidden>Please choose the location</option>
-                                            <option value="1">Bangkae</option>
-                                            <option value="2">Rangsit</option>
+                                            <option value="1">The Mall Bangkae</option>
+                                            <option value="2">Future Park Rangsit</option>
+                                            <option value="3">Central Ladprao</option>
+                                            <option value="4">The Mall Bangkapi</option>
+                                            <option value="5">Central Salaya</option>
                                         </select>
                                         <h1 className='pl-1 py-4 font-RobotoMono text-sm text-gray-500'>
                                         {

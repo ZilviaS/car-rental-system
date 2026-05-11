@@ -88,6 +88,7 @@ router.get('/cars', auth, async(req,res)=>{
                 b.id,
                 b.start_date::text,
                 b.end_date::text,
+                b.location_id,
                 b.status,
                 c.plate,
                 c.brand,
