@@ -121,9 +121,9 @@ function Booking(){
                                             <h1 className="pl-1 font-light">/ day</h1>
                                         </div>
                                         <hr className="my-2" />
-                                        <h1 className="text-gray-600 pb-2 px-1 text-sm w-full break-words min-h-20 bg-gray-100 overflow-y-auto max-h-40">
+                                        <p className="text-gray-600 pb-2 px-1 text-sm w-full break-words min-h-20 bg-gray-100 overflow-y-auto max-h-40 whitespace-pre-line">
                                             {car.description}
-                                        </h1>
+                                        </p>
                                     </div>
                                     <div className="lg:w-[50%] w-full">
                                         <div className="flex sm:flex-row flex-col gap-5 pb-2">

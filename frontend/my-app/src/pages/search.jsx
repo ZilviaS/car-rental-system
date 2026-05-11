@@ -191,7 +191,8 @@ function Search(){
                                                     <h2 className="text-sm">{car.year}</h2>
                                                     <h2 className="text-sm">{car.plate}</h2>
                                                 </div>
-                                                <h2 className="text-sm text-gray-400">{truncate(car.description == '' ? 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.' : car.description, 70)}</h2>
+                                                <h2 className="md:block hidden text-sm mt-1 text-gray-400">{truncate(car.description == '' ? '' : car.description, 240)}</h2>
+                                                <h2 className="md:hidden block text-sm text-gray-400">{truncate(car.description == '' ? '' : car.description, 100)}</h2>
                                             </div>
                                             <div className="flex w-full mt-2 items-baseline">
                                                 {car.status == true ?
