@@ -38,7 +38,7 @@ function Navbar(){
 
     return(
         <>
-            <section className='bg-white flex justify-between items-center max-h-16'>
+            <section className='bg-white flex justify-between items-center max-h-13'>
                 <a href="/"><img className='sm:max-h-10 max-h-7 rounded-full mx-3 ml-3' src="https://img.freepik.com/premium-vector/vector-car-logo-design-illus_714931-352.jpg" alt="" /></a>
                 <nav className='justify-center flex sm:gap-2 py-3 sm:mx-5 mx-1 items-center'>
                     <a className='sm:p-1 sm:block hidden p-0.5 hover:text-green-900 hover:underline font-RobotoMono text-xs sm:text-sm'  href="/">search</a>

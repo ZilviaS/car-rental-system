@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import userLogo from '../assets/user.svg'
 import AdminManage from "./adminManage.jsx"
+import Footer from "./footer.jsx"
 
 function Manage(){
 
@@ -390,8 +391,9 @@ function Manage(){
                 </section> : 
                 <></>
                 }
-                
+                <Footer></Footer>
             </div>
+            
         </>
     )
 }

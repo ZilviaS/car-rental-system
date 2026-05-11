@@ -121,7 +121,7 @@ function adminManage(){
             </div>
             <div className="flex justify-center">
                 {pageStatus === 'carList' && <>
-                <div className="w-full flex-col flex items-center gap-3 mb-5">
+                <div className="w-full flex-col flex items-center gap-3">
                     <div className="flex gap-2 md:w-200 w-full md:justify-start justify-center items-center">
                         <input onChange={(e)=> setSearchTearm(e.target.value)} className="border rounded px-1" type="text" value={searchTearm} placeholder="search" />
                         <p className="text-sm text-gray-500 items-baseline">total of {filteredCars.length} {filteredCars.length == 1 ? 'car' : 'cars'}</p>
@@ -139,9 +139,14 @@ function adminManage(){
                                             <h2 className="text-sm">{car.year}</h2>
                                             <h2 className="text-sm">{car.plate}</h2>
                                         </div>
+                                        <div className="flex items-baseline gap-1">
+                                            <p>price : </p>
+                                            <p className="text-sm font-bold text-green-700">{car.price}</p>
+                                            <p>฿</p>
+                                        </div>
                                         <h2 className="text-sm text-gray-400">{truncate(car.description == null ? 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.' : car.description, 370)}</h2>
                                     </div>  
-                                    <div className="flex gap-2">
+                                    <div className="flex gap-2 mt-1">
                                         <button onClick={()=>(handleEdit(car.id))} className="bg-green-500 text-white px-2 rounded hover:cursor-pointer">edit</button>
                                         <button onClick={()=>(handleDelete(car.id))} className="bg-red-500 text-white px-2 rounded hover:cursor-pointer">delete</button>
                                     </div>  
