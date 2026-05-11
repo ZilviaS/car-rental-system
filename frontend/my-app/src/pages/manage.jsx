@@ -391,9 +391,8 @@ function Manage(){
                 </section> : 
                 <></>
                 }
-                <Footer></Footer>
             </div>
-            
+
         </>
     )
 }

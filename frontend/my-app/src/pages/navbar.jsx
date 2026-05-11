@@ -51,7 +51,7 @@ function Navbar(){
                     <a className='sm:hidden px-1' href="/contact"><img className='h-6 mx-1 mr-2' src={contactLogo} alt="" /></a>
                     {user ? (user.role === 'admin' ? (
                         <>
-                            <div className='flex items-center border-l sm:pl-4 pl-2 gap-1 sm:gap-2'>
+                            <div className='flex items-center border-gray-400 border-l-2 sm:pl-4 pl-2 gap-1 sm:gap-2'>
                                 <a className='font-RobotoMono text-green-500 text-sm hover:shadow' href='/manage '>{user.username}</a>
                                 <button onClick={handleLogout}><img className='sm:w-5 w-4 pt-0.5 text-red-500 hover:cursor-pointer' src={signOutLogo} alt="" /></button>
                                 {/* <button className='text-red-500 hover:cursor-pointer hover:underline font-RobotoMono text-xs sm:text-sm' onClick={handleLogout}>Sign-Out</button> */}
@@ -59,14 +59,14 @@ function Navbar(){
                         </>
                     ) : (
                         <>
-                            <div className='flex items-center border-l pl-4 sm:gap-3 gap-1'>
+                            <div className='flex items-center border-gray-400 border-l-2 pl-4 sm:gap-3 gap-1'>
                                 <a className='font-RobotoMono sm:mr-0 mr-3 text-sm hover:shadow' href='/manage '>{user.username}</a>
                                 <button onClick={handleLogout}><img className='sm:w-5 w-4 pt-0.5 text-red-500 hover:cursor-pointer' src={signOutLogo} alt="" /></button>
                             </div>
                         </>
                     )) : (
                         <>
-                            <div className='flex items-center border-l sm:pl-2 pl-1 pr-1 gap-2'>
+                            <div className='flex items-center border-gray-400 border-l-2 sm:pl-2 pl-1 pr-1 gap-2'>
                                 <a className='font-RobotoMono text-xs sm:text-sm hover:cursor-pointer' href="/login">Sign-in</a>
                                 <a className='font-RobotoMono text-xs sm:text-sm sm:p-2 rounded sm:bg-yellow-400' href="/register">Sign-up</a>
                             </div>

@@ -121,7 +121,7 @@ function adminManage(){
             </div>
             <div className="flex justify-center">
                 {pageStatus === 'carList' && <>
-                <div className="w-full flex-col flex items-center gap-3">
+                <div className="w-full flex-col flex items-center gap-3 mb-5">
                     <div className="flex gap-2 md:w-200 w-full md:justify-start justify-center items-center">
                         <input onChange={(e)=> setSearchTearm(e.target.value)} className="border rounded px-1" type="text" value={searchTearm} placeholder="search" />
                         <p className="text-sm text-gray-500 items-baseline">total of {filteredCars.length} {filteredCars.length == 1 ? 'car' : 'cars'}</p>

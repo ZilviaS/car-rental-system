@@ -9,6 +9,7 @@ function Footer(){
                     <h1 className='text-gray-900 mx-3'>Tel: 000-000-0000</h1>
                     <h1 className='text-gray-900 mx-3'>Line: @company_noname</h1>
                     <h1 className='text-gray-900 mx-3'>Email: somecompany@gmail.com</h1>
+                    <h1 className='text-gray-900 mx-3'>Github: ZilviaS</h1>
                 </div>
             </footer>
         </>
