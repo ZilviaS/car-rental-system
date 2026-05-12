@@ -60,7 +60,7 @@ function Home(){
                                 <img className="rounded-full w-20" src='https://img.freepik.com/premium-vector/vector-car-logo-design-illus_714931-352.jpg' alt="" />
                             </div>
                             <div className='flex w-full justify-center'>
-                                <p className='text-white text-5xl pl-2 font-bold ' style={{
+                                <p className='text-white text-4xl pl-2 font-bold ' style={{
                                     WebkitTextStroke: '0.5px black'
                                 }}>Speed Rental</p>
                             </div>
