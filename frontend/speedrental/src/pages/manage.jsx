@@ -433,18 +433,18 @@ function Manage(){
                                                                         <>
                                                                         <button
                                                                             onClick={() => handleCancleOrder(car)}
-                                                                            className="bg-red-500 text-white font-RobotoMono px-2 sm:text-sm text-xs p-1 rounded hover:cursor-pointer"
+                                                                            className="bg-red-500 text-white font-RobotoMono px-2 sm:text-base text-sm p-1 rounded hover:cursor-pointer"
                                                                         >Cancel</button>
 
                                                                         <button
                                                                             onClick={() => handleReceivedCar(car.id)}
-                                                                            className="bg-green-500 text-white font-RobotoMono px-2 sm:text-sm text-xs p-1 rounded hover:cursor-pointer"
+                                                                            className="bg-green-500 text-white font-RobotoMono px-2 sm:text-base text-sm p-1 rounded hover:cursor-pointer"
                                                                         >Received</button>
                                                                     </>
                                                                     )
                                                                 }
                                                                 return(
-                                                                    <p className="text-green-500 font-RobotoMono sm:text-sm text-xs p-1">
+                                                                    <p className="text-green-500 font-RobotoMono sm:text-base text-sm p-1">
                                                                         {car.status}
                                                                     </p>
                                                                 )
@@ -452,14 +452,14 @@ function Manage(){
 
                                                             if (car.status === 'success'){
                                                                 return (
-                                                                    <button onClick={()=>handleRefund(car.id)} className="bg-green-500 text-white font-RobotoMono px-2 sm:text-sm text-xs p-1 rounded hover:cursor-pointer">
+                                                                    <button onClick={()=>handleRefund(car.id)} className="bg-green-500 text-white font-RobotoMono px-2 sm:text-base text-sm p-1 rounded hover:cursor-pointer">
                                                                         refund
                                                                     </button>
                                                                 )
                                                             }
 
                                                             return (
-                                                                    <p className="text-red-500 font-RobotoMono sm:text-sm text-xs p-1">
+                                                                    <p className="text-red-500 font-RobotoMono sm:text-base text-sm p-1">
                                                                         {car.status}
                                                                     </p>
                                                             )

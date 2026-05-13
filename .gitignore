@@ -1,4 +1,4 @@
 backend/.env
-frontend/my-app/.env
+frontend/speedrental/.env
 backend/node_modules/
-frontend/my-app/node_modules/
+frontend/speedrental/node_modules/

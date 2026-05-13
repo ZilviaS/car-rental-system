@@ -33,8 +33,17 @@ function adminManage(){
     const [resultLocationStatus, setLocationStatus] = useState(null)
 
     const [searchTearm, setSearchTearm] = useState('')
+    const [searchRefund, setSearchRefund] = useState('')
+
+    const [refundData, setRefundData] = useState([])
+    const [refundLog, setRefundLog] = useState(null)
 
     const navigate = useNavigate()
+    const dateDeFormat = (data)=>{
+        const date = new Date(data)
+        const formattedDate = date.toLocaleDateString('en-GB'); 
+        return formattedDate
+    }
 
     useEffect(()=>{
         fetch(`${API}/api/car`)
@@ -44,6 +53,29 @@ function adminManage(){
             setCarInfo(data)
         })
         .catch(err => console.error(err))
+    },[])
+
+    useEffect(()=>{
+        const token = localStorage.getItem('token')
+        const getRefund = async ()=>{
+            try {
+                const res = await fetch(`${API}/api/booking/refund`,{
+                    headers: {
+                        'Authorization' : `Bearer ${token}`
+                    }
+                })
+
+                const data = await res.json()
+                console.log('refund',data)
+                if (!res.ok){
+                    alert(data.error || data.message || 'sonething wrong')
+                }
+                setRefundData(data)
+            }catch(err){
+                console.log(err)
+            }
+        }
+        getRefund()
     },[])
 
     const handleCarUpdate = async ()=>{
@@ -78,7 +110,7 @@ function adminManage(){
     const handleDelete = async (id)=>{
         const token = localStorage.getItem('token')
         console.log(id)
-        const res = await fetch(`/api/car/delete`,{
+        const res = await fetch(`${API}/api/car/delete`,{
             method : 'POST',
             headers : {
                 'Authorization' : `Bearer ${token}`,
@@ -88,6 +120,7 @@ function adminManage(){
                 id : id
             })
         })
+
         if (!res.ok) {
             setResultStatus(data.error || 'something went wrong')
             return
@@ -110,14 +143,46 @@ function adminManage(){
             car.plate?.toLowerCase().includes(keyword)
         )
     })
+
+    const filteredRequest = refundData.filter((request)=>{
+        const keyword = searchRefund.toLocaleLowerCase()
+
+        return (
+            request.id?.toString().toLowerCase().includes(keyword) ||
+            request.brand?.toLowerCase().includes(keyword) ||
+            request.model?.toLowerCase().includes(keyword) ||
+            request.trim?.toLowerCase().includes(keyword) ||
+            request.plate?.toLowerCase().includes(keyword)
+        )
+    })
     
+    const handleRefundSubmit = async(id)=>{
+        const token = localStorage.getItem('token')
+
+        console.log(id)
+        const res = await fetch(`${API}/api/booking/${id}/refund/submit`,{
+            method : 'POST',
+            headers : {
+                'Authorization' : `Bearer ${token}`
+            }
+        })
+
+        const data = await res.json()
+
+        if(!res.ok){
+            alert(data.message || data.error || 'something wrong')
+        }else{
+            window.location.reload()
+        }
+    }
 
 
     return (
         <>
-            <div className="flex justify-center gap-5 mb-5">
-                <button onClick={()=>setPageStatus('carList')} className={`px-5 py-1 rounded hover:cursor-pointer hover:underline ${pageStatus === 'carList' ? 'bg-yellow-400' : 'bg-yellow-200'}`}>Car List</button>
-                <button onClick={()=>setPageStatus('rentalCar')} className={`px-5 py-1 rounded hover:cursor-pointer hover:underline ${pageStatus === 'rentalCar' ? 'bg-yellow-400' : 'bg-yellow-200'}`}>Update Rental Car</button>
+            <div className="flex justify-center sm:gap-5 gap-3 mb-5">
+                <button onClick={()=>setPageStatus('carList')} className={`sm:px-5 px-2 py-1 rounded hover:cursor-pointer hover:underline ${pageStatus === 'carList' ? 'bg-yellow-400' : 'bg-yellow-200'}`}>Car List</button>
+                <button onClick={()=>setPageStatus('rentalCar')} className={`sm:px-5 px-2 py-1 rounded hover:cursor-pointer hover:underline ${pageStatus === 'rentalCar' ? 'bg-yellow-400' : 'bg-yellow-200'}`}>Update Rental Car</button>
+                <button onClick={()=>setPageStatus('refundRequest')} className={`sm:px-5 px-2 rounded hover:cursor-pointer hover:underline ${pageStatus === 'refundRequest' ? 'bg-yellow-400' : 'bg-yellow-200'}`}>Refund Request</button>
             </div>
             <div className="flex justify-center">
                 {pageStatus === 'carList' && <>
@@ -198,6 +263,35 @@ function adminManage(){
                             <p className="text-red-700">{resultStatus}</p>
                         </div>
 
+                    </div>
+                </>}
+                {pageStatus === 'refundRequest' && <>
+                    <div className="w-[full] min-h-0 mb-3 flex flex-col gap-2">
+                        <div className="md:w-200 w-80 flex gap-1 items-baseline">
+                            <input onChange={(e)=> setSearchRefund(e.target.value)} value={searchRefund} className="bg-gray-100 rounded border px-2" type="text" placeholder="search" />
+                            <p className="text-sm text-gray-700">total of {refundData.length} request{refundData.length > 1 ? 's' : ''}</p>
+                        </div>
+                        {filteredRequest.map((request, index)=>{
+                            return(
+                                <div key={index} className="m-2 sm:w-150 md:w-200 w-80 sm:h-30 bg-white shadow flex sm:flex-row flex-col gap-2">
+                                    <img className="sm:h-full rounded-l sm:w-40 w-full h-40 object-cover" src={request.image_url} alt="" />
+                                    <div className="w-full flex justify-between">
+                                        <div className="flex flex-col">
+                                            <p className="font-RobotoMono font-bold">{request.year} {request.brand} {request.model} {request.trim}</p>
+                                            <p className="text-sm text-gray-600">ID: {request.id}</p>
+                                            <p className="text-sm text-gray-600">Plate : {request.plate}</p>
+                                            <p className="text-sm text-gray-600">Booking : {dateDeFormat(request.start_date).replaceAll("-","/")} - {dateDeFormat(request.end_date).replaceAll("-","/")}</p>
+                                            <p className="text-sm text-green-600">Price {request.price}</p>
+                                        </div>
+                                        <div>
+                                            <button onClick={()=>handleRefundSubmit(request.id)} className="h-full px-2 bg-green-600 text-white rounded-r hover:cursor-pointer">submit</button>
+                                        </div>
+                                    </div>
+                                    
+
+                                </div>
+                            )
+                        })}
                     </div>
                 </>}
             </div>

@@ -18,8 +18,9 @@ router.post('/', async (req,res)=>{
             `, [carID])
         const start = new Date(start_date)
         const end = new Date(end_date)
-        const days = Math.max((end - start) / (1000*60*60*24), 1)
+        const days = Math.max((end - start) / (1000*60*60*24), 0) + 1
         const price = result.rows[0].price * days
+        console.log("days : ",days)
         res.json({
             price , days
         })

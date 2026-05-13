@@ -88,8 +88,9 @@ router.get('/cars', auth, async(req,res)=>{
                 b.id,
                 b.start_date::text,
                 b.end_date::text,
-                b.location_id,
                 b.status,
+                l.location_name,
+                c.image_url,
                 c.plate,
                 c.brand,
                 c.model,
@@ -97,6 +98,7 @@ router.get('/cars', auth, async(req,res)=>{
                 b.price
             FROM bookings b
             JOIN cars c ON b.car_id = c.id
+            JOIN location l ON b.location_id = l.id
             WHERE b.user_id = $1
             ORDER BY b.start_date DESC`,
             [ userId ]
