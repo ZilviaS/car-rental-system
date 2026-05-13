@@ -23,7 +23,6 @@ function Booking(){
         return bookedDates.some(b => {
             const start = new Date(b.start_date)
             const end = new Date(b.end_date)
-
             return date >= start && date <= end
         })
     }
@@ -43,7 +42,9 @@ function Booking(){
     useEffect(()=>{
         fetch(`${API}/api/car/${id}/booked-dates`)
         .then(res => res.json())
-        .then(data => setBookedDates(data))
+        .then(data => {setBookedDates(data)
+            console.log(data)
+        })
     }, [])
 
     useEffect(()=>{
@@ -59,7 +60,11 @@ function Booking(){
         }
         navigate('/payment', {
             state:{
-                bookingData: data,
+                bookingData: {
+                    ...data,
+                    start_date: formatDate(data.start_date),
+                    end_date: formatDate(data.end_date)
+                },
                 car: car
             }
         })
@@ -74,8 +79,8 @@ function Booking(){
                 },
                 body : JSON.stringify({
                     carID: car.id,
-                    start_date: data.start_date.toISOString().split('T')[0],
-                    end_date: data.end_date.toISOString().split('T')[0]
+                    start_date: formatDate(data.start_date),
+                    end_date: formatDate(data.end_date)
                 })
             })
         const result = await res.json()
@@ -85,6 +90,14 @@ function Booking(){
         }catch (err){
             console.error(err)
         }
+    }
+
+    const formatDate = (date) => {
+        const year = date.getFullYear()
+        const month = String(date.getMonth() + 1).padStart(2, '0')
+        const day = String(date.getDate()).padStart(2, '0')
+
+        return `${year}-${month}-${day}`
     }
 
     return(

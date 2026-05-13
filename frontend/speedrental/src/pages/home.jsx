@@ -18,6 +18,14 @@ import RollsRoyceLogo from '../assets/RollsRoyceLogo.png'
 function Home(){
     const navigate = useNavigate();
 
+
+    const getTomorrow = ()=>{
+        const todayDate = new Date();
+        todayDate.setDate(todayDate.getDate() + 1)
+        return todayDate.toISOString().split('T')[0]
+    }
+
+
     const [form, setForm] = useState({
         brand: '',
         carname: '',
@@ -68,11 +76,11 @@ function Home(){
                                 <div className='grid lg:flex md:grid-cols-2 lg:flex-row flex-col lg:gap-3 gap-2'>
                                     <div className='w-full'>
                                         <h1 className='text-gray-500 font-RobotoMono text-sm'>start date</h1>
-                                        <input onChange={(e)=>{setForm({...form,startDate: e.target.value})}} type="date" name='startDate' className="lg:w-auto w-full px-4 py-2 rounded-md border" required/>
+                                        <input onChange={(e)=>{setForm({...form,startDate: e.target.value})}} min={getTomorrow()} type="date" name='startDate' className="lg:w-auto w-full px-4 py-2 rounded-md border" required/>
                                     </div>
                                     <div className='w-full'>
                                         <h1 className='text-gray-500 font-RobotoMono text-sm'>end date</h1>
-                                        <input onChange={(e)=>{setForm({...form,endDate: e.target.value})}}  type="date" name='endDate' className="lg:w-auto w-full px-4 py-2 rounded-md border" required/>
+                                        <input onChange={(e)=>{setForm({...form,endDate: e.target.value})}} min={getTomorrow()} type="date" name='endDate' className="lg:w-auto w-full px-4 py-2 rounded-md border" required/>
                                     </div>
                                     <div className='w-full'>
                                         <h1 className='text-gray-500 font-RobotoMono text-sm'>brand</h1>

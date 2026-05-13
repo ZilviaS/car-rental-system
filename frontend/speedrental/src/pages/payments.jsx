@@ -101,8 +101,8 @@ function Payment(){
                 },
                 body : JSON.stringify({
                     carID: car.id,
-                    start_date: bookingData.start_date.toISOString().split('T')[0],
-                    end_date: bookingData.end_date.toISOString().split('T')[0]
+                    start_date: bookingData.start_date,
+                    end_date: bookingData.end_date
                 })
                 })
                 const result = await res.json()
@@ -224,11 +224,11 @@ function Payment(){
                                         </tr>
                                         <tr>
                                             <td className="border"><h1 className="w-full px-1">Start Date</h1></td>
-                                            <td className="w-50 border pl-1">{bookingData.start_date.toISOString().split('T')[0]}</td>
+                                            <td className="w-50 border pl-1">{bookingData.start_date}</td>
                                         </tr>
                                         <tr>
                                             <td className="border"><h1 className="w-full px-1">End Date</h1></td>
-                                            <td className="w-50 border pl-1">{bookingData.end_date.toISOString().split('T')[0]}</td>
+                                            <td className="w-50 border pl-1">{bookingData.end_date}</td>
                                         </tr>
                                     </tbody>
                                     

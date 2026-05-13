@@ -18,6 +18,8 @@ function Manage(){
         sex : '',
         birthdate : ''
     })
+    const today = new Date()
+    today.setHours(0,0,0,0)
     const [userCars, setUserCars] = useState([])
     const navigate = useNavigate()
     const [pageState, setPageState] = useState('user')
@@ -127,6 +129,45 @@ function Manage(){
         })
     }
 
+    const handleReceivedCar = async (id)=>{
+        const token = localStorage.getItem('token')
+
+        const res = await fetch(`${API}/api/booking/${id}/received`,{
+            method : 'POST',
+            headers : {
+                'Authorization' : `Bearer ${token}`
+            }
+        })
+
+        const data = res.json()
+
+        if(res.ok){
+            window.location.reload()
+        }else{
+            alert(data.message || data.err || 'something error')
+        }
+
+    }
+
+    const handleRefund = async(id)=>{
+        const token = localStorage.getItem('token')
+        
+        const res = await fetch(`${API}/api/booking/${id}/refund`,{
+            method : 'POST',
+            headers : {
+                'Authorization' : `Bearer ${token}`
+            }
+        })
+
+        const data = res.json()
+
+        if(res.ok){
+            window.location.reload()
+        }else{
+            alert(data.message || data.err || 'something error')
+        }
+    }
+
     const handleCancleOrder = async (car)=>{
         const token = localStorage.getItem('token')
 
@@ -145,6 +186,12 @@ function Manage(){
                 return prev.filter(c => c.id !== car.id)})
             // window.location.reload()
         } 
+    }
+
+    const dateDeFormat = (data)=>{
+        const date = new Date(data)
+        const formattedDate = date.toLocaleDateString('en-GB'); 
+        return formattedDate
     }
 
     if (loading) {
@@ -351,36 +398,84 @@ function Manage(){
                         </>
                         }
                         {pageState == 'history' && <>
-                            <div className="overflow-x-auto w-full">
-                                <table className="">
-                                    <tbody>
-                                        <tr>
-                                            <td className="px-2 md:text-base text-sm w-20 md:w-25 border-2 border-gray-200">Plate</td>
-                                            <td className="px-2 md:text-base text-sm w-10 md:w-30 border-2 border-gray-200">Brand</td>
-                                            <td className="px-2 md:text-base text-sm w-10 md:w-35 border-2 border-gray-200">Model</td>
-                                            <td className="px-2 md:text-base text-sm w-10 md:w-15 border-2 border-gray-200">Year</td>
-                                            <td className="px-2 md:text-base text-sm w-10 md:w-25 border-2 border-gray-200">Start Date</td>
-                                            <td className="px-2 md:text-base text-sm md:w-25 border-2 border-gray-200">End Date</td>
-                                            <td className="px-2 md:text-base text-sm md:w-20 border-2 border-gray-200">Status</td>
-                                            <td className="px-2 md:text-base text-sm md:w-20 border-2 border-gray-200">Price</td>
-                                            <td className="px-2 md:text-base text-sm border-2 border-gray-200"></td>
-                                        </tr>
-                                        {userCars.map((car, index)=>(
-                                        <tr key={car.id}>
-                                            <td className="px-2 md:text-base text-sm w-20 md:py-2 border-2 border-gray-200">{car.plate}</td>
-                                            <td className="px-2 md:text-base text-sm w-10 border-2 border-gray-200">{car.brand}</td>
-                                            <td className="px-2 md:text-base text-sm w-10 border-2 border-gray-200">{car.model}</td>
-                                            <td className="px-2 md:text-base text-sm w-10 border-2 border-gray-200">{car.year}</td>
-                                            <td className="px-2 md:text-base text-sm w-10 border-2 border-gray-200">{car.start_date}</td>
-                                            <td className="px-2 md:text-base text-sm border-2 border-gray-200">{car.end_date}</td>
-                                            <td className="px-2 md:text-base text-sm border-2 border-gray-200">{car.status}</td>
-                                            <td className="px-2 md:text-base text-sm border-2 border-gray-200">{car.price}</td>
-                                            <td className="border-2 border-gray-200"><button onClick={()=>{handleCancleOrder(car)}} className="bg-red-500 text-white p-1 md:p-2 hover:cursor-pointer">Cancel</button></td>
-                                        </tr>
-                                        ))}
-                                            
-                                    </tbody>
-                                </table>
+                            <div className="w-full flex flex-col gap-3">
+                                {userCars.map((car,index)=>{
+                                    return (
+                                        <div className="flex justify-center shadow">
+                                            <div className="flex flex-row rounded sm:h-35 h-50 w-full">
+                                                <div className="sm:py-2 sm:pl-2 p-2 md:h-full h-30 md:w-50 w-35 shrink-0">
+                                                    <img className="h-full w-full  object-cover rounded" src={car.image_url} alt="" />
+                                                </div>
+                                                <div className="p-2 flex flex-col justify-between w-full min-w-0">
+                                                    <div className="">
+                                                        <p className="text-md font-RobotoMono truncate">{car.year} {car.brand} {car.model} {car.trim}</p>
+                                                        <p className="font-RobotoMono text-xs text-gray-500">( {car.plate}) @{car.location_name}</p>
+                                                        <p className="font-RobotoMono sm:text-sm text-xs text-gray-900">Booking period: {dateDeFormat(car.start_date).replaceAll("-","/")} - {dateDeFormat(car.end_date).replaceAll("-","/")}</p>
+                                                    </div>
+                                                    <p className="sm:hidden block text-green-600 mr-5">{car.price}</p>
+                                                    <div className="flex gap-2">
+                                                        {(()=>{
+                                                            const startDate = new Date(car.start_date)
+                                                            startDate.setHours(0,0,0,0)
+                                                            const endDate = new Date(car.end_date)
+                                                            endDate.setHours(0,0,0,0)
+
+                                                            if (today < startDate){
+                                                                return (
+                                                                    <button onClick={() => handleCancleOrder(car)} className="bg-red-500 text-white font-RobotoMono px-2 sm:text-sm text-xs p-1 rounded hover:cursor-pointer">
+                                                                        Cancel
+                                                                    </button>
+                                                                )
+                                                            }
+                                                            if (today >= startDate && today <= endDate){
+                                                                if (car.status == 'success'){
+                                                                    return (
+                                                                        <>
+                                                                        <button
+                                                                            onClick={() => handleCancleOrder(car)}
+                                                                            className="bg-red-500 text-white font-RobotoMono px-2 sm:text-sm text-xs p-1 rounded hover:cursor-pointer"
+                                                                        >Cancel</button>
+
+                                                                        <button
+                                                                            onClick={() => handleReceivedCar(car.id)}
+                                                                            className="bg-green-500 text-white font-RobotoMono px-2 sm:text-sm text-xs p-1 rounded hover:cursor-pointer"
+                                                                        >Received</button>
+                                                                    </>
+                                                                    )
+                                                                }
+                                                                return(
+                                                                    <p className="text-green-500 font-RobotoMono sm:text-sm text-xs p-1">
+                                                                        {car.status}
+                                                                    </p>
+                                                                )
+                                                            }
+
+                                                            if (car.status === 'success'){
+                                                                return (
+                                                                    <button onClick={()=>handleRefund(car.id)} className="bg-green-500 text-white font-RobotoMono px-2 sm:text-sm text-xs p-1 rounded hover:cursor-pointer">
+                                                                        refund
+                                                                    </button>
+                                                                )
+                                                            }
+
+                                                            return (
+                                                                    <p className="text-red-500 font-RobotoMono sm:text-sm text-xs p-1">
+                                                                        {car.status}
+                                                                    </p>
+                                                            )
+                                                        })()} 
+                                                        {/* <button onClick={()=>{handleCancleOrder(car)}} className="bg-red-500 text-white font-RobotoMono px-2 sm:text-sm text-xs p-1 rounded hover:cursor-pointer">Cancle</button>
+                                                        <button onClick={()=>{handleReceivedCar(car.id)}} className="bg-green-500 text-white font-RobotoMono px-2 sm:text-sm text-xs p-1 rounded hover:cursor-pointer">Received</button>
+                                                        <p className="text-green-500 font-RobotoMono sm:text-sm text-xs p-1 rounded hover:cursor-pointer">{car.status}</p> */}
+                                                    </div>
+                                                </div>
+                                                <div className="sm:flex flex-col justify-center hidden">
+                                                    <p className="text-green-600 mr-5">{car.price}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )
+                                })}
                             </div>
                         </>}   
                     </div>

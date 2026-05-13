@@ -143,7 +143,7 @@ function Contact(){
                                 <hr className='my-2 text-gray-500'/>
                                 <div>
                                     <p className='text-gray-900'>
-                                        Computer Science student with hands
+                                        Computer Science graduate with hands
                                         on experience in developing real-time
                                         systems, simulation-based applications,
                                         and full-stack web applications. Built an

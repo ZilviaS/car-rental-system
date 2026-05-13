@@ -73,9 +73,17 @@ function Search(){
 
             setCarinfo(data)
 
+            setCurrentPage(1)
+
         }catch(err){
             console.error(err)
         }
+    }
+
+    const getTomorrow = ()=>{
+        const todayDate = new Date();
+        todayDate.setDate(todayDate.getDate() + 1)
+        return todayDate.toISOString().split('T')[0]
     }
 
     const truncate = (str, n)=> {
@@ -94,86 +102,48 @@ function Search(){
         <>
             <div className="bg-white min-h-screen">
                 <Navbar/>
-                <section className="flex lg:flex-row flex-col sm:gap-10 gap-2 lg:mx-20 mt-5 mb-5">
-                    <form className="lg:block hidden" action="">
-                        <div className="w-100 bg-gray-100 rounded-md shadow-2xl">
-                            <div className=" bg-yellow-500 rounded-t-md">
-                                <h1 className=" font-bold py-3 text-black pl-5 font-RobotoMono">Search Car</h1>
-                            </div>
-                            <div className="m-5">
-                                <h1 className="font-bold pl-2 font-RobotoMono text-sm text-gray-600">Car Brand</h1>
-                                <select className="font-RobotoMono mt-2 bg-white w-full p-2 rounded-sm" name="brand" id="type" onChange={(e)=>setCarForm({...carForm,brand: e.target.value})}>
-                                    <option value="">select brand</option>
-                                    <option value="Abarth">Abarth</option>
-                                    <option value="Bentley">Bentley</option>
-                                    <option value="Ford">Ford</option>
-                                    <option value="Honda">Honda</option>
-                                    <option value="Jaguar">Jaguar</option>
-                                    <option value="Mazda">Mazda</option>
-                                    <option value="Mercedes">Mercedes Benz</option>
-                                    <option value="Nissan">Nissan</option>
-                                    <option value="Rolls">Rolls Royce</option>
-                                </select>
-                            </div>
-                            <div className="m-5">
-                                <h1 className="font-bold pl-2 font-RobotoMono text-sm text-gray-600">Model</h1>
-                                <input type="text" name="model" className="font-RobotoMono mt-1 bg-white w-full p-2 rounded-sm" onChange={(e)=>setCarForm({...carForm,carname: e.target.value})}/>
-                            </div>
-                            <div className="m-5">
-                                <h1 className="font-bold pl-2 font-RobotoMono text-sm text-gray-600">start date</h1>
-                                <input type="date" name="model" className="mt-1 bg-white w-full p-2 rounded-sm" onChange={(e)=>setCarForm({...carForm,startDate: e.target.value})}/>
-                            </div>
-                            <div className="m-5">
-                                <h1 className="font-bold pl-2 font-RobotoMono text-sm text-gray-600">end date</h1>
-                                <input type="date" name="model" className="mt-1 bg-white w-full p-2 rounded-sm" onChange={(e)=>setCarForm({...carForm,endDate: e.target.value})}/>
-                            </div>
-                            <div className="flex justify-center mx-5">
-                                <button type="button" className="font-RobotoMono bg-amber-400 py-3 w-full rounded-md hover:cursor-pointer mb-5" onClick={handleSearch}>search</button>
-                            </div>
-                        </div>
-                    </form>
-                    <div className="lg:hidden w-full flex justify-center">
+                <section className="flex lg:flex-row flex-col lg:gap-10 sm:gap-2 lg:mx-20 mt-5 mb-5">
+                    <div className="lg:w-auto w-full flex justify-center">
                         <form action="">
-                            <div className="w-full">
-                                <div className="flex gap-2">
-                                    <div>
-                                        <h1 className="font-bold text-sm text-gray-600">Car Brand</h1>
-                                        <select className=" mt-1 bg-gray-100 h-7 rounded-sm" name="brand" id="type" onChange={(e)=>setCarForm({...carForm,brand: e.target.value})}>
-                                            <option value="">select brand</option>
-                                            <option value="Abarth">Abarth</option>
-                                            <option value="Bentley">Bentley</option>
-                                            <option value="Ford">Ford</option>
-                                            <option value="Honda">Honda</option>
-                                            <option value="Jaguar">Jaguar</option>
-                                            <option value="Mazda">Mazda</option>
-                                            <option value="Mercedes">Mercedes Benz</option>
-                                            <option value="Nissan">Nissan</option>
-                                            <option value="Rolls">Rolls Royce</option>
-                                        </select>
-                                    </div>
-                                    <div className="">
-                                        <h1 className="font-bold text-sm text-gray-600">Model</h1>
-                                        <input type="text" name="model" className="mt-1 h-7 bg-gray-100  w-full rounded-sm" onChange={(e)=>setCarForm({...carForm,carname: e.target.value})}/>
-                                    </div>  
+                            <div className="md:w-100 w-80 lg:bg-gray-100 lg:rounded-md lg:shadow-2xl lg:flex lg:flex-col grid grid-cols-2">
+                                <div className=" lg:block hidden bg-yellow-500 rounded-t-md">
+                                    <h1 className=" font-bold py-3 text-black pl-5 font-RobotoMono">Search Car</h1>
                                 </div>
-                                <div className="my-2 w-full flex gap-3">
-                                    <div className="w-full">
-                                        <h1 className="font-bold text-sm text-gray-600">Start Date</h1>
-                                        <input type="date" name="model" className="mt-1  h-7 sm:text-md text-sm bg-gray-100 w-full rounded-sm" onChange={(e)=>setCarForm({...carForm,startDate: e.target.value})}/>
-                                    </div>
-                                    <div className="w-full">
-                                        <h1 className="font-bold text-sm text-gray-600">End Date</h1>
-                                        <input type="date" name="model" className="mt-1  h-7 sm:text-md text-sm bg-gray-100 w-full rounded-sm" onChange={(e)=>setCarForm({...carForm,endDate: e.target.value})}/>
-                                    </div>
+                                <div className="lg:m-5 m-1">
+                                    <h1 className="font-bold pl-2 font-RobotoMono text-sm text-gray-600">Car Brand</h1>
+                                    <select value={carForm.brand} className="font-RobotoMono mt-2 lg:bg-white bg-gray-100 w-full lg:p-2 rounded-sm lg:text-base text-sm" name="brand" id="type" onChange={(e)=>setCarForm({...carForm,brand: e.target.value})}>
+                                        <option value="">select brand</option>
+                                        <option value="Abarth">Abarth</option>
+                                        <option value="Bentley">Bentley</option>
+                                        <option value="Ford">Ford</option>
+                                        <option value="Honda">Honda</option>
+                                        <option value="Jaguar">Jaguar</option>
+                                        <option value="Mazda">Mazda</option>
+                                        <option value="Mercedes">Mercedes Benz</option>
+                                        <option value="Nissan">Nissan</option>
+                                        <option value="Rolls">Rolls Royce</option>
+                                    </select>
                                 </div>
-                                <div className="mt-1 flex justify-center">
-                                    <button type="button" className="font-RobotoMono bg-amber-400 py-1 w-full rounded-md hover:cursor-pointer" onClick={handleSearch}>Search</button>
+                                <div className="lg:m-5 m-1">
+                                    <h1 className="font-bold pl-2 font-RobotoMono text-sm text-gray-600">Model</h1>
+                                    <input type="text" name="model" className="font-RobotoMono lg:text-base text-sm mt-1 lg:bg-white bg-gray-100 w-full lg:p-2 pl-2 py-1 rounded-sm" value={carForm.carname}  onChange={(e)=>setCarForm({...carForm,carname: e.target.value})}/>
+                                </div>
+                                <div className="lg:m-5 m-1">
+                                    <h1 className="font-bold pl-2 font-RobotoMono text-sm text-gray-600">start date</h1>
+                                    <input min={getTomorrow()} type="date" name="model" className="mt-1 lg:bg-white bg-gray-100 lg:text-base text-sm w-full lg:p-2 pl-2 py-1 rounded-sm" value={carForm.startDate} onChange={(e)=>setCarForm({...carForm,startDate: e.target.value})}/>
+                                </div>
+                                <div className="lg:m-5 m-1">
+                                    <h1 className="font-bold pl-2 font-RobotoMono text-sm text-gray-600">end date</h1>
+                                    <input min={getTomorrow()} type="date" name="model" className="mt-1 lg:bg-white bg-gray-100 lg:text-base text-sm w-full lg:p-2 pl-2 py-1 rounded-sm" value={carForm.endDate} onChange={(e)=>setCarForm({...carForm,endDate: e.target.value})}/>
+                                </div>
+                                <div className="flex justify-center lg:mx-5 mx-0 col-span-2 lg:mt-0 mt-3">
+                                    <button type="button" className="font-RobotoMono bg-amber-400 lg:py-3 py-1 w-full rounded-md hover:cursor-pointer mb-5" onClick={handleSearch}>Search</button>
                                 </div>
                             </div>
                         </form>
                     </div>
                     
-                    <div className="md:mt-2">
+                    <div className="mt-2">
                         <div className="lg:pl-0 md:pl-10 w-full mb-3 flex justify-center md:justify-start">
                             <h1 className="md:text-md text-sm text-gray-500">{carinfo.length} Result Found</h1>
                         </div>
