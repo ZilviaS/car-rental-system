@@ -222,13 +222,13 @@ function Manage(){
                     <div className="h-full bg-white sm:mt-5 p-3 sm:p-5 md:w-230 shadow-xl min-h-90">
                         <h1 className="font-RobotoMono text-md">
                             {pageState == 'user' && 'User Information'}
-                            {pageState == 'account'  && 'account Information'}
-                            {pageState == 'history'  && 'history'}
+                            {pageState == 'account'  && 'Account Information'}
+                            {pageState == 'history'  && 'History'}
                         </h1>
                         <h1 className="font-RobotoMono text-xs text-gray-500">
                             {pageState == 'user' && 'Manage user account'}
-                            {pageState == 'account'  && 'account Information setting'}
-                            {pageState == 'history'  && 'user rent history'}
+                            {pageState == 'account'  && 'Account Information setting'}
+                            {pageState == 'history'  && 'User booking history'}
                         </h1>
                         <hr className="text-gray-300 my-3"/>
                         { pageState == 'user' && 

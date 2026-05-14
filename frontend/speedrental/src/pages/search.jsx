@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom"
 import { Navigate, useNavigate } from 'react-router-dom'
 import Navbar from "./navbar";
 import Footer from "./footer";
+import BrandSelect from "./brandSelect";
 
 function Search(){
     const navigate = useNavigate()
@@ -112,16 +113,7 @@ function Search(){
                                 <div className="lg:m-5 m-1">
                                     <h1 className="font-bold pl-2 font-RobotoMono text-sm text-gray-600">Car Brand</h1>
                                     <select value={carForm.brand} className="font-RobotoMono mt-2 lg:bg-white bg-gray-100 w-full lg:p-2 rounded-sm lg:text-base text-sm" name="brand" id="type" onChange={(e)=>setCarForm({...carForm,brand: e.target.value})}>
-                                        <option value="">select brand</option>
-                                        <option value="Abarth">Abarth</option>
-                                        <option value="Bentley">Bentley</option>
-                                        <option value="Ford">Ford</option>
-                                        <option value="Honda">Honda</option>
-                                        <option value="Jaguar">Jaguar</option>
-                                        <option value="Mazda">Mazda</option>
-                                        <option value="Mercedes">Mercedes Benz</option>
-                                        <option value="Nissan">Nissan</option>
-                                        <option value="Rolls">Rolls Royce</option>
+                                        <BrandSelect></BrandSelect>
                                     </select>
                                 </div>
                                 <div className="lg:m-5 m-1">
