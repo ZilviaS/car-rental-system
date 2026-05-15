@@ -240,7 +240,7 @@ function Home(){
                     </div>
                 </div>
                 <section className='flex justify-center'>
-                    <div className='bg-white my-5 gap-2 relative md:w-350 w-130 overflow-hidden rounded transition-all durtaion-300 ease-in-out hover:shadow-xl hover:-translate-0.5'>
+                    <div className='bg-white my-5 gap-2 relative md:w-350 w-130 overflow-hidden rounded transition-all durtaion-300 ease-in-out hover:shadow-xl'>
                         <div className='top-0 w-full'>
                             <div className='relative md:h-[700px] h-[350px]'>
                                 {images.map((image, index) => (
