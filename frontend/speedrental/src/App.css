@@ -24,6 +24,16 @@
     }
 }
 
+@keyframes slowZoom {
+    from{
+        transform: scale(1);
+    }
+
+    to{
+        transform: scale(1.1);
+    }
+}
+
 .animate-marquee {
   animation: marquee 50s linear infinite;
 }

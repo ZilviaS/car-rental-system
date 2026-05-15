@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Navbar from './navbar'
 import { Navigate, useNavigate } from 'react-router-dom'
 import '../App.css'
@@ -19,9 +19,32 @@ import NissanLogo from '../assets/NissanLogo.svg'
 import RollsRoyceLogo from '../assets/RollsRoyceLogo.png'
 import RoverLogo from '../assets/RoverLogo.png'
 import BrandSelect from './brandSelect'
+import HomepageCar1 from '../assets/homepagecar1.jpg'
+import HomepageCar2 from '../assets/homepagecar2.jpg'
+import HomepageCar3 from '../assets/homepagecar3.webp'
 
 function Home(){
     const navigate = useNavigate();
+
+    const images = [
+        HomepageCar1,
+        HomepageCar2,
+        HomepageCar3
+    ]
+
+    const [currentImage, setCurrentImage] = useState(0)
+
+    useEffect(()=>{
+
+        const interval = setInterval(()=>{
+            setCurrentImage(prev=>
+                prev === images.length - 1 ? 0 : prev + 1
+            )
+        }, 10000)
+
+        return ()=> clearInterval(interval)
+
+    },[])
 
 
     const getTomorrow = ()=>{
@@ -29,7 +52,6 @@ function Home(){
         todayDate.setDate(todayDate.getDate() + 1)
         return todayDate.toISOString().split('T')[0]
     }
-
 
     const [form, setForm] = useState({
         brand: '',
@@ -71,17 +93,13 @@ function Home(){
                         <div className='absolute inset-0 flex flex-col items-center justify-center'>
                             <div className="absolute inset-0 bg-black/30 z-0"></div>
                             <div className='z-10'>
-                                <div className='flex w-full justify-center items-center'>
-                                    {/* <img className="rounded-full w-20" src='https://img.freepik.com/premium-vector/vector-car-logo-design-illus_714931-352.jpg' alt="" /> */}
-                                    {/* <p className='font-RobotoMono font-bold text-4xl text-white'>Book Our 40+ Exotic Classic Cars</p> */}
-                                </div>
                                 <div className='w-full'>
-                                    <p className='text-white text-6xl pl-2 font-bold font-RobotoMono' style={{
+                                    <p className='text-white sm:text-6xl text-3xl pl-2 font-bold font-RobotoMono' style={{
                                         // WebkitTextStroke: '0.2px black'
                                     }}>SPEED-RENTAL</p>
                                     <p className='pl-3 font-RobotoMono text-white'>exotic car rental service</p>
                                 </div>
-                                <div className='bg-white/80 backdrop-blur-md p-6 rounded-md shadow-lg mt-5'>
+                                <div className='bg-white/80 backdrop-blur-md p-6 rounded-md shadow-lg mt-2'>
                                     <div className='grid lg:flex md:grid-cols-2 lg:flex-row flex-col lg:gap-3 gap-2'>
                                         <div className='w-full'>
                                             <h1 className='text-gray-500 font-RobotoMono text-sm'>pick-up date</h1>
@@ -224,7 +242,29 @@ function Home(){
                 <section className='flex justify-center'>
                     <div className='bg-white my-5 gap-2 relative md:w-350 w-130 overflow-hidden rounded transition-all durtaion-300 ease-in-out hover:shadow-xl hover:-translate-0.5'>
                         <div className='top-0 w-full'>
-                            <img className='w-full h-full object-cover' src="https://cdn.shopify.com/s/files/1/0560/9534/2767/files/022_01.jpg?v=1686857573" alt="" />
+                            <div className='relative md:h-[700px] h-[350px]'>
+                                {images.map((image, index) => (
+                                    <img key={index} src={image} alt=""
+                                        className={`
+                                            absolute inset-0
+                                            w-full h-full
+                                            object-cover
+
+                                            transition-opacity duration-[3000ms]
+
+                                            animate-[slowZoom_10s_linear_forwards]
+
+                                            ${
+                                                currentImage === index
+                                                ? 'opacity-100'
+                                                : 'opacity-0'
+                                            }
+                                        `}
+                                    />
+
+                                ))}
+                            </div>
+                            {/* <img key={currentImage} src={images[currentImage]} className='w-full h-full object-cover animate-[slowZoom_20s_linear_forwards] transition-all duration-1000' alt="" /> */}
                             <div className="
                                     absolute top-0 right-0 h-full sm:w-[45%] md:w-[35%] w-full
                                     bg-black/70 flex items-center px-6

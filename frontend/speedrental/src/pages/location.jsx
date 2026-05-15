@@ -27,8 +27,8 @@ function Location(){
             <Navbar></Navbar>
             <section className='flex justify-center'>
                 <div className='flex justify-center gap-10 my-7 w-[90%] shadow rounded'>
-                    <div className='w-full h-screen bg-white shadow justify-center items-center px-5 pt-3'>
-                        <div className='w-full h-[95%]'>
+                    <div className='w-full sm:h-screen h-100 bg-white shadow justify-center items-center sm:px-5 sm:pt-3'>
+                        <div className='w-full sm:h-[95%] h-full'>
                             <MapContainer 
                                 center = {[13.714696747819657, 100.40647611209434]}
                                 zoom={12} 

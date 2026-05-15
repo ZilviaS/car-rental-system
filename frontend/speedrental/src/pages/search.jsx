@@ -112,7 +112,7 @@ function Search(){
                                 </div>
                                 <div className="lg:m-5 m-1">
                                     <h1 className="font-bold pl-2 font-RobotoMono text-sm text-gray-600">Car Brand</h1>
-                                    <select value={carForm.brand} className="font-RobotoMono mt-2 lg:bg-white bg-gray-100 w-full lg:p-2 rounded-sm lg:text-base text-sm" name="brand" id="type" onChange={(e)=>setCarForm({...carForm,brand: e.target.value})}>
+                                    <select value={carForm.brand} className="font-RobotoMono mt-2 h-full lg:bg-white bg-gray-100 w-full lg:p-2 rounded-sm lg:text-base text-sm" name="brand" id="type" onChange={(e)=>setCarForm({...carForm,brand: e.target.value})}>
                                         <BrandSelect></BrandSelect>
                                     </select>
                                 </div>

@@ -207,7 +207,7 @@ function Manage(){
                         <button onClick={()=>setPageState('account')} className={`font-RobotoMono text-sm px-2 py-2 hover:cursor-pointer  ${  pageState === 'account' ? 'bg-white' : 'text-gray-500 bg-gray-200'}`}>Account</button>
                         <button onClick={()=>setPageState('history')} className={`font-RobotoMono text-sm px-2 py-2 hover:cursor-pointer  ${  pageState === 'history' ? 'bg-white' : 'text-gray-500 bg-gray-200'}`}>My Booking</button>
                     </div>
-                    <div className="h-full bg-white mt-5 p-5 w-70 pt-4 shadow-xl rounded md:block hidden">
+                    <div className="h-full bg-white border-gray-100 border-1 mt-5 p-5 w-70 pt-4 shadow-xl rounded md:block hidden">
                         <div className="flex items-center gap-2">
                             <img src={userLogo} alt="" className="h-10"/>
                             <h1 className="font-RobotoMono sm:text-md text-sm font-normal">{user.username}</h1>
@@ -219,7 +219,7 @@ function Manage(){
                             <h1><button onClick={()=>setPageState('history')} className={`font-RobotoMono text-sm hover:cursor-pointer hover:text-red-500 ${  pageState === 'history' ? '' : 'text-gray-500'}`}>My Booking</button></h1>
                         </div>  
                     </div>
-                    <div className="h-full bg-white sm:mt-5 p-3 sm:p-5 md:w-230 shadow-xl min-h-90">
+                    <div className="h-full bg-white sm:mt-5 p-3 sm:p-5 md:w-230 shadow-xl min-h-90 border-gray-100 border-1">
                         <h1 className="font-RobotoMono text-md">
                             {pageState == 'user' && 'User Information'}
                             {pageState == 'account'  && 'Account Information'}
@@ -400,7 +400,7 @@ function Manage(){
                         {pageState == 'history' && <>
                             <div className="w-full flex flex-col gap-3">
                                 {userCars.length === 0 && (
-                                    <p className="font-RobotoMono text-xs text-gray-500">You're not booking anything yet</p>
+                                    <p className="font-RobotoMono text-xs text-gray-500">You're not book anything yet</p>
                                     )}
                                 {userCars.map((car,index)=>{
                                     return (
