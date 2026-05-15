@@ -2,7 +2,10 @@ function Footer(){
     return(
         <>
             <footer className='bg-gray-200 '>
-                <h1 className='ml-3 font-bold text-gray-600'>Contact</h1>
+                <div className="flex sm:flex-row flex-col w-full justify-between px-3">
+                    <p className='font-bold text-gray-600'>Contact</p>
+                    <p className='font-bold text-gray-600'>WARNING! This is not a real website, It's for my portfolio only</p>
+                </div>
                 <div className='w-full flex flex-wrap justify-center bg-gray-300'>
                     <h1 className='text-gray-900 mx-3'>บริษัท ไม่ได้ตั้งชื่อ ไม่จำกัด</h1>
                     <h1 className='text-gray-900 mx-3'>เลขประจำตัวกำกับภาษี: 228267</h1>

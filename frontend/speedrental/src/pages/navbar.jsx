@@ -41,17 +41,17 @@ function Navbar(){
             <section className='bg-white flex justify-between items-center max-h-13'>
                 <div className='flex items-center'>
                     <a href="/"><img className='sm:max-h-10 max-h-7 rounded-full mx-3 ml-3' src="https://img.freepik.com/premium-vector/vector-car-logo-design-illus_714931-352.jpg" alt="" /></a>
-                    <p className='text-gray-700 font-RobotoMono hidden sm:flex pl-2 font-bold'>SPEED-RENTAL</p>
+                    <a href="/" className='text-gray-800 font-RobotoMono hidden sm:flex pl-2 font-bold hover:cursor-pointer'>SPEED-RENTAL</a>
                 </div>
                 
                 <nav className='justify-center flex sm:gap-2 py-3 sm:mx-5 mx-1 items-center'>
-                    <a className='sm:p-1 sm:block hidden p-0.5 hover:text-green-900 hover:underline font-RobotoMono text-xs sm:text-sm'  href="/">search</a>
+                    <a className='sm:p-1 sm:block hidden p-0.5 hover:text-green-900 hover:underline font-RobotoMono text-xs sm:text-sm'  href="/">HOME</a>
                     <a className='sm:hidden px-1' href="/"><img className='h-6 mx-1' src={searchLogo} alt="" /></a>
-                    <a className='sm:p-1 sm:block hidden p-0.5 hover:text-green-900 hover:underline font-RobotoMono text-xs sm:text-sm'  href="/search">cars</a>
+                    <a className='sm:p-1 sm:block hidden p-0.5 hover:text-green-900 hover:underline font-RobotoMono text-xs sm:text-sm'  href="/search">CARS</a>
                     <a className='sm:hidden px-1' href="/search"><img className='h-6 mx-1' src={carsLogo} alt="" /></a>
-                    <a className='sm:p-1 sm:block hidden p-0.5 hover:text-green-900 hover:underline font-RobotoMono text-xs sm:text-sm'  href="/location">location</a>
+                    <a className='sm:p-1 sm:block hidden p-0.5 hover:text-green-900 hover:underline font-RobotoMono text-xs sm:text-sm'  href="/location">LOCATION</a>
                     <a className='sm:hidden px-1' href="/location"><img className='h-6 mx-1' src={locationLogo} alt="" /></a>
-                    <a className='sm:p-1 sm:block hidden p-0.5 hover:text-green-900 hover:underline font-RobotoMono text-xs sm:text-sm'  href="/contact">contact</a>
+                    <a className='sm:p-1 sm:block hidden p-0.5 hover:text-green-900 hover:underline font-RobotoMono text-xs sm:text-sm'  href="/contact">CONTACT</a>
                     <a className='sm:hidden px-1' href="/contact"><img className='h-6 mx-1 mr-2' src={contactLogo} alt="" /></a>
                     {user ? (user.role === 'admin' ? (
                         <>

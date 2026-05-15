@@ -205,7 +205,7 @@ function Manage(){
                     <div className="flex md:hidden w-full bg-gray-200">
                         <button onClick={()=>setPageState('user')} className={`font-RobotoMono text-sm px-2 py-1 hover:cursor-pointer  ${  pageState === 'user' ? 'bg-white' : 'text-gray-500 bg-gray-200'}`}>User</button>
                         <button onClick={()=>setPageState('account')} className={`font-RobotoMono text-sm px-2 py-2 hover:cursor-pointer  ${  pageState === 'account' ? 'bg-white' : 'text-gray-500 bg-gray-200'}`}>Account</button>
-                        <button onClick={()=>setPageState('history')} className={`font-RobotoMono text-sm px-2 py-2 hover:cursor-pointer  ${  pageState === 'history' ? 'bg-white' : 'text-gray-500 bg-gray-200'}`}>History</button>
+                        <button onClick={()=>setPageState('history')} className={`font-RobotoMono text-sm px-2 py-2 hover:cursor-pointer  ${  pageState === 'history' ? 'bg-white' : 'text-gray-500 bg-gray-200'}`}>My Booking</button>
                     </div>
                     <div className="h-full bg-white mt-5 p-5 w-70 pt-4 shadow-xl rounded md:block hidden">
                         <div className="flex items-center gap-2">
@@ -216,14 +216,14 @@ function Manage(){
                         <div className="">
                             <h1><button onClick={()=>setPageState('user')} className={`font-RobotoMono text-sm hover:cursor-pointer hover:text-red-500 ${  pageState === 'user' ? '' : 'text-gray-500'}`}>User</button></h1>
                             <h1><button onClick={()=>setPageState('account')} className={`font-RobotoMono text-sm hover:cursor-pointer hover:text-red-500 ${  pageState === 'account' ? '' : 'text-gray-500'}`}>Account</button></h1>
-                            <h1><button onClick={()=>setPageState('history')} className={`font-RobotoMono text-sm hover:cursor-pointer hover:text-red-500 ${  pageState === 'history' ? '' : 'text-gray-500'}`}>History</button></h1>
+                            <h1><button onClick={()=>setPageState('history')} className={`font-RobotoMono text-sm hover:cursor-pointer hover:text-red-500 ${  pageState === 'history' ? '' : 'text-gray-500'}`}>My Booking</button></h1>
                         </div>  
                     </div>
                     <div className="h-full bg-white sm:mt-5 p-3 sm:p-5 md:w-230 shadow-xl min-h-90">
                         <h1 className="font-RobotoMono text-md">
                             {pageState == 'user' && 'User Information'}
                             {pageState == 'account'  && 'Account Information'}
-                            {pageState == 'history'  && 'History'}
+                            {pageState == 'history'  && 'My Booking'}
                         </h1>
                         <h1 className="font-RobotoMono text-xs text-gray-500">
                             {pageState == 'user' && 'Manage user account'}
@@ -399,6 +399,9 @@ function Manage(){
                         }
                         {pageState == 'history' && <>
                             <div className="w-full flex flex-col gap-3">
+                                {userCars.length === 0 && (
+                                    <p className="font-RobotoMono text-xs text-gray-500">You're not booking anything yet</p>
+                                    )}
                                 {userCars.map((car,index)=>{
                                     return (
                                         <div className="flex justify-center shadow">
@@ -455,6 +458,14 @@ function Manage(){
                                                                     <button onClick={()=>handleRefund(car.id)} className="bg-green-500 text-white font-RobotoMono px-2 sm:text-base text-sm p-1 rounded hover:cursor-pointer">
                                                                         refund
                                                                     </button>
+                                                                )
+                                                            }
+
+                                                            if (car.status === 'received' || car.status === 'pending success'){
+                                                                return (
+                                                                    <p className="text-green-500 font-RobotoMono sm:text-base text-sm p-1">
+                                                                        {car.status}
+                                                                    </p>
                                                                 )
                                                             }
 

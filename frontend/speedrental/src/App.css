@@ -12,6 +12,18 @@
   }
 }
 
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
 .animate-marquee {
   animation: marquee 50s linear infinite;
 }
@@ -42,5 +54,7 @@
 ::-webkit-scrollbar-button {
   display: none;
 }
+
+
 
 
