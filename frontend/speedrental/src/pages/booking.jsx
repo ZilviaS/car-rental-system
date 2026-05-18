@@ -27,12 +27,16 @@ function Booking(){
         })
     }
 
+    const [imgURL, setImgURL] = useState([])
+    const [imgStatus, setImgStatus] = useState(0)
+
     useEffect(()=>{
         console.log(id)
         fetch(`${API}/api/car/${id}`)
         .then(res => res.json())
         .then(data => {
             setCar(data)
+            setImgURL(data.img_set)
             console.log(data)
         })
         .catch(err => console.error(err))
@@ -100,6 +104,7 @@ function Booking(){
         return `${year}-${month}-${day}`
     }
 
+
     return(
         <>
             
@@ -109,18 +114,20 @@ function Booking(){
                     {car ? 
                         <>
                             <div className="bg-white md:w-[70%] w-[95%] rounded-xl p-5 shadow-2xl">
-                                <div className="sm:flex hidden h-100 w-full justify-center">
-                                    <img className="h-full w-[60%] rounded-l object-cover" src={car.image_url} alt="" />
-                                    <div className="flex flex-col">
-                                        <img className="h-[50%] rounded-tr object-cover" src={car.image_url_secondary || placeholderImage} alt="" />
-                                        <img className="h-[50%] rounded-br object-cover" src={car.image_url_teritery || placeholderImage} alt="" />
+                                <div className="w-full flex sm:flex-row flex-col gap-2 sm:h-120">
+                                    <div className="bg-gray-200 sm:w-200 w-full sm:h-full h-80">
+                                        <img className="w-full h-full object-cover" src={imgURL[imgStatus]} alt="" />
                                     </div>
-                                </div>
-                                <div className="sm:hidden block shadow-xl">
-                                    <img className="h-full w-full rounded-t object-cover" src={car.image_url} alt="" />
-                                    <div className="flex">
-                                        <img className="w-[50%] rounded-bl object-cover" src={car.image_url_secondary || placeholderImage} alt="" />
-                                        <img className="w-[50%] rounded-br object-cover" src={car.image_url_teritery || placeholderImage} alt="" />
+                                    <div className="bg-gray-200 sm:w-55 w-full sm:h-full h-20 flex sm:flex-col flex-row sm:overflow-y-scroll overflow-x-scroll no-scrollbar">
+                                        {imgURL.map((img, index)=>{
+                                            return (
+                                                <>
+                                                    <div className={`sm:w-full shrink-0 w-30 sm:h-30 h-20 ${imgStatus === index ? 'grayscale' : ''}`} key={index}>
+                                                        <img onClick={()=>{setImgStatus(index)}} className="w-full h-full object-cover hover:cursor-pointer " src={img} alt="" />
+                                                    </div>
+                                                </> 
+                                            )
+                                        })}
                                     </div>
                                 </div>
                                 <div className="flex lg:flex-row flex-col justify-between gap-5 mt-3">

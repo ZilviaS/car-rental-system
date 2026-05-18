@@ -16,18 +16,21 @@ function EditCar(){
         year: '',
         plate: '',
         status: false,
-        image_url: '',
-        image_url_secondary: '',
-        image_url_teritery : ''
+        img_set: []
     })
 
     const navigate = useNavigate()
 
-    const [imageURL , setImageURL] = useState({
-        primary : '',
-        secondary : '',
-        teritery : ''
-    })
+    const [imgState, setImgState] = useState(0)
+
+    const handleImageChange = (index, value)=>{
+        setCarInfo(prev => {
+            const updated = [...prev.img_set]
+            updated[index] = value
+            return { ...prev, img_set: updated }
+        })
+    }
+
 
     useEffect(()=>{
         const fetchCar = async ()=>{
@@ -35,10 +38,8 @@ function EditCar(){
                 const res = await fetch(`${API}/api/car/${id}`)
                 const data = await res.json()
                 setCarInfo(data)
-                setImageURL({
-                    primary : data.image_url || '',
-                    secondary : data.image_url_secondary || '',
-                    teritery : data.image_url_teritery || ''})
+                setImgURL(data.img_set)
+                console.log(data)
 
             }catch(err){
                 console.log(err)
@@ -124,35 +125,37 @@ function EditCar(){
                                             <p className='items-center'>available</p>
                                         </div>
                                     </div>
-                                    <div className='md:hidden flex'>
-                                        <div className='h-55 shadow flex'>
-                                            <img className='w-[60%] object-cover' src={imageURL.primary || placeholderImage} alt="" />
-                                            <div className='w-[40%] flex flex-col'>
-                                                <img className='w-full h-[50%] object-cover' src={imageURL.secondary  || placeholderImage} alt="" />
-                                                <img className='w-full h-[50%] object-cover' src={imageURL.teritery || placeholderImage} alt="" />
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div className='md:w-[59%] flex flex-col gap-0.5 pt-5'>
-                                        <div className='h-55 shadow md:flex hidden'>
-                                            <img className='w-[60%] object-cover' src={imageURL.primary || placeholderImage} alt="" />
-                                            <div className='w-[40%] flex flex-col'>
-                                                <img className='w-full h-[50%] object-cover' src={imageURL.secondary  || placeholderImage} alt="" />
-                                                <img className='w-full h-[50%] object-cover' src={imageURL.teritery || placeholderImage} alt="" />
+                                        <div className='h-75 shadow flex sm:flex-row flex-col justify-between'>
+                                            <div className='sm:w-[75%] w-full sm:h-full bg-gray-200 shrink-0'>
+                                                <img className='sm:h-full h-50 w-full object-cover' src={carInfo.img_set?.[imgState] || placeholderImage} alt="" />
+                                            </div>
+                                            <div className='sm:w-45 w-full h-full bg-gray-200 flex sm:flex-col flex-row overflow-y-scroll no-scrollbar'>
+                                                {carInfo.img_set.map((img,index)=>{
+                                                    return(
+                                                        <div key={index} className={`sm:w-full w-30 h-25 bg-gray-200 shrink-0 ${imgState == index ? 'grayscale' : ''} `}>
+                                                            <img onClick={()=>{setImgState(index)}} className='hover:cursor-pointer w-full h-full object-cover' src={img} alt="" />
+                                                        </div>
+                                                    )
+                                                })}
+
                                             </div>
                                         </div>
                                         
                                         <p className='font-RobotoMono text-gray-500 text-sm'>image(url)</p>
-                                        <input onChange={(e)=>{setCarInfo({...carInfo, image_url : e.target.value})}} className='px-2 w-full bg-gray-100 rounded border-gray-400 border-1' type="text" value={carInfo.image_url} />
-                                        <input onChange={(e)=>{setCarInfo({...carInfo, image_url_secondary : e.target.value})}} className='px-2 w-full bg-gray-100 rounded border-gray-400 border-1' type="text" placeholder='secondary' value={carInfo.image_url_secondary} />
-                                        <input onChange={(e)=>{setCarInfo({...carInfo, image_url_teritery : e.target.value})}} className='px-2 w-full bg-gray-100 rounded border-gray-400 border-1' type="text" placeholder='tertiary' value={carInfo.image_url_teritery} />
-                                        <div><button onClick={()=>{
-                                            setImageURL({
-                                                primary : carInfo.image_url,
-                                                secondary : carInfo.image_url_secondary,
-                                                teritery : carInfo.image_url_teritery
-                                            })
-                                            }} className='bg-amber-300 rounded px-4 hover:cursor-pointer mt-1'>check</button></div>
+                                        {carInfo.img_set.map((img,index)=>{
+                                            return(
+                                                <div className='w-full' key={index}>
+                                                    <input onChange={(e)=>{handleImageChange(index,e.target.value)}} className='bg-gray-100 px-1 border-gray-400 border-1 rounded w-full' value={img} type="text" placeholder={`image ${index + 1}`}/>
+                                                </div>
+                                            )
+                                        })}
+                                        <div>
+                                            <button onClick={()=>{setCarInfo({
+                                                ...carInfo,
+                                                img_set : [...carInfo.img_set, '']
+                                            })}} className='bg-green-600 rounded text-white px-2 hover:cursor-pointer'>add image</button>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className='px-3 pb-3'>

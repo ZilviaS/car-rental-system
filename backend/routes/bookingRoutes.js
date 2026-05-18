@@ -27,12 +27,12 @@ router.post('/cancle', auth, async (req,res)=>{
         const id = req.user.id
         const car = req.body
         console.log(car.id)
-        console.log(userId)
+        console.log(id)
         const result = await pool.query(`
             DELETE FROM bookings
             WHERE id = $1
                 AND user_id = $2 
-        `, [car.id, userId])
+        `, [car.id, id])
         res.status(201).json({message : 'finnish'})
         console.log('updated')
     }catch(err){

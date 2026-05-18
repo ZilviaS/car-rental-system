@@ -43,8 +43,9 @@ router.post('/', async (req,res)=>{
             baseQuery += ` WHERE ` + conditions.join(' AND ')
         }
 
+        baseQuery += ` ORDER BY c.brand`
+
         const result = await pool.query(baseQuery, values)
-        console.log(baseQuery)
         res.json(result.rows)
     }
     catch (err) {
@@ -64,14 +65,19 @@ router.get('/:id', async (req,res)=>{
         console.log(result.rows)
 
         const imageResult = await pool.query(`
-            SELECT * FROM car_image WHERE car_id = $1`,
+            SELECT image_url FROM car_image WHERE car_id = $1`,
             [id]
         )
 
         const car = result.rows[0]
+        
+        if(imageResult.length != 0){
+            car.img_set = imageResult.rows.map(img => img.image_url)
+        }
+        car.img_set.unshift(car.image_url)
 
-        car.image_url_secondary = imageResult.rows[0]?.image_url || ''
-        car.image_url_teritery = imageResult.rows[1]?.image_url || ''
+        // car.image_url_secondary = imageResult.rows[0]?.image_url || ''
+        // car.image_url_teritery = imageResult.rows[1]?.image_url || ''
         console.log(car)
         res.json(car)
     }catch (err){
@@ -175,8 +181,9 @@ router.post('/delete', authAdmin, async (req,res)=>{
 })
 
 router.post('/update', authAdmin, async (req, res)=>{
-    const {id, brand, model, trim, year, plate, status, image_url, description, price , image_url_secondary, image_url_teritery} = req.body
-    console.log(id, brand, model, trim, year, plate, status, image_url, description, price, image_url_secondary, image_url_teritery)
+    const {id, brand, model, trim, year, plate, status, description, price , img_set} = req.body
+    console.log(id, brand, model, trim, year, plate, status, description, price, img_set)
+    const [image_url, ...secondaryImages] = img_set
     const client = await pool.connect()
     try{
         await client.query('BEGIN');
@@ -187,24 +194,23 @@ router.post('/update', authAdmin, async (req, res)=>{
             plate = $5, status = $6, image_url = $7, description = $8,
             price = $9
             WHERE id = $10`,[
-                brand, model, trim, year, plate, status, image_url, description, price, id
+                brand, model, trim, year, plate, status, image_url , description, price, id
         ])
 
         await client.query(`
             DELETE FROM car_image
             WHERE car_id = $1
         `,[id])
-
-        await client.query(`
-            INSERT INTO car_image(car_id, image_url)
-            VALUES ($1, $2)
-            `,[id, image_url_secondary])
-
-        await client.query(`
-            INSERT INTO car_image(car_id, image_url)
-            VALUES ($1, $2)
-            `,[id, image_url_teritery])
         
+        for (const img of secondaryImages){
+            if(img.trim() !== ''){
+                await client.query(`
+                    INSERT INTO car_image(car_id, image_url)
+                    VALUES ($1, $2)
+                `,[id, img])
+            }
+        }
+
         await client.query('COMMIT');
 
         res.status(201).json({
