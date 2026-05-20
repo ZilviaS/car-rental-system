@@ -16,7 +16,8 @@ function EditCar(){
         year: '',
         plate: '',
         status: false,
-        img_set: []
+        img_set: [],
+        price: ''
     })
 
     const navigate = useNavigate()
@@ -120,6 +121,8 @@ function EditCar(){
                                         <input onChange={(e)=>{setCarInfo({...carInfo, year: e.target.value})}} className='bg-gray-100 rounded border-gray-400 border-1 w-full px-2' type="number" value={carInfo.year} />
                                         <p className='font-RobotoMono text-gray-500 mt-2 text-sm'>plate</p>
                                         <input onChange={(e)=>{setCarInfo({...carInfo, plate: e.target.value})}} className='bg-gray-100 rounded border-gray-400 border-1 w-full px-2' type="text" value={carInfo.plate} />
+                                        <p className='font-RobotoMono text-gray-500 mt-2 text-sm'>price</p>
+                                        <input onChange={(e)=>{setCarInfo({...carInfo, price: e.target.value})}} className='bg-gray-100 rounded border-gray-400 border-1 w-full px-2' type="text" value={carInfo.price} />
                                         <div className='flex gap-1 mt-2'>
                                             <input onChange={(e)=>{setCarInfo({...carInfo, status: e.target.checked})}} className='items-center' checked={carInfo.status} type="checkbox" />
                                             <p className='items-center'>available</p>

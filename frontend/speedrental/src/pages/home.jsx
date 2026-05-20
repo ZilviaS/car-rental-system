@@ -18,6 +18,7 @@ import MercedesBenzLogo from '../assets/BenzLogo.png'
 import NissanLogo from '../assets/NissanLogo.svg'
 import RollsRoyceLogo from '../assets/RollsRoyceLogo.png'
 import RoverLogo from '../assets/RoverLogo.png'
+import ToyotaLogo from '../assets/ToyotaLogo.png'
 import BrandSelect from './brandSelect'
 import HomepageCar1 from '../assets/homepagecar1.jpg'
 import HomepageCar2 from '../assets/homepagecar2.jpg'
@@ -198,6 +199,9 @@ function Home(){
                             <div className=''>
                                 <img onClick={()=>handleLogoSearch('rover')} className='h-12 object-cover  grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition duration-300' src={RoverLogo} alt="" />
                             </div>
+                            <div className=''>
+                                <img onClick={()=>handleLogoSearch('toyota')} className='h-12 object-cover  grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition duration-300' src={ToyotaLogo} alt="" />
+                            </div>
                         </div>
                         <div className='flex items-center md:gap-30 gap-10'>
                             <div className=''>
@@ -235,6 +239,9 @@ function Home(){
                             </div>
                             <div className=''>
                                 <img onClick={()=>handleLogoSearch('rover')} className='h-12 object-cover  grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition duration-300' src={RoverLogo} alt="" />
+                            </div>
+                            <div className=''>
+                                <img onClick={()=>handleLogoSearch('toyota')} className='h-12 object-cover  grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition duration-300' src={ToyotaLogo} alt="" />
                             </div>
                         </div>
                     </div>

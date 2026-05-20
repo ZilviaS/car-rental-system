@@ -16,7 +16,8 @@ function adminManage(){
         plate : '',
         price : '',
         imageURL : '',
-        description : ''
+        description : '',
+        img_set : []
     })
 
     const [locationData, setLocationData] = useState({
@@ -37,6 +38,8 @@ function adminManage(){
 
     const [refundData, setRefundData] = useState([])
     const [refundLog, setRefundLog] = useState(null)
+
+    const [imgSet, setImgSet] = useState(0)
 
     const navigate = useNavigate()
     const dateDeFormat = (data)=>{
@@ -176,6 +179,14 @@ function adminManage(){
         }
     }
 
+    const updateImage = (index, value)=>{
+        setCarData(prev => {
+            const updated = [...prev.img_set]
+            updated[index] = value
+            return { ...prev, img_set: updated }
+        })
+    }
+
 
     return (
         <>
@@ -252,9 +263,19 @@ function adminManage(){
                                 </div>
                                 <div className="flex flex-col">
                                     <p>ImageURL:</p>
-                                    <input onChange={(e)=>{setCarData({...carData, imageURL : e.target.value})}} type="text" className="bg-gray-100 rounded border-gray-200 border-1 px-2 w-full" placeholder="primary"/>
-                                    <input onChange={(e)=>{setCarData({...carData, imageURL_secondary : e.target.value})}} type="text" className="bg-gray-100 rounded border-gray-200 border-1 px-2 w-full mt-2" placeholder="secondary"/>
-                                    <input onChange={(e)=>{setCarData({...carData, imageURL_teritary : e.target.value})}} type="text" className="bg-gray-100 rounded border-gray-200 border-1 px-2 w-full mt-2" placeholder="teritary"/>
+                                    <input onChange={(e)=>{setCarData({...carData, imageURL : e.target.value})}} type="text" className="bg-gray-100 rounded border-gray-200 border-1 px-2 w-full" placeholder="main image"/>
+                                    {
+                                        [...Array(imgSet)].map((_,index)=>{
+                                            return(
+                                                <input onChange={(e)=>updateImage(index,e.target.value)} className="bg-gray-100 mt-1 rounded border-gray-200 border-1 px-2 w-full" type="text" name="" id={index} placeholder={`image no ${index+2}`} />
+                                            )
+                                        })
+                                    }
+                                    <div className="mt-1">
+                                        <button onClick={()=>{setImgSet(imgSet+1)}} className="text-sm bg-green-600 text-white rounded px-1 py-1">Add Image</button>
+                                    </div>
+                                    {/* <input onChange={(e)=>{setCarData({...carData, imageURL_secondary : e.target.value})}} type="text" className="bg-gray-100 rounded border-gray-200 border-1 px-2 w-full mt-2" placeholder="secondary"/>
+                                    <input onChange={(e)=>{setCarData({...carData, imageURL_teritary : e.target.value})}} type="text" className="bg-gray-100 rounded border-gray-200 border-1 px-2 w-full mt-2" placeholder="teritary"/> */}
                                 </div>
                                 <p>Description</p>
                                 <textarea onChange={(e)=>{setCarData({...carData, description : e.target.value})}} className="bg-gray-100 rounded border w-full h-20 px-2 py-1"></textarea>

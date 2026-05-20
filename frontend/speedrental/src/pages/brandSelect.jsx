@@ -14,6 +14,7 @@ function BrandSelect(){
             <option value="Nissan">Nissan</option>
             <option value="Rolls">Rolls Royce</option>
             <option value="Rover">Rover</option>
+            <option value="Toyota">Toyota</option>
         </>
     )
 

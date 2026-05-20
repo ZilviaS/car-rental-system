@@ -91,11 +91,12 @@ router.get('/:id', async (req,res)=>{
 router.get('', async (req,res)=>{
     try{
         const result = await pool.query(
-            `SELECT * FROM cars`
+            `SELECT * FROM cars ORDER BY brand`
         )
         console.log(result.rows)
         res.json(result.rows)
     }catch(err){
+        console.log(err)
         res.status(500).send('server error')
     }
 })
@@ -118,8 +119,8 @@ router.get('/:id/booked-dates', async (req,res)=>{
 })
 
 router.post('/insert', authAdmin, async (req,res)=>{
-    const {brand, model, trim, year, plate, imageURL, description, price, imageURL_secondary, imageURL_teritary} = req.body
-    console.log(brand, model, trim, year, plate, imageURL, description, imageURL_secondary, imageURL_teritary)
+    const {brand, model, trim, year, plate, imageURL, description, price, img_set} = req.body
+    console.log(brand, model, trim, year, plate, imageURL, description, img_set)
     const client = await pool.connect()
     const carId = uuidv4();
     try{
@@ -130,16 +131,12 @@ router.post('/insert', authAdmin, async (req,res)=>{
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
             `,[brand, model, trim, year, description, plate, 'true' ,imageURL, price, carId])
         
-        if (imageURL_secondary && imageURL_secondary.trim() !== ''){
-            await client.query(`
-                INSERT INTO car_image(car_id, image_url)
-                VALUES ($1, $2)`,[carId, imageURL_secondary])
-        }
-
-        if (imageURL_teritary && imageURL_teritary.trim() !== ''){
-            await client.query(`
-                INSERT INTO car_image(car_id, image_url)
-                VALUES ($1, $2)`,[carId, imageURL_teritary])
+        for (const img of img_set || []){
+            if (img.trim() !== ''){
+                await client.query(`
+                    INSERT INTO car_image(car_id, image_url)
+                    VALUES ($1, $2)`,[carId, img])
+            }
         }
         
         await client.query('COMMIT');
