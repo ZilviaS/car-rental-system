@@ -115,17 +115,30 @@ function Booking(){
                         <>
                             <div className="bg-white md:w-[70%] w-[95%] rounded-xl p-5 shadow-2xl">
                                 <div className="w-full flex sm:flex-row flex-col gap-2 sm:h-120">
-                                    <div className="bg-gray-200 sm:w-200 w-full sm:h-full h-80">
+                                    <div className="relative bg-gray-200 sm:w-200 w-full sm:h-full h-80">
+                                        <button onClick={()=>{
+                                            if (imgStatus <= 0){
+                                                setImgStatus(car.img_set.length-1)
+                                            }else{
+                                                setImgStatus(imgStatus-1)
+                                                console.log(imgStatus)
+                                            }
+                                        }} className="absolute left-3 opacity-30 hover:opacity-100 rounded transition top-1/2 text-white text-3xl -translate-y-1/2 hover:cursor-pointer hover:bg-black/50 z-10 px-1 py-2 flex items-center pb-3 justify-center">&lt;</button>
                                         <img className="w-full h-full object-cover" src={imgURL[imgStatus]} alt="" />
+                                        <button onClick={()=>{
+                                            if (imgStatus >= car.img_set.length-1){
+                                                setImgStatus(0)
+                                            }else{
+                                                setImgStatus(imgStatus+1)
+                                            }
+                                        }} className="absolute right-3 opacity-30 hover:opacity-100 rounded transition top-1/2 text-white text-3xl -translate-y-1/2 hover:cursor-pointer hover:bg-black/50 z-10 px-1 py-2 flex items-center pb-3 justify-center">&gt;</button>
                                     </div>
                                     <div className="bg-gray-200 sm:w-55 w-full sm:h-full h-20 flex sm:flex-col flex-row sm:overflow-y-scroll overflow-x-scroll no-scrollbar">
                                         {imgURL.map((img, index)=>{
                                             return (
-                                                <>
-                                                    <div className={`sm:w-full shrink-0 w-30 sm:h-30 h-20 ${imgStatus === index ? 'grayscale' : ''}`} key={index}>
-                                                        <img onClick={()=>{setImgStatus(index)}} className="w-full h-full object-cover hover:cursor-pointer " src={img} alt="" />
-                                                    </div>
-                                                </> 
+                                                <div className={`sm:w-full shrink-0 w-30 sm:h-30 h-20 ${imgStatus === index ? 'grayscale' : ''}`} key={index}>
+                                                    <img onClick={()=>{setImgStatus(index)}} className="w-full h-full object-cover hover:cursor-pointer " src={img} alt="" />
+                                                </div>
                                             )
                                         })}
                                     </div>
@@ -133,7 +146,7 @@ function Booking(){
                                 <div className="flex lg:flex-row flex-col justify-between gap-5 mt-3">
                                     <div className="lg:w-[60%] w-full">
                                         <div className="flex mt-4 py-1 items-baseline md:flex-row flex-col">
-                                            <h1 className="text-xl font-bold font-RobotoMono">{car.brand} {car.model}</h1>
+                                            <h1 className="text-xl font-bold font-RobotoMono">{car.brand} {car.model} {car.trim}</h1>
                                             <h1 className="pl-2 text-sm">({car.plate})</h1>
                                         </div>
                                         <div className="flex items-baseline">

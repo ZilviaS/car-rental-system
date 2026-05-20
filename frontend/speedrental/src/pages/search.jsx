@@ -187,6 +187,16 @@ function Search(){
                         {currentPage} / {totalPages}
                     </p>
 
+                    {
+                        [...Array(totalPages)].map((_,index)=>(
+                            <button key={index} onClick={()=>{setCurrentPage(index + 1)}} className={`px-1 text-sm hover:cursor-pointer
+                                ${currentPage === index + 1
+                                    ? 'underline'
+                                    : ''}
+                            `}>{index+1}</button>
+                        ))
+                    }
+
                     <button
                         disabled={currentPage === totalPages}
                         onClick={() => setCurrentPage(currentPage + 1)}

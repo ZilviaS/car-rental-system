@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { jwtDecode } from "jwt-decode"
 import { Navigate, useNavigate } from 'react-router-dom'
+import webLogo from '../assets/webLogo.avif'
 import signOutLogo from '../assets/logout.svg'
 import searchLogo from '../assets/search.svg'
 import carsLogo from '../assets/car.svg'
@@ -38,9 +39,9 @@ function Navbar(){
 
     return(
         <>
-            <section className='bg-white flex justify-between items-center max-h-13'>
+            <section className='bg-white flex justify-between items-center h-13'>
                 <div className='flex items-center py-1 px-2 gap-2'>
-                    <a href="/"><img className='sm:max-h-10 max-h-7 rounded-full shadow' src="https://img.freepik.com/premium-vector/vector-car-logo-design-illus_714931-352.jpg" alt="" /></a>
+                    <a href="/"><img className='sm:max-h-10 max-h-7 rounded-full shadow' src={webLogo} alt="" /></a>
                     <a href="/" className='border-l-gray-300 border-l text-black font-RobotoMono hidden sm:flex pl-2  hover:cursor-pointer'>SPEED-RENTAL</a>
                 </div>
                 
