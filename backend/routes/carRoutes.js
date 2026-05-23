@@ -3,7 +3,6 @@ const router = express.Router()
 const pool = require('../db')
 const auth = require('../middleware/auth')
 const authAdmin = require('../middleware/authAdmin')
-const { v4: uuidv4 } = require('uuid')
 
 router.post('/', async (req,res)=>{
     const {brand, carname, startDate, endDate} = req.body
@@ -122,15 +121,17 @@ router.post('/insert', authAdmin, async (req,res)=>{
     const {brand, model, trim, year, plate, imageURL, description, price, img_set} = req.body
     console.log(brand, model, trim, year, plate, imageURL, description, img_set)
     const client = await pool.connect()
-    const carId = uuidv4();
     try{
         await client.query('BEGIN')
-        await client.query(`
+        const result = await client.query(`
             INSERT INTO cars(
-	        brand, model, trim, year, description, plate, status, image_url, price, id)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-            `,[brand, model, trim, year, description, plate, 'true' ,imageURL, price, carId])
+	        brand, model, trim, year, description, plate, status, image_url, price)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+            RETURNING id
+            `,[brand, model, trim, year, description, plate, true ,imageURL, price])
         
+        const carId = result.rows[0].id
+
         for (const img of img_set || []){
             if (img.trim() !== ''){
                 await client.query(`
@@ -140,6 +141,7 @@ router.post('/insert', authAdmin, async (req,res)=>{
         }
         
         await client.query('COMMIT');
+
         res.status(201).json({
             message: 'success'
         })

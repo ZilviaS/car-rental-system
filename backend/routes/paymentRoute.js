@@ -1,7 +1,6 @@
 const express = require('express')
 const router = express.Router()
 const pool = require('../db')
-const { v4: uuidv4 } = require('uuid');
 
 router.post('/', async (req,res)=>{
     const { carID, start_date, end_date } = req.body
@@ -34,11 +33,21 @@ router.post('/transcript/', async (req,res)=>{
     const { paymentInfo, userPayment , bookingData , carID , userID } = req.body
 
     if (!paymentInfo || !userPayment || !bookingData || !carID || !userID){
-        res.status(400).json({message : 'please provide all the information'})
+        return res.status(400).json({message : 'please provide all the information'})
     }
 
-    if (!userPayment.card_number || !userPayment.ex_month || !userPayment.ex_year || !userPayment.user_id || !userPayment.cvv || !paymentInfo.price || !userPayment.bank , !bookingData.start_date , !bookingData.end_date , !bookingData.location, !userPayment.tel){
-        res.status(400).json({message : 'please provide all the information'})
+    if (!userPayment.card_number || 
+        !userPayment.ex_month || 
+        !userPayment.ex_year || 
+        !userPayment.user_id || 
+        !userPayment.cvv || 
+        !paymentInfo.price || 
+        !userPayment.bank || 
+        !bookingData.start_date || 
+        !bookingData.end_date ||
+        !bookingData.location ||
+        !userPayment.tel){
+        return res.status(400).json({message : 'please provide all the information'})
     }
 
 
@@ -49,22 +58,22 @@ router.post('/transcript/', async (req,res)=>{
     try{
         await client.query('BEGIN');
 
-        const bookingId = uuidv4();
-        const paymentId = uuidv4();
 
-        await client.query(`
+        const result = await client.query(`
         INSERT INTO bookings(
-	    id, user_id, car_id, start_date, end_date, status, location_id, price, tel)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-        `, [bookingId, userID, carID, bookingData.start_date, bookingData.end_date, 'pending', bookingData.location, paymentInfo.price, userPayment.tel])
+	    user_id, car_id, start_date, end_date, status, location_id, price, tel)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        RETURNING id
+        `, [userID, carID, bookingData.start_date, bookingData.end_date, 'pending', bookingData.location, paymentInfo.price, userPayment.tel])
         
-        const transaction_ref = uuidv4();
+        const bookingId = result.rows[0].id
+
 
         await client.query(`
         INSERT INTO payments(
-        id, booking_id, amount, bank, status, transaction_ref)   
-        VALUES ($1, $2, $3, $4, $5 , $6)
-        `, [paymentId, bookingId, paymentInfo.price, userPayment.bank , 'paid' , transaction_ref]) 
+        booking_id, amount, bank, status)   
+        VALUES ($1, $2, $3, $4)
+        `, [bookingId, paymentInfo.price, userPayment.bank , 'paid']) 
 
         await client.query(`
         UPDATE bookings
