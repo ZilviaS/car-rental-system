@@ -2,7 +2,6 @@ import Navbar from "./navbar.jsx"
 import '../App.jsx'
 import { useEffect, useState } from "react"
 import { Navigate, useNavigate } from "react-router-dom"
-import userLogo from '../assets/user.svg'
 
 function adminManage(){
     const API = import.meta.env.VITE_API_URL
