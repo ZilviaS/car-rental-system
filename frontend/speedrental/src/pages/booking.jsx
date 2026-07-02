@@ -30,6 +30,14 @@ function Booking(){
     const [imgURL, setImgURL] = useState([])
     const [imgStatus, setImgStatus] = useState(0)
 
+    const formatDate = (date) => {
+        const year = date.getFullYear()
+        const month = String(date.getMonth() + 1).padStart(2, '0')
+        const day = String(date.getDate()).padStart(2, '0')
+
+        return `${year}-${month}-${day}`
+    }
+
     useEffect(()=>{
         console.log(id)
         fetch(`${API}/api/car/${id}`)
@@ -50,12 +58,6 @@ function Booking(){
             console.log(data)
         })
     }, [])
-
-    useEffect(()=>{
-        if(data.start_date && data.end_date && car){
-            handleCheck()
-        }
-    }, [data.start_date, data.end_date, car])
 
     const handleSubmit = ()=>{
         if (data.start_date == '' || data.end_date == '' || data.location == ''){
@@ -96,13 +98,13 @@ function Booking(){
         }
     }
 
-    const formatDate = (date) => {
-        const year = date.getFullYear()
-        const month = String(date.getMonth() + 1).padStart(2, '0')
-        const day = String(date.getDate()).padStart(2, '0')
+    useEffect(()=>{
+        if(data.start_date && data.end_date && car){
+            handleCheck()
+        }
+    }, [data.start_date, data.end_date, car])
 
-        return `${year}-${month}-${day}`
-    }
+    
 
 
     return(

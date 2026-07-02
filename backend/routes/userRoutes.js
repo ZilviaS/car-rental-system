@@ -25,6 +25,7 @@ router.get('/me', auth, async(req, res)=>{
 })
 
 router.get('/admin/me', authAdmin, (req, res)=>{
+    console.log('ok')
     res.status(200).json({message : 'success'})
 })
 
@@ -89,12 +90,14 @@ router.get('/cars', auth, async(req,res)=>{
                 b.start_date::text,
                 b.end_date::text,
                 b.status,
+                b.car_id, 
                 l.location_name,
                 c.image_url,
                 c.plate,
                 c.brand,
                 c.model,
                 c.year,
+                c.price AS car_price,
                 b.price
             FROM bookings b
             JOIN cars c ON b.car_id = c.id
@@ -103,9 +106,26 @@ router.get('/cars', auth, async(req,res)=>{
             ORDER BY b.start_date DESC`,
             [ userId ]
         )
-        console.log('yay')
-        console.log(result.rows)
-        res.json(result.rows)
+
+        const booking = result.rows.map((booking)=>{
+            let fine = 0
+            const endDate = new Date(booking.end_date)
+            const lateDays = Math.max(
+                0,
+                Math.ceil((Date.now() - endDate) / (1000 * 60 * 60 * 24))
+            );
+            if (lateDays > 0){
+                const price = booking.car_price
+                console.log("price :", price)
+                fine = lateDays * price * (5/100)
+            }
+            return {
+                ...booking, fine
+            }
+        })
+
+        console.log(booking)
+        res.json(booking)
     }catch(err){
         console.log(err)
         res.status(500).send(err)

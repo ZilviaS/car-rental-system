@@ -5,7 +5,7 @@ import { Navigate, useNavigate } from "react-router-dom"
 
 function adminManage(){
     const API = import.meta.env.VITE_API_URL
-    const [pageStatus , setPageStatus] = useState('carList')
+    const [pageStatus , setPageStatus] = useState('rentedList')
 
     const [carData , setCarData] = useState({
         brand : '',
@@ -27,16 +27,15 @@ function adminManage(){
         description : ''
     })
 
+    const [ rentedList, setRentedList ] = useState([])
     const [carinfo, setCarInfo] = useState([])
 
     const [resultStatus, setResultStatus] = useState(null)
-    const [resultLocationStatus, setLocationStatus] = useState(null)
 
     const [searchTearm, setSearchTearm] = useState('')
     const [searchRefund, setSearchRefund] = useState('')
 
     const [refundData, setRefundData] = useState([])
-    const [refundLog, setRefundLog] = useState(null)
 
     const [imgSet, setImgSet] = useState(0)
 
@@ -78,6 +77,25 @@ function adminManage(){
             }
         }
         getRefund()
+    },[])
+
+    useEffect(()=>{
+        const token = localStorage.getItem('token')
+        const getRentedList = async ()=>{
+            try{
+                const res = await fetch(`${API}/api/booking/list`,{
+                    headers: {
+                        'Authorization' : `Bearer ${token}`
+                    }
+                })
+                const data = await res.json()
+                setRentedList(data)
+                console.log("rented",data)
+            }catch(err){
+                console.log(err)
+            }
+        }
+        getRentedList()
     },[])
 
     const handleCarUpdate = async ()=>{
@@ -124,6 +142,7 @@ function adminManage(){
         })
 
         if (!res.ok) {
+            const data = res.json()
             setResultStatus(data.error || 'something went wrong')
             return
         }else{
@@ -186,13 +205,19 @@ function adminManage(){
         })
     }
 
+    const returningCars = async(id)=>{
+
+    }
+
 
     return (
         <>
-            <div className="flex justify-center sm:gap-5 gap-3 mb-5">
+            <Navbar></Navbar>
+            <div className="flex justify-center sm:gap-5 gap-3 my-5">
                 <button onClick={()=>setPageStatus('carList')} className={`sm:px-5 px-2 py-1 rounded hover:cursor-pointer hover:underline ${pageStatus === 'carList' ? 'bg-yellow-400' : 'bg-yellow-200'}`}>Car List</button>
                 <button onClick={()=>setPageStatus('rentalCar')} className={`sm:px-5 px-2 py-1 rounded hover:cursor-pointer hover:underline ${pageStatus === 'rentalCar' ? 'bg-yellow-400' : 'bg-yellow-200'}`}>Update Rental Car</button>
                 <button onClick={()=>setPageStatus('refundRequest')} className={`sm:px-5 px-2 rounded hover:cursor-pointer hover:underline ${pageStatus === 'refundRequest' ? 'bg-yellow-400' : 'bg-yellow-200'}`}>Refund Request</button>
+                <button onClick={()=>setPageStatus('rentedList')} className={`sm:px-5 px-2 rounded hover:cursor-pointer hover:underline ${pageStatus === 'rentedList' ? 'bg-yellow-400' : 'bg-yellow-200'}`}>Rented list</button>
             </div>
             <div className="flex justify-center">
                 {pageStatus === 'carList' && <>
@@ -313,6 +338,37 @@ function adminManage(){
                             )
                         })}
                     </div>
+                </>}
+                {pageStatus === 'rentedList' && <>
+                    {rentedList == [] ? <>
+                    </> : <>
+                            <div className="w-[full] min-h-0 mb-3 flex flex-col gap-2">
+                                <div className="md:w-200 w-80 flex gap-1 items-baseline">
+                                    <input className="bg-gray-100 rounded border px-2" type="text" placeholder="search" />
+                                    <p className="text-sm text-gray-700">total of</p>
+                                </div>
+                                {
+                                    rentedList.map((data)=>(
+                                        <div key={data.id} className="w-full flex gap-5 text-sm">
+                                            <div>
+                                                <img src={data.image_url} className="w-50 max-h-50" alt="" />
+                                            </div>
+                                            <div className="flex flex-col gap-2">
+                                                <div>
+                                                    <p className="font-RobotoMono"><span className="font-bold">({data.plate.replace(/\s/g, "")})</span> {data.brand} {data.model} {data.trim}</p>
+                                                    <p>period : {new Date(data.start_date).toLocaleDateString("th-TH")} - {new Date(data.end_date).toLocaleDateString("th-TH")}</p>
+                                                    <p>fine : <span className={`${data.fine != 0 ? 'text-red-500 font-bold' : ''}`}>{data.fine}</span> THB</p>
+                                                </div>
+                                                <div>
+                                                    <a href={`/return/${data.id}`} className="bg-green-500 rounded text-xs font-bold font-RobotoMono text-white px-1 py-1 mt-1">submit</a>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    ))
+                                }
+                            </div>
+                    </>}
                 </>}
             </div>
         </>

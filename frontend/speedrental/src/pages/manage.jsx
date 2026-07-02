@@ -48,7 +48,7 @@ function Manage(){
 
     const [loading, setLoading] = useState(true)
 
-    const [isAdmin, setIsAdmin] = useState(false)
+    // const [isAdmin, setIsAdmin] = useState(false)
 
     useEffect(()=>{
         const token = localStorage.getItem('token')
@@ -91,14 +91,14 @@ function Manage(){
                 console.log(data)
             })
 
-            const adminCheck = await fetch(`${API}/api/user/admin/me`,{
-                headers : {
-                    Authorization : `Bearer ${token}`
-                }
-            })
-            if (adminCheck.ok){
-                setIsAdmin(true)
-            }
+            // const adminCheck = await fetch(`${API}/api/user/admin/me`,{
+            //     headers : {
+            //         Authorization : `Bearer ${token}`
+            //     }
+            // })
+            // if (adminCheck.ok){
+            //     setIsAdmin(true)
+            // }
         }
 
         handleUserInformation()
@@ -402,7 +402,7 @@ function Manage(){
                                 {userCars.length === 0 && (
                                     <p className="font-RobotoMono text-xs text-gray-500">You're not book anything yet</p>
                                     )}
-                                {userCars.map((car,index)=>{
+                                {userCars.map((car)=>{
                                     return (
                                         <div className="flex justify-center shadow">
                                             <div className="flex flex-row rounded sm:h-35 h-50 w-full">
@@ -414,6 +414,9 @@ function Manage(){
                                                         <p className="text-md font-RobotoMono truncate">{car.year} {car.brand} {car.model} {car.trim}</p>
                                                         <p className="font-RobotoMono text-xs text-gray-500">( {car.plate}) @{car.location_name}</p>
                                                         <p className="font-RobotoMono sm:text-sm text-xs text-gray-900">Booking period: {dateDeFormat(car.start_date).replaceAll("-","/")} - {dateDeFormat(car.end_date).replaceAll("-","/")}</p>
+                                                        {car.fine > 0 ? <>
+                                                            <p className="font-RobotoMono text-xs text-gray-500">fine : <span className="font-RobotoMono text-red-500 ">{car.fine}</span>thb</p>
+                                                        </> : <></>}
                                                     </div>
                                                     <p className="sm:hidden block text-green-600 mr-5">{car.price}</p>
                                                     <div className="flex gap-2">
@@ -491,12 +494,12 @@ function Manage(){
                         </>}   
                     </div>
                 </section>
-                {isAdmin === true ? 
+                {/* {isAdmin === true ? 
                 <section className="my-10">
                     <AdminManage />
                 </section> : 
                 <></>
-                }
+                } */}
             </div>
 
         </>

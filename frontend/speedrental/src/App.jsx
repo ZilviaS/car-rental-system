@@ -9,6 +9,8 @@ import Payment from './pages/payments'
 import Location from './pages/location'
 import Contact from './pages/contact'
 import EditCar from './pages/editCar'
+import AdminManage from './pages/adminManage'
+import ReturnCar from './pages/returnCars'
 import './App.css'
 import 'leaflet/dist/leaflet.css'
 
@@ -27,6 +29,8 @@ function App() {
         <Route path='/location' element={<Location/>}></Route>
         <Route path='/contact' element={<Contact/>}></Route>
         <Route path='/edit/:id' element={<EditCar/>}></Route>
+        <Route path='/admin' element={<AdminManage/>}></Route>
+        <Route path='/return/:id' element={<ReturnCar/>}></Route>
       </Routes>
     </BrowserRouter>
   )

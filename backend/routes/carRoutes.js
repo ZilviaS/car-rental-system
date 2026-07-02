@@ -74,9 +74,6 @@ router.get('/:id', async (req,res)=>{
             car.img_set = imageResult.rows.map(img => img.image_url)
         }
         car.img_set.unshift(car.image_url)
-
-        // car.image_url_secondary = imageResult.rows[0]?.image_url || ''
-        // car.image_url_teritery = imageResult.rows[1]?.image_url || ''
         console.log(car)
         res.json(car)
     }catch (err){
@@ -92,7 +89,7 @@ router.get('', async (req,res)=>{
         const result = await pool.query(
             `SELECT * FROM cars ORDER BY brand`
         )
-        console.log(result.rows)
+        // console.log(result.rows)
         res.json(result.rows)
     }catch(err){
         console.log(err)
@@ -107,7 +104,7 @@ router.get('/:id/booked-dates', async (req,res)=>{
             SELECT start_date, end_date
             FROM bookings
             WHERE car_id = $1
-            AND status != 'cancelled'
+            AND status NOT IN ('cancelled', 'returned')
         `, [id])
         console.log(result.rows)
         res.json(result.rows)

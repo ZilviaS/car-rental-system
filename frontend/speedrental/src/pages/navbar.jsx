@@ -58,6 +58,7 @@ function Navbar(){
                         <>
                             <div className='flex items-center border-gray-300 border-l sm:pl-4 pl-2 gap-1 sm:gap-2'>
                                 <a className='font-RobotoMono text-green-500 text-sm hover:shadow' href='/manage '>{user.username}</a>
+                                <a className='font-RobotoMono text-xs hover:underline' href='/admin'>MANAGE</a>
                                 <button onClick={handleLogout}><img className='sm:w-5 w-4 pt-0.5 text-red-500 hover:cursor-pointer' src={signOutLogo} alt="" /></button>
                                 {/* <button className='text-red-500 hover:cursor-pointer hover:underline font-RobotoMono text-xs sm:text-sm' onClick={handleLogout}>Sign-Out</button> */}
                             </div>
