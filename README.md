@@ -28,6 +28,12 @@ The application follows a RESTful architecture with a responsive frontend and a 
 - PostgreSQL
 - JWT Authentication
 
+## Deployment
+- Frontend : Vercel
+- Backend : Render
+- Database : NeonDB
+- DEMO : [https://car-rental-system-omega-lemon.vercel.app/](https://car-rental-system-omega-lemon.vercel.app/)
+
 ## Responsibilities
 
 - Designed and developed the entire application independently.
