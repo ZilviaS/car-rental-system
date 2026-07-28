@@ -13,27 +13,34 @@ import '../App.css'
 
 function Navbar(){
     const [user, setUser] = useState(null) 
+    const API = import.meta.env.VITE_API_URL
 
     const navigate = useNavigate()
 
     useEffect(()=>{
-        const token = localStorage.getItem('token')
-        if (!token){
-            setUser(null)
-        }else{
-            try{
-                const decode = jwtDecode(token)
-
-                setUser(decode)
-                
-            }catch{
-                setUser(null)
+        const getUser = async ()=>{
+            const res = await fetch(`${API}/api/auth/me`,{
+                credentials: "include"
+            })
+            if(!res.ok){
+                setUser(null);
+                console.log("error")
+                return;
             }
+            const user = await res.json();
+            setUser(user);
         }
+
+        getUser()
     }, [])
 
-    const handleLogout = ()=>{
-        localStorage.removeItem('token')
+    const handleLogout = async ()=>{
+        await fetch(`${API}/api/auth/logout`,{
+            method: "POST",
+            credentials: "include"
+        })
+
+        setUser(null);
         window.location.reload()
     }
 

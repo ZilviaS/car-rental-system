@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt')
 const pool = require('../db')
 const jwt = require('jsonwebtoken')
 const auth = require('../middleware/auth')
+const authAdmin = require('../middleware/authAdmin')
  
 router.post('/register', async (req,res)=>{
     const {username, email, password, confirmPassword} = req.body
@@ -110,6 +111,13 @@ router.post('/login', async (req,res)=>{
             process.env.JWT_SECRET, { expiresIn: '7d' }
         )
 
+        res.cookie("token",token, {
+            httpOnly: true,
+            secure : process.env.NODE_ENV === 'production',
+            sameSite : "lax",
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        });
+
         res.json({
             message: 'Login Success',
             token
@@ -119,6 +127,22 @@ router.post('/login', async (req,res)=>{
         console.log(err)
         res.status(500).json({error: err.message})
     }
+})
+
+router.post('/logout', (req, res) =>{
+    res.clearCookie("token");
+
+    res.json({
+        message : "Logout Success"
+    })
+})
+
+router.get('/me', auth , (req,res)=>{
+    res.json(req.user);
+})
+
+router.get('/admin/me', authAdmin , (req,res)=>{
+    res.json(req.user);
 })
 
 module.exports = router

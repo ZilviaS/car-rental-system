@@ -2,15 +2,14 @@ const pool = require('../db')
 const jwt = require('jsonwebtoken')
 
 async function authAdmin(req, res, next){
-    const authHeader = req.headers.authorization
+    // const token = req.cookies.token;
+    const token = req.cookies.token;
 
-    if(!authHeader){
+    if(!token){
         return res.status(401).json( {msg: 'no token'})
     }
 
     console.log('checkAdmin')
-
-    const token = authHeader.split(' ')[1]
 
     try{
         const decoded = jwt.verify(token, process.env.JWT_SECRET)

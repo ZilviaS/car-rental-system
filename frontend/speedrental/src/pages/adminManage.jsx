@@ -57,13 +57,10 @@ function adminManage(){
     },[])
 
     useEffect(()=>{
-        const token = localStorage.getItem('token')
         const getRefund = async ()=>{
             try {
                 const res = await fetch(`${API}/api/booking/refund`,{
-                    headers: {
-                        'Authorization' : `Bearer ${token}`
-                    }
+                    credentials : "include"
                 })
 
                 const data = await res.json()
@@ -80,13 +77,10 @@ function adminManage(){
     },[])
 
     useEffect(()=>{
-        const token = localStorage.getItem('token')
         const getRentedList = async ()=>{
             try{
                 const res = await fetch(`${API}/api/booking/list`,{
-                    headers: {
-                        'Authorization' : `Bearer ${token}`
-                    }
+                    credentials : "include"
                 })
                 const data = await res.json()
                 setRentedList(data)
@@ -99,14 +93,13 @@ function adminManage(){
     },[])
 
     const handleCarUpdate = async ()=>{
-        const token = localStorage.getItem('token')
         try{
             const res = await fetch(`${API}/api/car/insert`,{
                 method : 'POST',
                 headers :{
-                        'Authorization' : `Bearer ${token}`,
                         'content-type' : 'application/json'
                     },
+                credentials : "include",
                 body : JSON.stringify(carData),
             })
 
@@ -128,14 +121,13 @@ function adminManage(){
     }
 
     const handleDelete = async (id)=>{
-        const token = localStorage.getItem('token')
         console.log(id)
         const res = await fetch(`${API}/api/car/delete`,{
             method : 'POST',
             headers : {
-                'Authorization' : `Bearer ${token}`,
                 'content-type' : 'application/json'
             },
+            credentials : "include",
             body : JSON.stringify({
                 id : id
             })
@@ -178,14 +170,11 @@ function adminManage(){
     })
     
     const handleRefundSubmit = async(id)=>{
-        const token = localStorage.getItem('token')
 
         console.log(id)
         const res = await fetch(`${API}/api/booking/${id}/refund/submit`,{
             method : 'POST',
-            headers : {
-                'Authorization' : `Bearer ${token}`
-            }
+            credentials : "include"
         })
 
         const data = await res.json()
@@ -203,10 +192,6 @@ function adminManage(){
             updated[index] = value
             return { ...prev, img_set: updated }
         })
-    }
-
-    const returningCars = async(id)=>{
-
     }
 
 

@@ -48,19 +48,24 @@ function Manage(){
 
     const [loading, setLoading] = useState(true)
 
-    // const [isAdmin, setIsAdmin] = useState(false)
-
     useEffect(()=>{
-        const token = localStorage.getItem('token')
-        if(!token){
-            navigate('/login')
-            return
+        const getUser = async ()=>{
+            const res = await fetch(`${API}/api/auth/me`,{
+                credentials: "include"
+            })
+            if(!res.ok){
+                setUser(null);
+                navigate('/login')
+                return
+            }
+            const user = await res.json();
+            setUser(user);
         }
+        getUser()
+
         const handleUserInformation = async()=>{
             fetch(`${API}/api/user/me`,{
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
+                credentials: "include"
             })
             .then(res => res.json())
             .then(data => {
@@ -71,9 +76,7 @@ function Manage(){
             })
 
             fetch(`${API}/api/user/account`,{
-                headers : {
-                    Authorization: `Bearer ${token}`
-                }
+                credentials: "include"
             })
             .then(res => res.json())
             .then(data => {
@@ -81,9 +84,7 @@ function Manage(){
             })
 
             fetch(`${API}/api/user/cars`,{
-                headers : {
-                    Authorization : `Bearer ${token}`
-                }
+                credentials: "include"
             })
             .then(res => res.json())
             .then(data => {
@@ -106,37 +107,32 @@ function Manage(){
     },[])
 
     const handleUpdate = ()=>{
-        const token = localStorage.getItem('token')
         fetch(`${API}/api/user`,{
             method : 'POST',
             headers : {
                 'content-type' : 'application/json',
-                'Authorization' : `Bearer ${token}`
             },
+            credentials: "include",
             body: JSON.stringify(user)
         })
     }
 
     const handleAccountUpdate = ()=>{
-        const token = localStorage.getItem('token')
         fetch(`${API}/api/user/account`,{
             method : 'POST',
             headers : {
                 'content-type' : 'application/json',
-                'Authorization' : `Bearer ${token}`
             },
+            credentials: "include",
             body: JSON.stringify(userPayment)
         })
     }
 
     const handleReceivedCar = async (id)=>{
-        const token = localStorage.getItem('token')
 
         const res = await fetch(`${API}/api/booking/${id}/received`,{
             method : 'POST',
-            headers : {
-                'Authorization' : `Bearer ${token}`
-            }
+            credentials: "include"
         })
 
         const data = res.json()
@@ -150,13 +146,10 @@ function Manage(){
     }
 
     const handleRefund = async(id)=>{
-        const token = localStorage.getItem('token')
         
         const res = await fetch(`${API}/api/booking/${id}/refund`,{
             method : 'POST',
-            headers : {
-                'Authorization' : `Bearer ${token}`
-            }
+            credentials: "include"
         })
 
         const data = res.json()
@@ -169,14 +162,12 @@ function Manage(){
     }
 
     const handleCancleOrder = async (car)=>{
-        const token = localStorage.getItem('token')
-
         const res = await fetch(`${API}/api/booking/cancle`,{
             method : 'POST',
             headers:{
                 'content-type' : 'application/json',
-                'Authorization' : `Bearer ${token}`
             },
+            credentials: "include",
             body: JSON.stringify(car)
         })
 

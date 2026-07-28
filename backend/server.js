@@ -2,6 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const app = express()
 const cors = require('cors')
+const cookieParser = require("cookie-parser")
 
 const allowedOrigins = [
   'http://localhost:5173',
@@ -18,10 +19,13 @@ app.use(cors({
     }
 
     return callback(new Error('Not allowed by CORS'))
-  }
+  },
+  credentials : true
 }))
 
 app.use(express.json())
+
+app.use(cookieParser())
 
 const carRoutes = require('./routes/carRoutes')
 app.use('/api/car', carRoutes)
@@ -40,6 +44,7 @@ app.use('/api/payment', paymentRoutes)
 
 const locationRoutes = require('./routes/locationRoute')
 app.use('/api/location', locationRoutes)
+
 
 app.get('/', (req,res)=>{
     res.send('API is running')

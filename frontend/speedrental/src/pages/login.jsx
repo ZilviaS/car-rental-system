@@ -21,6 +21,7 @@ function login(){
             headers :{
                 'content-type' : 'application/json'
             },
+            credentials : "include",
             body : JSON.stringify({
                 email: userForm.email,
                 password: userForm.password
@@ -32,7 +33,6 @@ function login(){
         console.log(data)
 
         if(res.ok){
-            localStorage.setItem('token', data.token)
             navigate('/')
         }
         else{

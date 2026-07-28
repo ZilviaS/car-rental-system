@@ -3,8 +3,6 @@ import Navbar from './navbar'
 import { Navigate, useNavigate } from 'react-router-dom'
 import '../App.css'
 import Footer from './footer'
-import brandSelect from './brandSelect'
-
 import bg from '../assets/background_crop.jpg'
 import AbarthLogo from '../assets/AbarthLogo.png'
 import AlfaRomeoLogo from '../assets/AlfaRomeoLogo.png'

@@ -17,13 +17,12 @@ function returnCar(){
             setErrorLog('please, fill all the info before submit')
             return null
         }
-        const token = localStorage.getItem("token")
         const res = await fetch(`${API}/api/booking/${id}/return`,{
             method : 'POST',
             headers : {
-                'authorization' : `Bearer ${token}`,
                 'content-type' : 'Application/json'
             },
+            credentials : "include",
             body : JSON.stringify(carInfo)
         })
         if(res.ok){
@@ -33,12 +32,9 @@ function returnCar(){
     }
 
     useEffect(()=>{
-        const token = localStorage.getItem("token")
         const checkAdmin = async ()=>{
             const res = await fetch(`${API}/api/user/admin/me`,{
-                headers : {
-                    'Authorization' : `Bearer ${token}`
-                }
+                credentials : "include"
             })
             if(!res.ok){
                 navigate('/login')
@@ -49,11 +45,8 @@ function returnCar(){
 
     useEffect(()=>{
         const carInfoHandle = async()=>{
-            const token = localStorage.getItem('token')
             const res = await fetch(`${API}/api/booking/${id}/get`,{
-                headers : {
-                    'Authorization' : `Bearer ${token}`
-                }}
+                credentials : "include"}
             )
             const data = await res.json()
             if (res.ok){

@@ -50,42 +50,28 @@ function EditCar(){
     },[id])
 
     useEffect(()=>{
-        const token = localStorage.getItem('token')
-
-        if(!token){
-            navigate('/')
-        }
-        
-        const checkAdmin = async ()=>{
-            try{   
-                const res = await fetch(`${API}/api/user/admin/me`,{
-                    headers:{
-                        Authorization : `Bearer ${token}`
-                    }
-                })
-                if (!res.ok){
-                    navigate('/')
-                }
-                return
-            } catch(err){
+        const getUserAdmin = async ()=>{
+            const res = await fetch(`${API}/api/auth/admin/me`,{
+                credentials : "include"
+            })
+            if (!res.ok){
                 navigate('/')
             }
-
         }
-        checkAdmin()
+        getUserAdmin()
+
 
     },[])
 
     const handleUpdateCar = async ()=>{
-        const token = localStorage.getItem('token')
         try{
             console.log(carInfo)
             const res = await fetch(`${API}/api/car/update`,{
                 method : 'POST',
                 headers : {
-                    'Authorization' : `Bearer ${token}`,
                     'content-type' : 'application/json'
                 },
+                credentials : "include",
                 body : JSON.stringify(carInfo)
             })
 

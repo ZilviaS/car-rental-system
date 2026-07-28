@@ -4,7 +4,6 @@ import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
-import placeholderImage from '../assets/placeholder.jpg'
 
 function Booking(){
     const navigate = useNavigate()
@@ -76,7 +75,9 @@ function Booking(){
         })
     }
 
-    const handleCheck = async ()=>{
+
+    useEffect(()=>{
+        const handleCheck = async ()=>{
         try{
             const res = await fetch(`${API}/api/payment`,{
                 method : 'POST',
@@ -97,11 +98,10 @@ function Booking(){
             console.error(err)
         }
     }
-
-    useEffect(()=>{
         if(data.start_date && data.end_date && car){
             handleCheck()
         }
+
     }, [data.start_date, data.end_date, car])
 
     

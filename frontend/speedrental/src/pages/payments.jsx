@@ -57,16 +57,23 @@ function Payment(){
     }
 
     useEffect(()=>{
-        const token = localStorage.getItem('token')
-        if(!token){
-            navigate('/login')
-            return
+        const getUser = async ()=>{
+            const res = await fetch(`${API}/api/auth/me`,{
+                credentials: "include"
+            })
+            if(!res.ok){
+                setUser(null);
+                navigate('/login')
+                return;
+            }
+            const user = await res.json();
+            setUser(user);
         }
 
+        getUser()
+
         fetch(`${API}/api/user/me`,{
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
+            credentials : "include"
         })
         .then(res => res.json())
         .then(data => {{
@@ -77,9 +84,7 @@ function Payment(){
         })
 
         fetch(`${API}/api/user/account`,{
-            headers : {
-                Authorization: `Bearer ${token}`
-            }
+            credentials : "include"
         })
         .then(res=> res.json())
         .then(data=>{
